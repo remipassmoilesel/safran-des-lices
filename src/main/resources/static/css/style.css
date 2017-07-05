@@ -44,18 +44,18 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 a {
-    color: #5fcf80;
+    color: #7f5f91;
 }
 
 a:hover, a:focus {
-    color: #5fcf80;
+    color: #7f5f91;
 }
 
 /***********************************
 Navigation bar
 ************************************/
 .navbar-default .navbar-brand {
-    color: #5FCF80;
+    color: #7f5f91;
 }
 
 .navbar-default {
@@ -79,40 +79,35 @@ Navigation bar
 }
 
 .navbar-default .navbar-nav > li > a:focus, .navbar-default .navbar-nav > li > a:hover {
-    color: #5FCF80;
+    color: #7f5f91;
 }
 
 .navbar-nav .active a {
     background: none !important;
-    color: #5FCF80 !important;
+    color: #7f5f91 !important;
     outline: none;
 }
 
 .btn-trial a {
-    background-color: #5FCF80;
+    background-color: #7f5f91;
     border-radius: 25px;
     color: #ffffff !important;
-    border: 1px solid #5FCF80;
+    border: 1px solid #7f5f91;
 }
 
 .btn-trial a:hover, .btn-trial a:focus {
-    border: 1px solid #5FCF80;
+    border: 1px solid #7f5f91;
     background-color: #fff;
-    color: #5FCF80 !important;
+    color: #7f5f91 !important;
 }
 
 .navbar-default .navbar-brand {
     font-family: 'Dosis', sans-serif !important;
     font-weight: 700;
-    text-transform: uppercase;
     padding: 0px;
     height: inherit;
     font-size: 36px;
     margin: 20px 0px;
-}
-
-.navbar-default .navbar-brand span {
-    font-weight: 100 !important;
 }
 
 .navbar {
@@ -151,7 +146,7 @@ Banner
 }
 
 .text-border {
-    border: 5px solid #5FCF80;
+    border: 5px solid #7f5f91;
     display: inline-block;
     margin-top: 150px;
 }
@@ -289,7 +284,7 @@ Banner
 }
 
 .quote .btn {
-    background-color: #5fcf80;
+    background-color: #7f5f91;
     color: #fff;
     -webkit-transition: all 0.3s ease-in-out;
     -moz-transition: all 0.3s ease-in-out;
@@ -299,7 +294,7 @@ Banner
 
 .quote .btn:hover, .quote .btn:focus {
     background-color: #fff;
-    color: #5fcf80;
+    color: #7f5f91;
     border-color: #fff;
     -webkit-transition: all 0.3s ease-in-out;
     -moz-transition: all 0.3s ease-in-out;
@@ -334,7 +329,7 @@ h2 {
 
 .fea i {
     font-size: 39px;
-    color: #5FCF80;
+    color: #7f5f91;
     margin-top: 7px;
 }
 
@@ -359,7 +354,7 @@ h2 {
 }
 
 .orga-stru {
-    background-color: #5FCF80;
+    background-color: #7f5f91;
     width: 109px;
     height: auto;
     padding: 10px 10px 25px 10px;
@@ -397,7 +392,7 @@ h3.det-txt {
 }
 
 h4.sm-txt {
-    color: #5FCF80;
+    color: #7f5f91;
     font-size: 24px;
 }
 
@@ -433,7 +428,7 @@ Cta
     min-width: 280px;
     margin-left: -4px;
     margin-bottom: 2px;
-    border: 1px solid #5fcf80;
+    border: 1px solid #7f5f91;
     background-color: rgb(247, 247, 247);
     border-radius: 30px 0px 0px 30px;
 }
@@ -442,7 +437,7 @@ Cta
     font-size: 18px;
     text-transform: capitalize;
     color: #fff;
-    background-color: #5fcf80;
+    background-color: #7f5f91;
     border: 2px solid #fff;
     padding: 14px 30px;
     margin-left: -4px;
@@ -468,7 +463,7 @@ Work Shop
 }
 
 .icon-box i {
-    color: #5FCF80;
+    color: #7f5f91;
     font-size: 65px;
 }
 
@@ -539,11 +534,11 @@ Testimonial
 Course
 ************************************/
 [class*=" imghvr-"] figcaption, [class^="imghvr-"] figcaption {
-    background-color: #5FCF80;
+    background-color: #7f5f91;
 }
 
 [class*=" imghvr-"], [class^="imghvr-"] {
-    background-color: #5FCF80;
+    background-color: #7f5f91;
     color: #fff;
 }
 
@@ -594,7 +589,7 @@ Price Table
     padding: 20px 0px;
     font-weight: bold !important;
     font-size: 14px;
-    background-color: #5fcf80;
+    background-color: #7f5f91;
 }
 
 /***********************************
@@ -725,7 +720,7 @@ Footer
 }
 
 .btn-submit:hover, .btn-submit:focus {
-    background-color: #5fcf80;
+    background-color: #7f5f91;
     color: #fff;
 }
 
@@ -733,7 +728,7 @@ Footer
     padding: 14px 12px;
     border-radius: 50px;
     text-transform: uppercase;
-    background-color: #5fcf80;
+    background-color: #7f5f91;
     color: #fff;
 }
 
@@ -790,7 +785,7 @@ Footer
 }
 
 .light-form-button {
-    background: #5fcf80;
+    background: #7f5f91;
     border: 1px solid rgba(119, 81, 81, 0.34);
     width: 24%;
     padding: 10px 10px;
@@ -805,7 +800,7 @@ Footer
 }
 
 .btn-green, .btn-green:hover {
-    background-color: #5fcf80;
+    background-color: #7f5f91;
     color: #fff;
 }
 
