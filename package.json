@@ -1,0 +1,24 @@
+{
+  "name": "abc-map.fr",
+  "version": "1.0.0",
+  "description": "The new version of Abc-map's website. Work in progress. Based on Spring Boot.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/remipassmoilesel/abcmap-fr.git"
+  },
+  "author": "",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/remipassmoilesel/abcmap-fr/issues"
+  },
+  "homepage": "https://github.com/remipassmoilesel/abcmap-fr#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-sass": "^3.1.0",
+    "sass": "^1.0.0-beta.1"
+  }
+}

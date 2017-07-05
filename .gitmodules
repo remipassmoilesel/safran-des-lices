@@ -1,0 +1,3 @@
+[submodule "src/main/resources/static/gh-activity"]
+	path = src/main/resources/static/gh-activity
+	url = https://github.com/colmdoyle/gh-activity

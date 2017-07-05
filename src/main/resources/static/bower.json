@@ -1,0 +1,21 @@
+{
+  "name": "static",
+  "homepage": "https://github.com/remipassmoilesel/abcmap-fr",
+  "authors": [
+    "remi.passmoilesel <remi.passmoilesel@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "GPL-3.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "lightbox2": "^2.9.0",
+    "jquery": "2",
+  }
+}
