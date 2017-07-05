@@ -17,6 +17,12 @@ public class Mappings {
 
     public static final String ROOT = "/";
 
+    public static final String WELCOME= ROOT + "exploitation";
+    public static final String PRODUCTS = ROOT + "produits";
+    public static final String EXPLOITATION = ROOT + "exploitation";
+    public static final String ORDER = ROOT + "commander";
+    public static final String TEMPLATE = ROOT + "template";
+
     public static final String ADMIN_PAGE = ROOT + "admin-bulubulu";
     public static final String ADMIN_PAGE_LOGIN = ROOT + "admin-login-bulubulu";
     public static final String ADMIN_PAGE_LOGOUT = ROOT + "admin-logout-bulubulu";

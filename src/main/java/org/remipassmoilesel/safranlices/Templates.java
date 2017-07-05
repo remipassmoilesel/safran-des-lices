@@ -7,8 +7,15 @@ public class Templates {
 
     public static final String PAGES_DIR = "pages/";
 
+    public static final String WELCOME = PAGES_DIR + "welcome";
+    public static final String PRODUCTS = PAGES_DIR + "products";
+    public static final String EXPLOITATION = PAGES_DIR + "exploitation";
+    public static final String ORDER = PAGES_DIR + "order";
+    public static final String MAIN_TEMPLATE = "main-decorator";
+
     public static final String EXAMPLE_CONTENT = PAGES_DIR + "contentExample";
     public static final String ADMIN = PAGES_DIR + "admin";
     public static final String ADMIN_LOGIN = PAGES_DIR + "adminLogin";
+
 
 }

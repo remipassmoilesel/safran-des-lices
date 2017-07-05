@@ -129,6 +129,10 @@ Navigation bar
     margin-top: 20px;
 }
 
+.content-container{
+    padding: 3em;
+}
+
 /***********************************
 Banner
 ************************************/
