@@ -16,8 +16,8 @@ public class MainController {
     private static final Logger logger = LoggerFactory.getLogger(MainController.class);
 
     @RequestMapping(Mappings.ROOT)
-    public void showIndex() {
-
+    public String showIndex() {
+        return "main-decorator";
     }
 
 }
