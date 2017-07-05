@@ -106,8 +106,15 @@ Navigation bar
     font-weight: 700;
     padding: 0px;
     height: inherit;
-    font-size: 36px;
+    font-size: 27px;
     margin: 20px 0px;
+}
+
+.navbar-default .brand-img{
+    width: 1.5em;
+    margin-left: 1em;
+    margin-right: 1em;
+    display: inline-block;
 }
 
 .navbar {
