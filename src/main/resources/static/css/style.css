@@ -713,7 +713,7 @@ Footer
 
 .footer .social-links li {
     display: inline-block;
-    margin: 0 25px 25px;
+    margin: 0 1em 1em;
     -webkit-transition: all .3s ease-out;
     transition: all .3s ease-out;
 }
