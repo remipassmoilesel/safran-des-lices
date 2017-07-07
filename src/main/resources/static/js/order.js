@@ -15,7 +15,7 @@ var App = {
                 return;
             }
 
-            document.location.href = UrlTree.BASKET + "?addToCart=" + qtty + "&id=" + id;
+            document.location.href = UrlTree.BASKET + "?addToCart=" + id + "&qtty=" + qtty;
 
         });
     }
