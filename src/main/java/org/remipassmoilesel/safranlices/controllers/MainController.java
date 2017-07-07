@@ -78,4 +78,10 @@ public class MainController {
         return Templates.ORDER;
     }
 
+    @RequestMapping(Mappings.BASKET)
+    public String showBasket(Model model) {
+        Mappings.includeMappings(model);
+        return Templates.BASKET;
+    }
+
 }
