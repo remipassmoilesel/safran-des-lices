@@ -7,7 +7,26 @@
     <title>Commander en ligne</title>
 
     <style>
+        .product input {
+            width: 4.5em !important;
+            display: inline-block !important;
+        }
+
+        .product a:nth-child(1) {
+            width: 4em !important;
+            display: inline-block !important;
+        }
+
+        .errorArea{
+            font-weight: bolder;
+            color: darkred;
+            font-size: 0.9em;
+            height: 3em;
+        }
     </style>
+
+    <script th:src="@{/js/order.js}"></script>
+
 </head>
 <body>
 <div layout:fragment="content">
@@ -43,21 +62,25 @@
                         </div>
 
                         <!-- Add quantity to basket -->
-                        <div style="margin: 1em;" th:if="${p.getQuantityAvailable() gt 0}">
-                            <form class="form-inline"  style="width: 50%; margin: auto;">
+                        <div style="margin: 1em;" th:if="${p.getQuantityAvailable() gt 0}" class="product">
+                            <form class="form-inline" style="width: 70%; margin: auto;">
                                 <div class="form-group">
-                                    <input type="text" size="2" value="1" class="form-control"
+                                    <input type="number" value="1" class="form-control"
                                            th:id="'productQuantity' + ${p.getId()}"/>
+                                    &nbsp;
+                                    <a class="btn btn-default fa fa-cart-plus add-to-basket"
+                                       th:attr="data-max=${p.getQuantityAvailable()}, data-id=${p.getId()}">
+                                    </a>
                                 </div>
-                                &nbsp;
-                                <a class="btn btn-default fa fa-cart-plus"
-                                   th:onclick="'addQuantityToBasket(' + ${p.getId()} + ')'">
-                                </a>
                             </form>
 
                             <div class="availableQuantity">
                                 Quantité disponible:
                                 <span th:text="${p.getQuantityAvailable()}"></span>
+                            </div>
+
+                            <div class="errorArea" th:id="'errorArea' + ${p.getId()}">
+                                &nbsp;
                             </div>
 
                         </div>

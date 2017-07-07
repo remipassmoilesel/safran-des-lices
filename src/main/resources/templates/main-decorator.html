@@ -20,6 +20,12 @@
     <script th:src="@{/bower_components/jquery/dist/jquery.js}"></script>
     <script th:src="@{/bower_components/lightbox2/dist/js/lightbox.js}"></script>
 
+    <script th:inline="javascript">
+        var UrlTree = {
+            BASKET: /*[[${#httpServletRequest.getContextPath() + mappings.get('BASKET')}]]*/ null
+        };
+    </script>
+
 </head>
 <body>
 

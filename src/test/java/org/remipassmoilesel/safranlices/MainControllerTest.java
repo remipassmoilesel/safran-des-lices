@@ -52,11 +52,13 @@ public class MainControllerTest {
 
         mockMvc.perform(get(Mappings.ORDER))
                 .andExpect(status().isOk())
+                .andExpect(model().attributeExists("products"))
                 .andExpect(model().attributeExists(Mappings.MODEL_ARGUMENT_NAME));
 
         mockMvc.perform(get(Mappings.BASKET))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists(Mappings.MODEL_ARGUMENT_NAME));
     }
+
 
 }
