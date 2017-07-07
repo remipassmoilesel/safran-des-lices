@@ -6,6 +6,17 @@
     <title>Payer mon panier</title>
 
     <style>
+        .checkoutform .row {
+            margin: 0.7em;
+        }
+        input[name="postalcode"]{
+            display: inline-block;
+            width: 27%;
+        }
+        input[name="city"]{
+            display: inline-block;
+            width: 70%;
+        }
     </style>
 </head>
 <body>
@@ -23,7 +34,7 @@
             </div>
         </div>
 
-        <div class="container">
+        <div class="container checkoutform">
 
             <form method="post" th:action="@{${mappings.get('CHECKOUT')}}">
                 <div class="row">
@@ -81,9 +92,20 @@
                         Moyen de paiement:
                     </div>
                     <div class="col-md-5">
-                        <input type="radio" name="paymentType" value="creditcard" checked="true"/>
-                        <input type="radio" name="paymentType" value="bankcheck"/>
-                        <input type="radio" name="paymentType" value="paypal"/>
+                        <ul style="margin: 0em; padding: 0em">
+                            <li>
+                                <input type="radio" name="paymentType" value="creditcard" checked="true"/>
+                                Carte de crédit
+                            </li>
+                            <li>
+                                <input type="radio" name="paymentType" value="paypal"/>
+                                Paypal
+                            </li>
+                            <li>
+                                <input type="radio" name="paymentType" value="bankcheck"/>
+                                Chèque bancaire
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 <div class="row">
