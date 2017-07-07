@@ -10,9 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by remipassmoilesel on 13/06/17.
@@ -21,6 +26,7 @@ import java.util.List;
 public class MainController {
 
     private static final Logger logger = LoggerFactory.getLogger(MainController.class);
+    private static final String CURRENT_BASKET = "basket";
 
     @Autowired
     private ProductRepository productRepository;
@@ -79,7 +85,44 @@ public class MainController {
     }
 
     @RequestMapping(Mappings.BASKET)
-    public String showBasket(Model model) {
+    public String showBasket(
+            @RequestParam(required = false, name = "addToCart") Long id,
+            @RequestParam(required = false, name = "qtty") Integer qtty,
+            HttpSession session,
+            Model model) {
+
+        HashMap<Long, Integer> basket = (HashMap<Long, Integer>) session.getAttribute(CURRENT_BASKET);
+        if(basket == null){
+            basket = new HashMap<>();
+            session.setAttribute("basket", basket);
+        }
+
+        // add something to cart
+        if(id != null && qtty != null){
+
+            if(basket.get(id) != null){
+                qtty += basket.get(id);
+            }
+
+            basket.put(id, qtty);
+            session.setAttribute(CURRENT_BASKET, basket);
+        }
+
+        // map quantities and products
+        List<Product> products = productRepository.findAll();
+        HashMap<Product, Integer> productsWithQuantities = new HashMap<>();
+        Iterator<Long> keys = basket.keySet().iterator();
+        while(keys.hasNext()){
+            Long pId = keys.next();
+            Product p = products.stream()
+                    .filter(pf -> pId.equals(pf.getId()))     // we dont like mkyong
+                    .findAny().orElse(null);
+
+            productsWithQuantities.put(p, basket.get(pId));
+        }
+
+        model.addAttribute("basket", productsWithQuantities);
+
         Mappings.includeMappings(model);
         return Templates.BASKET;
     }

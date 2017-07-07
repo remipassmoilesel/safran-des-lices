@@ -16,10 +16,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by remipassmoilesel on 12/06/17.
@@ -88,11 +85,12 @@ public class DevDataLoader implements ApplicationRunner {
         for (int i = 0; i < 50; i++) {
 
             ArrayList<Product> prds = new ArrayList<>();
+            HashMap<Long, Integer> quantities = new HashMap<>();
             for (int j = 0; j < rand.ints(1, 10).iterator().next(); j++) {
                 prds.add(products.get(rand.nextInt(products.size())));
             }
 
-            CommercialOrder order = DevDataFactory.createOrder(start.minusDays(i).toDate(), prds, null,
+            CommercialOrder order = DevDataFactory.createOrder(start.minusDays(i).toDate(), prds, quantities, null,
                     null, null, null, null, null);
 
             orderRepository.save(order);

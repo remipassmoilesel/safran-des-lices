@@ -49,7 +49,7 @@ public class DevDataFactory {
         return new Product(name, description, pictures, price, quantityAvailable);
     }
 
-    public static CommercialOrder createOrder(Date date, List<Product> products, String address, String phonenumber,
+    public static CommercialOrder createOrder(Date date, List<Product> products, HashMap<Long, Integer> quantities, String address, String phonenumber,
                                               String firstName, String lastName, PaymentType paymentType, String comment) {
 
         if (date == null) {
@@ -61,6 +61,13 @@ public class DevDataFactory {
             int nbr = rand.ints(1, 6).iterator().next();
             for (int i = 0; i < nbr; i++) {
                 prds.add(createProduct(null, null, null, null, null));
+            }
+        }
+
+        if(quantities == null){
+            quantities = new HashMap<>();
+            for(Product p : products){
+                quantities.put(p.getId(), rand.nextInt(25));
             }
         }
 
@@ -88,7 +95,7 @@ public class DevDataFactory {
             lastName = Utils.generateLoremIpsum(200);
         }
 
-        return new CommercialOrder(date, products, address, phonenumber, firstName, lastName, paymentType, comment);
+        return new CommercialOrder(date, products, quantities, address, phonenumber, firstName, lastName, paymentType, comment);
     }
 
 }

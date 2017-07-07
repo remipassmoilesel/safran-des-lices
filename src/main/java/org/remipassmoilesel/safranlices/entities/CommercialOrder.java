@@ -2,6 +2,7 @@ package org.remipassmoilesel.safranlices.entities;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,6 +20,7 @@ public class CommercialOrder {
 
     @ManyToMany
     private List<Product> products;
+    private HashMap<Long, Integer> quantities;
 
     private String address;
 
@@ -36,15 +38,24 @@ public class CommercialOrder {
     public CommercialOrder() {
     }
 
-    public CommercialOrder(Date date, List<Product> products, String address, String phonenumber, String firstName, String lastName, PaymentType paymentType, String comment) {
+    public CommercialOrder(Date date, List<Product> products, HashMap<Long, Integer> quantities, String address, String phonenumber, String firstName, String lastName, PaymentType paymentType, String comment) {
         this.date = date;
         this.products = products;
+        this.quantities = quantities;
         this.address = address;
         this.phonenumber = phonenumber;
         this.firstName = firstName;
         this.lastName = lastName;
         this.paymentType = paymentType;
         this.comment = comment;
+    }
+
+    public HashMap<Long, Integer> getQuantities() {
+        return quantities;
+    }
+
+    public void setQuantities(HashMap<Long, Integer> quantities) {
+        this.quantities = quantities;
     }
 
     public Long getId() {
@@ -123,29 +134,31 @@ public class CommercialOrder {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CommercialOrder order = (CommercialOrder) o;
-        return Objects.equals(id, order.id) &&
-                Objects.equals(date, order.date) &&
-                Objects.equals(products, order.products) &&
-                Objects.equals(address, order.address) &&
-                Objects.equals(phonenumber, order.phonenumber) &&
-                Objects.equals(firstName, order.firstName) &&
-                Objects.equals(lastName, order.lastName) &&
-                paymentType == order.paymentType &&
-                Objects.equals(comment, order.comment);
+        CommercialOrder that = (CommercialOrder) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(date, that.date) &&
+                Objects.equals(products, that.products) &&
+                Objects.equals(quantities, that.quantities) &&
+                Objects.equals(address, that.address) &&
+                Objects.equals(phonenumber, that.phonenumber) &&
+                Objects.equals(firstName, that.firstName) &&
+                Objects.equals(lastName, that.lastName) &&
+                paymentType == that.paymentType &&
+                Objects.equals(comment, that.comment);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, date, products, address, phonenumber, firstName, lastName, paymentType, comment);
+        return Objects.hash(id, date, products, quantities, address, phonenumber, firstName, lastName, paymentType, comment);
     }
 
     @Override
     public String toString() {
-        return "Order{" +
+        return "CommercialOrder{" +
                 "id=" + id +
                 ", date=" + date +
-                ", product=" + products +
+                ", products=" + products +
+                ", quantities=" + quantities +
                 ", address='" + address + '\'' +
                 ", phonenumber='" + phonenumber + '\'' +
                 ", firstName='" + firstName + '\'' +

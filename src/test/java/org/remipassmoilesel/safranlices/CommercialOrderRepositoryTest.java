@@ -36,7 +36,7 @@ public class CommercialOrderRepositoryTest {
 
         int nbr = 10;
         for (int i = 0; i < nbr; i++) {
-            orderRepository.save(DevDataFactory.createOrder(null, null,
+            orderRepository.save(DevDataFactory.createOrder(null, null, null,
                     null, null, null, null, null, null));
         }
 
