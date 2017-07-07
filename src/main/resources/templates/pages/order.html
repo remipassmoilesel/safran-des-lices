@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="main-decorator">
+<html layout:decorator="main-decorator"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Commander</title>
 
@@ -9,44 +12,38 @@
 <body>
 <div layout:fragment="content">
 
-    <section id="courses" class="section-padding">
+    <section id="work-shop" class="section-padding">
         <div class="container">
+
             <div class="row">
                 <div class="header-section text-center">
-                    <h2>Lorem ipsum</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Exercitationem nesciunt vitae,<br/>
-                        maiores, magni dolorum aliquam.</p>
+                    <h2>Commander en ligne</h2>
+                    <p>Faîtes vous livrer nos produits partout en France !</p>
                     <hr class="bottom-line"/>
                 </div>
             </div>
-        </div>
 
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 col-sm-6 padleft-right">
-                    <figure class="imghvr-fade">
-                        <img src="img/course01.jpg" class="img-responsive"/>
-                        <figcaption>
-                            <h3>Lorem ipsum</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam atque, nostrum
-                                veniam
-                                consequatur libero fugiat, similique quis.</p>
-                        </figcaption>
-                        <a href="#"></a>
-                    </figure>
-                </div>
-                <div class="col-md-6 col-sm-6 padleft-right">
-                    <figure class="imghvr-fade">
-                        <img src="img/course02.jpg" class="img-responsive"/>
-                        <figcaption>
-                            <h3>Lorem ipsum</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam atque, nostrum
-                                veniam consequatur libero fugiat, similique quis.</p>
-                        </figcaption>
-                        <a href="#"></a>
-                    </figure>
+            <div class="row" style="margin: 1em;" th:each="row : ${products}">
+                <div class="col-md-4 col-sm-6" th:each="p : ${row}">
+                    <div class="service-box text-center">
+                        <div class="icon-box">
+                            <img th:src="@{${p.getPicturesAsList().get(0)}}" style="width: 100%;"/>
+                        </div>
+                        <div class="icon-text">
+                            <h4 class="ser-text" th:text="${p.getName()}">Product name</h4>
+                            <div th:text="${p.getDescription()}">Product description</div>
+                        </div>
+                        <div style="margin: 1em;">
+                            Quantité:
+                            <input type="text" size="2" value="1" th:id="'productQuantity' + ${p.getId()}"/>
+                            &nbsp;<a href="#" th:onclick="'addQuantityToBasket(' + ${p.getId()} + ')'">
+                                Ajouter au panier
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
+
         </div>
     </section>
 
