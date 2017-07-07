@@ -26,25 +26,37 @@
         <div class="container">
             <div class="row">
 
-                <div th:text="${basket}"></div>
-
                 <div class="">
                     <table class="table">
                         <tr>
                             <th>Article</th>
                             <th>Quantité</th>
+                            <th>Prix unitaire</th>
                             <th>Prix</th>
                         </tr>
 
-                        <!--<tr th:each="row : ${basket}">-->
-                            <!--<td th:text="${products.get()}row.key"></td>-->
-                            <!--<td th:text="row.value"></td>-->
-                        <!--</tr>-->
+                        <tr th:each="row : ${basket}">
+                            <td th:text="${row.key.getName()}">Nom du produit</td>
+                            <td th:text="${row.value}">3</td>
+                            <td th:text="${row.key.getPrice() + ' €'}">35.5€</td>
+                            <td th:text="${row.key.getPrice() * row.value + ' €'}">135.5€</td>
+                        </tr>
 
                     </table>
                 </div>
+
             </div>
+
+            <div style="text-align: center">
+                <div class="col-md-2 col-md-offset-5">
+                    <a th:href="@{${mappings.get('CHECKOUT')}}" class="btn btn-primary">
+                        Payer ma commande
+                    </a>
+                </div>
+            </div>
+
         </div>
+
     </section>
 
 </div>

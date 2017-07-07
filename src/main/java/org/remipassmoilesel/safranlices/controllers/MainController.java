@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by remipassmoilesel on 13/06/17.
@@ -92,15 +91,15 @@ public class MainController {
             Model model) {
 
         HashMap<Long, Integer> basket = (HashMap<Long, Integer>) session.getAttribute(CURRENT_BASKET);
-        if(basket == null){
+        if (basket == null) {
             basket = new HashMap<>();
             session.setAttribute("basket", basket);
         }
 
         // add something to cart
-        if(id != null && qtty != null){
+        if (id != null && qtty != null) {
 
-            if(basket.get(id) != null){
+            if (basket.get(id) != null) {
                 qtty += basket.get(id);
             }
 
@@ -112,10 +111,10 @@ public class MainController {
         List<Product> products = productRepository.findAll();
         HashMap<Product, Integer> productsWithQuantities = new HashMap<>();
         Iterator<Long> keys = basket.keySet().iterator();
-        while(keys.hasNext()){
+        while (keys.hasNext()) {
             Long pId = keys.next();
             Product p = products.stream()
-                    .filter(pf -> pId.equals(pf.getId()))     // we dont like mkyong
+                    .filter(pf -> pId.equals(pf.getId()))
                     .findAny().orElse(null);
 
             productsWithQuantities.put(p, basket.get(pId));
@@ -125,6 +124,35 @@ public class MainController {
 
         Mappings.includeMappings(model);
         return Templates.BASKET;
+    }
+
+    @RequestMapping(Mappings.CHECKOUT)
+    public String checkout(
+            HttpSession session,
+            Model model) {
+
+        HashMap<Long, Integer> basket = (HashMap<Long, Integer>) session.getAttribute(CURRENT_BASKET);
+        if (basket == null) {
+            basket = new HashMap<>();
+            session.setAttribute("basket", basket);
+        }
+
+        Double total = 0d;
+        Iterator<Long> keys = basket.keySet().iterator();
+        List<Product> products = productRepository.findAll();
+        while (keys.hasNext()) {
+            Long pId = keys.next();
+            Product p = products.stream()
+                    .filter(pf -> pId.equals(pf.getId()))
+                    .findAny().orElse(null);
+
+            total += p.getPrice() * basket.get(pId);
+        }
+
+        model.addAttribute("total", total);
+
+        Mappings.includeMappings(model);
+        return Templates.CHECKOUT;
     }
 
 }

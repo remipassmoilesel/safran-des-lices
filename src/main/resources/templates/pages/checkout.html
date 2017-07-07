@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorator="main-decorator">
+<head>
+    <title>Payer mon panier</title>
+
+    <style>
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <section id="courses" class="section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="header-section text-center">
+                    <h2>Payer mon panier</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Exercitationem nesciunt vitae,<br/>
+                        maiores, magni dolorum aliquam.</p>
+                    <hr class="bottom-line"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <form method="post" th:action="@{${mappings.get('CHECKOUT')}}">
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-2">
+                        Prix total de la commande:
+                    </div>
+                    <div class="col-md-5" th:text="${total + ' €'}">
+                        12.95 €
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-2">
+                        Prénom:
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="firstname"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-2">
+                        Nom:
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="lastname"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-2">
+                        Code postal et ville:
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="postalcode"/>
+                        <input type="text" class="form-control" name="city"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-2">
+                        Adresse:
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="address"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-2">
+                        Numéro de téléphone:
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="phonenumber"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-2">
+                        Moyen de paiement:
+                    </div>
+                    <div class="col-md-5">
+                        <input type="radio" name="paymentType" value="creditcard" checked="true"/>
+                        <input type="radio" name="paymentType" value="bankcheck"/>
+                        <input type="radio" name="paymentType" value="paypal"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-2">
+                        Commentaire (facultatif):
+                    </div>
+                    <div class="col-md-5">
+                        <textarea class="form-control" rows="5" name="comment"></textarea>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 2em;">
+                    <div class="col-md-2 col-md-offset-5">
+                        <button type="submit" th:href="@{${mappings.get('CHECKOUT')}}"
+                                class="btn btn-primary">Régler ma commande
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </section>
+
+</div>
+</body>
+</html>

@@ -22,6 +22,7 @@ public class Mappings {
     public static final String EXPLOITATION = ROOT + "exploitation";
     public static final String ORDER = ROOT + "commander";
     public static final String BASKET = ROOT + "mon-panier";
+    public static final String CHECKOUT = ROOT + "regler-ma-commande";
     public static final String TEMPLATE = ROOT + "template";
 
     public static final String ADMIN_PAGE = ROOT + "admin-bulubulu";

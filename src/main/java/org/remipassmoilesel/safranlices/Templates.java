@@ -12,6 +12,7 @@ public class Templates {
     public static final String EXPLOITATION = PAGES_DIR + "exploitation";
     public static final String ORDER = PAGES_DIR + "order";
     public static final String BASKET = PAGES_DIR + "basket";
+    public static final String CHECKOUT = PAGES_DIR + "checkout";
 
     public static final String MAIN_TEMPLATE = "main-decorator";
 
