@@ -4,7 +4,7 @@
       xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Commander</title>
+    <title>Commander en ligne</title>
 
     <style>
     </style>
@@ -26,6 +26,8 @@
             <div class="row" style="margin: 1em;" th:each="row : ${products}">
                 <div class="col-md-4 col-sm-6" th:each="p : ${row}">
                     <div class="service-box text-center">
+
+                        <!-- Pictures, some are hidden -->
                         <div class="icon-box">
                             <a th:each="imagePath, iter : ${p.getPicturesAsList()}"
                                th:style="'display: ' + ${iter.index == 0 ? 'block' : 'none' } + ';'"
@@ -33,17 +35,37 @@
                                 <img th:src="@{${imagePath}}" style="width: 100%;"/>
                             </a>
                         </div>
+
+                        <!-- Name and description -->
                         <div class="icon-text">
                             <h4 class="ser-text" th:text="${p.getName()}">Product name</h4>
                             <div th:text="${p.getDescription()}">Product description</div>
                         </div>
-                        <div style="margin: 1em;">
-                            Quantité:
-                            <input type="text" size="2" value="1" th:id="'productQuantity' + ${p.getId()}"/>
-                            &nbsp;<a href="#" th:onclick="'addQuantityToBasket(' + ${p.getId()} + ')'">
-                            Ajouter au panier
-                        </a>
+
+                        <!-- Add quantity to basket -->
+                        <div style="margin: 1em;" th:if="${p.getQuantityAvailable() gt 0}">
+                            <form class="form-inline"  style="width: 50%; margin: auto;">
+                                <div class="form-group">
+                                    <input type="text" size="2" value="1" class="form-control"
+                                           th:id="'productQuantity' + ${p.getId()}"/>
+                                </div>
+                                &nbsp;
+                                <a class="btn btn-default fa fa-cart-plus"
+                                   th:onclick="'addQuantityToBasket(' + ${p.getId()} + ')'">
+                                </a>
+                            </form>
+
+                            <div class="availableQuantity">
+                                Quantité disponible:
+                                <span th:text="${p.getQuantityAvailable()}"></span>
+                            </div>
+
                         </div>
+
+                        <div style="margin: 1em;" th:if="${p.getQuantityAvailable() le 0}">
+                            <h3>Produit épuisé</h3>
+                        </div>
+
                     </div>
                 </div>
             </div>

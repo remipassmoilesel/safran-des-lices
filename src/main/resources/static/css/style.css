@@ -949,3 +949,8 @@ Responsive media queries
 .illustration{
     margin: 1em;
 }
+
+.availableQuantity{
+    font-size: 0.7em;
+    color: gray;
+}
