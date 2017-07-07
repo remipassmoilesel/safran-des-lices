@@ -27,7 +27,11 @@
                 <div class="col-md-4 col-sm-6" th:each="p : ${row}">
                     <div class="service-box text-center">
                         <div class="icon-box">
-                            <img th:src="@{${p.getPicturesAsList().get(0)}}" style="width: 100%;"/>
+                            <a th:each="imagePath, iter : ${p.getPicturesAsList()}"
+                               th:style="'display: ' + ${iter.index == 0 ? 'block' : 'none' } + ';'"
+                               th:href="@{${imagePath}}" th:attr="data-lightbox=${p.getId()}">
+                                <img th:src="@{${imagePath}}" style="width: 100%;"/>
+                            </a>
                         </div>
                         <div class="icon-text">
                             <h4 class="ser-text" th:text="${p.getName()}">Product name</h4>
@@ -37,8 +41,8 @@
                             Quantité:
                             <input type="text" size="2" value="1" th:id="'productQuantity' + ${p.getId()}"/>
                             &nbsp;<a href="#" th:onclick="'addQuantityToBasket(' + ${p.getId()} + ')'">
-                                Ajouter au panier
-                            </a>
+                            Ajouter au panier
+                        </a>
                         </div>
                     </div>
                 </div>
