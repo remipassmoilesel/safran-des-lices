@@ -59,6 +59,7 @@
                         <div class="icon-text">
                             <h4 class="ser-text" th:text="${p.getName()}">Product name</h4>
                             <div th:text="${p.getDescription()}">Product description</div>
+                            <div th:text="${p.getPrice() + ' €'}">35 €</div>
                         </div>
 
                         <!-- Add quantity to basket -->
