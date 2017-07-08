@@ -3,6 +3,7 @@ package org.remipassmoilesel.safranlices;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.remipassmoilesel.safranlices.entities.Product;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
 import org.remipassmoilesel.safranlices.utils.DevDataFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class ProductRepositoryTest {
 
     @Before
     public void setup() throws IOException {
-        productRepository.deleteAll();
+        //productRepository.deleteAll();
     }
 
     @Test
@@ -36,11 +37,12 @@ public class ProductRepositoryTest {
 
         int nbr = 10;
         for (int i = 0; i < nbr; i++) {
-            productRepository.save(DevDataFactory.createProduct(null, null,
-                    null, null, null));
+            Product product = DevDataFactory.createProduct(null, null,
+                    null, null, null);
+            productRepository.save(product);
         }
 
-        assertTrue(productRepository.findAll().size() == nbr);
+        assertTrue(productRepository.findAll().size() >= nbr);
 
     }
 
