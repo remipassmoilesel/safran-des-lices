@@ -3,7 +3,10 @@ package org.remipassmoilesel.safranlices;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.remipassmoilesel.safranlices.entities.CommercialOrder;
+import org.remipassmoilesel.safranlices.entities.Product;
 import org.remipassmoilesel.safranlices.repositories.OrderRepository;
+import org.remipassmoilesel.safranlices.repositories.ProductRepository;
 import org.remipassmoilesel.safranlices.utils.DevDataFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,6 +14,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import static org.junit.Assert.assertTrue;
 
@@ -26,6 +32,9 @@ public class CommercialOrderRepositoryTest {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private ProductRepository productRepository;
+
     @Before
     public void setup() throws IOException {
         orderRepository.deleteAll();
@@ -34,10 +43,15 @@ public class CommercialOrderRepositoryTest {
     @Test
     public void testInsert() throws Exception {
 
+
+        // create and save products
+        List<Product> products = productRepository.findAll();
+
         int nbr = 10;
         for (int i = 0; i < nbr; i++) {
-            orderRepository.save(DevDataFactory.createOrder(null, null, null,
-                    null, null, null, null, null, null));
+            CommercialOrder order = DevDataFactory.createOrder(null, products, null,
+                    null, null, null, null, null, null);
+            orderRepository.save(order);
         }
 
         assertTrue(orderRepository.findAll().size() == nbr);

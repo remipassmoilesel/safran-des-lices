@@ -57,10 +57,10 @@ public class DevDataFactory {
         }
 
         if (products == null) {
-            ArrayList<Product> prds = new ArrayList<>();
+            products = new ArrayList<>();
             int nbr = rand.ints(1, 6).iterator().next();
             for (int i = 0; i < nbr; i++) {
-                prds.add(createProduct(null, null, null, null, null));
+                products.add(createProduct(null, null, null, null, null));
             }
         }
 

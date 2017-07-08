@@ -20,6 +20,8 @@ public class CommercialOrder {
 
     @ManyToMany
     private List<Product> products;
+
+    @Column(columnDefinition = "BLOB")
     private HashMap<Long, Integer> quantities;
 
     private String address;
