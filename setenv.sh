@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-# Launch script for Abc-Map
-# You can modify environment vars to modify site behavior
+# You can modify these environment vars to modify site behavior
 
 export SAFRANLICES_FR_DB_NAME=safranlices
 # Specify JDBC url without database name
