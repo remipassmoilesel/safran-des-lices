@@ -105,6 +105,7 @@ public class BasketTest {
 
         // empty basket
         mockMvc.perform(get(Mappings.BASKET)
+                .session(session)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("reset", "true"))
                 .andExpect(status().is3xxRedirection());
