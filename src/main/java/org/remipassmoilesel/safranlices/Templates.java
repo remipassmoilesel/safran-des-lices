@@ -14,11 +14,13 @@ public class Templates {
     public static final String BASKET = PAGES_DIR + "basket";
     public static final String CHECKOUT_FORM = PAGES_DIR + "checkoutForm";
     public static final String CHECKOUT_RESULT = PAGES_DIR + "checkoutResult";
+    public static final String ADMIN_TEMPLATE = PAGES_DIR + "admin";
 
     public static final String MAIN_TEMPLATE = "main-decorator";
 
     public static final String EXAMPLE_CONTENT = PAGES_DIR + "contentExample";
     public static final String ADMIN = PAGES_DIR + "admin";
     public static final String ADMIN_LOGIN = PAGES_DIR + "adminLogin";
+
 
 }

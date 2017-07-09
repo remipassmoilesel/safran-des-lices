@@ -1,14 +1,19 @@
 package org.remipassmoilesel.safranlices;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
 
     @Value("${app.admin-login}")
     private String adminLogin;
@@ -21,7 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
+        
         // avoid weird errors
         http.csrf().disable()
                 // allow calls from iframes
@@ -39,15 +44,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage(Mappings.ADMIN_PAGE_LOGIN)
-                .loginProcessingUrl(Mappings.ADMIN_PAGE_LOGIN)
+                .loginPage(Mappings.ADMIN_LOGIN)
+                .loginProcessingUrl(Mappings.ADMIN_LOGIN)
                 .defaultSuccessUrl(Mappings.ADMIN_PAGE)
-                .failureUrl(Mappings.ADMIN_PAGE_LOGIN)
+                .failureUrl(Mappings.ADMIN_LOGIN)
                 .permitAll()
                 .and()
                 .logout()
-                .logoutUrl(Mappings.ADMIN_PAGE_LOGOUT)
+                .logoutUrl(Mappings.ADMIN_LOGOUT)
                 .permitAll();
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        //web.debug(true);
+        web.debug(false);
     }
 
     @Autowired

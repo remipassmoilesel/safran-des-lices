@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org" layout:decorator="main-decorator">
+
+<head>
+    <title>Connexion</title>
+
+    <style>
+
+        #mainForm {
+            margin-top: 2em;
+        }
+
+        .disconnected {
+            text-align: center;
+            font-weight: bolder;
+            padding: 1.5em;
+        }
+
+        .validButton {
+            margin: 2em;
+        }
+
+    </style>
+
+</head>
+<body>
+<div layout:fragment="content">
+
+    <div class="container section-padding">
+        <div class="row">
+            <div class="col-md-6 col-offset-md3">
+
+                <form th:action="${mappings.get('ADMIN_LOGIN')}" method="post" id="mainForm">
+
+                    <h2>Connexion</h2>
+
+                    <div th:if="${param.logout}" class="disconnected">
+                        Vous avez été déconnecté.
+                    </div>
+
+                    <div class="form-group">
+                        <label for="username">Identifiant</label>
+                        <input type="text" class="form-control" id="username" name="username" required="true"
+                               placeholder="Identifiant"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Mot de passe</label>
+                        <input type="password" class="form-control" id="password" name="password" required="true"
+                               placeholder="Mot de passe"/>
+                    </div>
+
+                    <div style="text-align: right;">
+                        <button type="submit" class="btn btn-default validButton">Connexion</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

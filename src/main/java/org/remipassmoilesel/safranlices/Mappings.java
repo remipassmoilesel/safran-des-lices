@@ -25,9 +25,9 @@ public class Mappings {
     public static final String CHECKOUT = ROOT + "regler-ma-commande";
     public static final String TEMPLATE = ROOT + "template";
 
-    public static final String ADMIN_PAGE = ROOT + "admin-bulubulu";
-    public static final String ADMIN_PAGE_LOGIN = ROOT + "admin-login-bulubulu";
-    public static final String ADMIN_PAGE_LOGOUT = ROOT + "admin-logout-bulubulu";
+    public static final String ADMIN_PAGE = ROOT + "admin";
+    public static final String ADMIN_LOGIN = ROOT + "admin-login";
+    public static final String ADMIN_LOGOUT = ROOT + "admin-logout";
 
 
     public static MappingMap getMap() {
