@@ -101,6 +101,8 @@ public class MainController {
         if(reset != null && reset == true){
             basket = new HashMap<>();
             session.setAttribute("basket", basket);
+
+            return "redirect:" + Mappings.BASKET;
         }
 
         // add something to cart
@@ -112,6 +114,7 @@ public class MainController {
 
             basket.put(id, qtty);
             session.setAttribute(CURRENT_BASKET, basket);
+            return "redirect:" + Mappings.BASKET;
         }
 
         // map quantities and products
