@@ -28,8 +28,8 @@ import java.util.*;
 @Controller
 public class MainController {
 
+    public static final String BASKET_SATTR = "basket";
     private static final Logger logger = LoggerFactory.getLogger(MainController.class);
-    private static final String CURRENT_BASKET = "basket";
 
     @Autowired
     private ProductRepository productRepository;
@@ -90,7 +90,7 @@ public class MainController {
         return Templates.ORDER;
     }
 
-    @RequestMapping(Mappings.BASKET)
+    @RequestMapping(value = Mappings.BASKET)
     public String showBasket(
             @RequestParam(required = false, name = "id") Long id,
             @RequestParam(required = false, name = "addToCart") Boolean addToCart,
@@ -125,7 +125,8 @@ public class MainController {
             }
 
             basket.put(id, qtty);
-            session.setAttribute(CURRENT_BASKET, basket);
+            session.setAttribute(BASKET_SATTR, basket);
+
             return "redirect:" + Mappings.BASKET;
         }
 
@@ -251,7 +252,7 @@ public class MainController {
     }
 
     private HashMap<Long, Integer> checkOrCreateBasket(HttpSession session) {
-        HashMap<Long, Integer> basket = (HashMap<Long, Integer>) session.getAttribute(CURRENT_BASKET);
+        HashMap<Long, Integer> basket = (HashMap<Long, Integer>) session.getAttribute(BASKET_SATTR);
         if (basket == null) {
             basket = new HashMap<>();
             session.setAttribute("basket", basket);

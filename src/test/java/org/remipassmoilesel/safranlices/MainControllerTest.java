@@ -77,5 +77,5 @@ public class MainControllerTest {
         ArrayList<Product> sortedProducts = (ArrayList<Product>) result.getModelAndView().getModel().get("products");
         assertTrue(sortedProducts.size() > 0);
     }
-    
+
 }
