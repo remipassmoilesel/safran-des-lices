@@ -1,22 +1,26 @@
 package org.remipassmoilesel.safranlices.controllers;
 
+import org.remipassmoilesel.safranlices.CheckoutForm;
 import org.remipassmoilesel.safranlices.Mappings;
 import org.remipassmoilesel.safranlices.Templates;
+import org.remipassmoilesel.safranlices.entities.CommercialOrder;
+import org.remipassmoilesel.safranlices.entities.PaymentType;
 import org.remipassmoilesel.safranlices.entities.Product;
+import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import javax.validation.Valid;
+import java.util.*;
 
 /**
  * Created by remipassmoilesel on 13/06/17.
@@ -29,6 +33,9 @@ public class MainController {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private OrderRepository orderRepository;
 
     @RequestMapping(Mappings.TEMPLATE)
     public String showTemplate(Model model) {
@@ -94,22 +101,16 @@ public class MainController {
             Model model) {
 
         // current user basket: Article ID / Quantity
-        HashMap<Long, Integer> basket = (HashMap<Long, Integer>) session.getAttribute(CURRENT_BASKET);
-        if (basket == null) {
-            basket = new HashMap<>();
-            session.setAttribute("basket", basket);
-        }
+        HashMap<Long, Integer> basket = checkOrCreateBasket(session);
 
         // empty basket
-        if(reset != null && reset == true){
-            basket = new HashMap<>();
-            session.setAttribute("basket", basket);
-
+        if (reset != null && reset == true) {
+            resetBasket(session);
             return "redirect:" + Mappings.BASKET;
         }
 
         // delete article
-        if(delete != null && delete == true && id != null){
+        if (delete != null && delete == true && id != null) {
             basket.remove(id);
             session.setAttribute("basket", basket);
 
@@ -147,20 +148,92 @@ public class MainController {
         return Templates.BASKET;
     }
 
-    @RequestMapping(Mappings.CHECKOUT)
-    public String checkout(
+
+    @RequestMapping(value = Mappings.CHECKOUT, method = RequestMethod.GET)
+    public String showCheckout(
             HttpSession session,
             Model model) {
 
-        HashMap<Long, Integer> basket = (HashMap<Long, Integer>) session.getAttribute(CURRENT_BASKET);
-        if (basket == null) {
-            basket = new HashMap<>();
-            session.setAttribute("basket", basket);
-        }
+        HashMap<Long, Integer> basket = checkOrCreateBasket(session);
 
-        if(basket.size() < 1){
+        // check if basket is not empty
+        if (basket.size() < 1) {
             return "redirect:" + Mappings.BASKET;
         }
+
+        Double total = computeTotal(basket);
+        model.addAttribute("total", total);
+
+        Mappings.includeMappings(model);
+        return Templates.CHECKOUT_FORM;
+    }
+
+    @RequestMapping(value = Mappings.CHECKOUT, method = RequestMethod.POST)
+    public String processCheckout(
+            @Valid CheckoutForm checkoutForm,
+            BindingResult results,
+            HttpSession session,
+            Model model) {
+
+        HashMap<Long, Integer> basket = checkOrCreateBasket(session);
+
+        // check if basket is not empty
+        if (basket.size() < 1) {
+            return "redirect:" + Mappings.BASKET;
+        }
+
+        // check form
+        if (results.hasErrors()) {
+
+            // TODO: show errors
+            logger.error("Form errors: " + results.getAllErrors(), new Exception());
+            model.addAttribute("errors", results.getAllErrors());
+
+            Mappings.includeMappings(model);
+            return Templates.CHECKOUT_RESULT;
+        }
+
+        // save order
+        ArrayList<Product> products = new ArrayList<>();
+        Iterator<Long> it = basket.keySet().iterator();
+        while (it.hasNext()) {
+            Long pid = it.next();
+            products.add(productRepository.findOne(pid));
+        }
+
+        PaymentType paymentType = PaymentType.valueOf(checkoutForm.getPaymentType());
+
+        CommercialOrder order = new CommercialOrder(
+                new Date(),
+                products,
+                basket,
+                checkoutForm.getAddress(),
+                checkoutForm.getPhonenumber(),
+                checkoutForm.getFirstname(),
+                checkoutForm.getLastname(),
+                paymentType,
+                checkoutForm.getComment());
+
+        orderRepository.save(order);
+
+        // reset basket
+        resetBasket(session);
+
+        //
+        Double total = computeTotal(basket);
+        model.addAttribute("total", total);
+        model.addAttribute("paymentType", paymentType.toString());
+
+        Mappings.includeMappings(model);
+        return Templates.CHECKOUT_RESULT;
+    }
+
+    private void resetBasket(HttpSession session) {
+        HashMap<Long, Integer> basket = new HashMap<>();
+        session.setAttribute("basket", basket);
+    }
+
+    private Double computeTotal(HashMap<Long, Integer> basket) {
 
         Double total = 0d;
         Iterator<Long> keys = basket.keySet().iterator();
@@ -174,10 +247,17 @@ public class MainController {
             total += p.getPrice() * basket.get(pId);
         }
 
-        model.addAttribute("total", total);
+        return total;
+    }
 
-        Mappings.includeMappings(model);
-        return Templates.CHECKOUT;
+    private HashMap<Long, Integer> checkOrCreateBasket(HttpSession session) {
+        HashMap<Long, Integer> basket = (HashMap<Long, Integer>) session.getAttribute(CURRENT_BASKET);
+        if (basket == null) {
+            basket = new HashMap<>();
+            session.setAttribute("basket", basket);
+        }
+
+        return basket;
     }
 
 }
