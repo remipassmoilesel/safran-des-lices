@@ -87,11 +87,18 @@ public class MainController {
     public String showBasket(
             @RequestParam(required = false, name = "addToCart") Long id,
             @RequestParam(required = false, name = "qtty") Integer qtty,
+            @RequestParam(required = false, name = "reset") Boolean reset,
             HttpSession session,
             Model model) {
 
         HashMap<Long, Integer> basket = (HashMap<Long, Integer>) session.getAttribute(CURRENT_BASKET);
         if (basket == null) {
+            basket = new HashMap<>();
+            session.setAttribute("basket", basket);
+        }
+
+        // empty basket
+        if(reset != null && reset == true){
             basket = new HashMap<>();
             session.setAttribute("basket", basket);
         }
