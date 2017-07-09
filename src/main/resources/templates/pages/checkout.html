@@ -5,6 +5,8 @@
 <head>
     <title>Payer mon panier</title>
 
+    <script th:src="@{js/checkout.js}"></script>
+
     <style>
         .checkoutform .row {
             margin: 0.7em;
@@ -16,6 +18,13 @@
         input[name="city"]{
             display: inline-block;
             width: 70%;
+        }
+
+        .errorArea{
+            color: darkred;
+            opacity: 0;
+            text-align: center;
+            padding: 1em;
         }
     </style>
 </head>
@@ -34,9 +43,11 @@
             </div>
         </div>
 
+        <div class="errorArea"></div>
+
         <div class="container checkoutform">
 
-            <form method="post" th:action="@{${mappings.get('CHECKOUT')}}">
+            <form method="post" th:action="@{${mappings.get('CHECKOUT')}}" id="checkoutForm">
                 <div class="row">
                     <div class="col-md-3 col-md-offset-2">
                         Prix total de la commande:
@@ -118,14 +129,20 @@
                 </div>
 
                 <div style="text-align: center; margin-top: 2em;">
+                    <div class="errorArea"></div>
+                </div>
+
+                <div style="text-align: center; margin-top: 2em;">
                     <div class="col-md-2 col-md-offset-5">
-                        <button type="submit" th:href="@{${mappings.get('CHECKOUT')}}"
+                        <button type="button" th:href="@{${mappings.get('CHECKOUT')}}"
                                 class="btn btn-primary">Régler ma commande
                         </button>
                     </div>
                 </div>
             </form>
         </div>
+
+
 
     </section>
 
