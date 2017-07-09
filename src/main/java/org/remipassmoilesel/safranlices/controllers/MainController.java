@@ -158,6 +158,10 @@ public class MainController {
             session.setAttribute("basket", basket);
         }
 
+        if(basket.size() < 1){
+            return "redirect:" + Mappings.BASKET;
+        }
+
         Double total = 0d;
         Iterator<Long> keys = basket.keySet().iterator();
         List<Product> products = productRepository.findAll();
