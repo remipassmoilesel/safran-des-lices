@@ -23,7 +23,7 @@ var App = {
                 return;
             }
 
-            document.location.href = UrlTree.BASKET + "?addToCart=" + id + "&qtty=" + qtty;
+            document.location.href = UrlTree.BASKET + "?addToCart=true&id=" + id + "&qtty=" + qtty;
 
         });
     }

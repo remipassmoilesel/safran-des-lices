@@ -85,12 +85,15 @@ public class MainController {
 
     @RequestMapping(Mappings.BASKET)
     public String showBasket(
-            @RequestParam(required = false, name = "addToCart") Long id,
+            @RequestParam(required = false, name = "id") Long id,
+            @RequestParam(required = false, name = "addToCart") Boolean addToCart,
             @RequestParam(required = false, name = "qtty") Integer qtty,
             @RequestParam(required = false, name = "reset") Boolean reset,
+            @RequestParam(required = false, name = "delete") Boolean delete,
             HttpSession session,
             Model model) {
 
+        // current user basket: Article ID / Quantity
         HashMap<Long, Integer> basket = (HashMap<Long, Integer>) session.getAttribute(CURRENT_BASKET);
         if (basket == null) {
             basket = new HashMap<>();
@@ -105,8 +108,16 @@ public class MainController {
             return "redirect:" + Mappings.BASKET;
         }
 
+        // delete article
+        if(delete != null && delete == true && id != null){
+            basket.remove(id);
+            session.setAttribute("basket", basket);
+
+            return "redirect:" + Mappings.BASKET;
+        }
+
         // add something to cart
-        if (id != null && qtty != null) {
+        if (addToCart != null && addToCart == true && id != null && qtty != null) {
 
             if (basket.get(id) != null) {
                 qtty += basket.get(id);

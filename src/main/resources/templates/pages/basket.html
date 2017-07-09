@@ -26,7 +26,7 @@
         <div class="container" th:if="${#maps.size(basket) lt 1}">
             <div class="row">
                 <div class="col-md-10 col-md-offset-2">
-                    <h3>Votre panier est vide.</h3>
+                    <h4>Votre panier est vide.</h4>
                     <div>Vous pouvez sélectionner des produits sur
                         <a th:href="@{${mappings.get('ORDER')}}">la page de commande</a>.
                     </div>
@@ -43,6 +43,7 @@
                             <th>Quantité</th>
                             <th>Prix unitaire</th>
                             <th>Prix</th>
+                            <th>&nbsp;</th>
                         </tr>
 
                         <tr th:each="row : ${basket}">
@@ -50,6 +51,10 @@
                             <td th:text="${row.value}">3</td>
                             <td th:text="${row.key.getPrice() + ' €'}">35.5€</td>
                             <td th:text="${row.key.getPrice() * row.value + ' €'}">135.5€</td>
+                            <td><a th:href="@{${mappings.get('BASKET')}(delete=true, id=${row.key.getId()})}"
+                                   title="Supprimer l'article"
+                                   class="fa fa-times"></a>
+                            </td>
                         </tr>
 
                     </table>
@@ -57,16 +62,16 @@
             </div>
 
             <div class="row">
-                <div class="col-md-2 col-md-offset-3">
-                    <a th:href="@{${mappings.get('CHECKOUT')}}" class="btn btn-primary">
-                        Payer ma commande
-                    </a>
-                </div>
+                <div style="text-align: center">
 
-                <div class="col-md-2 col-md-offset-1">
                     <a th:href="@{${mappings.get('BASKET') + '?reset=true'}}" class="btn btn-warning">
                         Vider mon panier
                     </a>
+                    &nbsp;
+                    <a th:href="@{${mappings.get('CHECKOUT')}}" class="btn btn-primary">
+                        Payer ma commande
+                    </a>
+
                 </div>
             </div>
         </div>
