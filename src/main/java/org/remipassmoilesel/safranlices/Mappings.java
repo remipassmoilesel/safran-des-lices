@@ -16,7 +16,7 @@ public class Mappings {
     public static final String MODEL_ARGUMENT_NAME = "mappings";
 
     public static final String ROOT = "/";
-    
+
     public static final String OUR_SAFRAN = ROOT + "notre-safran";
     public static final String OUR_EXPLOITATION = ROOT + "notre-exploitation";
     public static final String ORDER = ROOT + "commander";
