@@ -8,8 +8,6 @@ import org.remipassmoilesel.safranlices.entities.Product;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -18,8 +16,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -54,11 +50,11 @@ public class MainControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists(Mappings.MODEL_ARGUMENT_NAME));
 
-        mockMvc.perform(get(Mappings.PRODUCTS))
+        mockMvc.perform(get(Mappings.OUR_SAFRAN))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists(Mappings.MODEL_ARGUMENT_NAME));
 
-        mockMvc.perform(get(Mappings.EXPLOITATION))
+        mockMvc.perform(get(Mappings.OUR_EXPLOITATION))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists(Mappings.MODEL_ARGUMENT_NAME));
 
