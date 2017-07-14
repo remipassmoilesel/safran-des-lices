@@ -21,6 +21,7 @@
     "bootstrap": "^3.3.7",
     "jquery-ui": "^1.12.1",
     "jquery-easing": "*",
-    "imagehover.css": "*"
+    "imagehover.css": "*",
+    "leaflet": "^1.1.0"
   }
 }

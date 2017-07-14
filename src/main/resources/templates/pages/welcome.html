@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="main-decorator">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="mainDecorator"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Bienvenue</title>
 
@@ -14,38 +16,40 @@
         <div class="container">
             <div class="row">
                 <div class="header-section text-center">
-                    <h2>Lorem ipsum</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Exercitationem nesciunt vitae,<br/>
-                        maiores, magni dolorum aliquam.</p>
+                    <h2>Bienvenue sur le site du Safran des Lices</h2>
+
+                    <p>Nichée au cœur d’un charmant village de l’Hérault, entre mer et garrigue,
+                        <br/> notre exploitation familiale va vous surprendre.</p>
+
+                    <p>Découvrez à travers la qualité de nos produits la force et la finesse
+                        <br/> de cette épice qui saura réveiller tous vos plats.</p>
+
                     <hr class="bottom-line"/>
                 </div>
             </div>
-        </div>
 
-        <div class="container">
             <div class="row">
-                <div class="col-md-6 col-sm-6 padleft-right">
-                    <figure class="imghvr-fade">
-                        <img src="img/course01.jpg" class="img-responsive"/>
-                        <figcaption>
-                            <h3>Lorem ipsum</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam atque, nostrum
-                                veniam
-                                consequatur libero fugiat, similique quis.</p>
-                        </figcaption>
-                        <a href="#"></a>
-                    </figure>
+                <div class="col-md-5 col-sm-5 col-md-offset-1 col-sm-offset-1 padleft-right">
+                    <a th:href="@{${mappings.get('OUR_SAFRAN')}}">
+                        <figure class="imghvr-fade ih-delay-lg">
+                            <img th:src="@{img/DSC_0168.jpg}" class="img-responsive"/>
+                            <figcaption>
+                                <h3>Notre safran</h3>
+                                <p>.....</p>
+                            </figcaption>
+                        </figure>
+                    </a>
                 </div>
-                <div class="col-md-6 col-sm-6 padleft-right">
-                    <figure class="imghvr-fade">
-                        <img src="img/course02.jpg" class="img-responsive"/>
-                        <figcaption>
-                            <h3>Lorem ipsum</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam atque, nostrum
-                                veniam consequatur libero fugiat, similique quis.</p>
-                        </figcaption>
-                        <a href="#"></a>
-                    </figure>
+                <div class="col-md-5 col-sm-5 padleft-right">
+                    <a th:href="@{${mappings.get('ORDER')}}">
+                        <figure class="imghvr-fade ih-delay-lg">
+                            <img th:src="@{img/DSC_0040.jpg}" class="img-responsive"/>
+                            <figcaption>
+                                <h3>Commander en ligne</h3>
+                                <p>...</p>
+                            </figcaption>
+                        </figure>
+                    </a>
                 </div>
             </div>
         </div>
@@ -53,4 +57,4 @@
 
 </div>
 </body>
-</html>
+</html>*

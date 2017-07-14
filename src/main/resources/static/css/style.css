@@ -955,3 +955,10 @@ Responsive media queries
     font-size: 0.7em;
     color: gray;
 }
+
+.subtitle {
+    font-weight: bolder;
+    font-size: 1.1em;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+}

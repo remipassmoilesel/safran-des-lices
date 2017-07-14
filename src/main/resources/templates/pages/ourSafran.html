@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorator="mainDecorator"
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Nos produits</title>
+
+    <style type="text/css">
+
+    </style>
+
+</head>
+<body>
+<div layout:fragment="content">
+
+    <section id="courses" class="section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="header-section text-center">
+                    <h2>Notre safran</h2>
+                    <p>Cultivé dans le sud de la France, naturellement et avec soin, <br/>
+                        notre safran est un produit de qualité exceptionnelle.</p>
+                    <hr class="bottom-line"/>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-5 col-sm-5 col-md-offset-1 col-sm-offset-1 padleft-right">
+                    <a th:href="@{img/DSC_0017.jpg}" data-lightbox="exploitation">
+                        <figure class="imghvr-fade ih-delay-lg">
+                            <img th:src="@{img/DSC_0017.jpg}" class="img-responsive"/>
+                            <figcaption>
+                                <h3>Notre safranière</h3>
+                                <p>La culture de notre safran nous prends beaucoup
+                                    de temps, mais le travail de la terre est plein de belles
+                                    surprises</p>
+                            </figcaption>
+                        </figure>
+                    </a>
+                </div>
+                <div class="col-md-5 col-sm-5 padleft-right">
+                    <a th:href="@{img/DSC_0147.jpg}" data-lightbox="exploitation">
+                        <figure class="imghvr-fade ih-delay-lg">
+                            <img th:src="@{img/DSC_0147.jpg}" class="img-responsive"/>
+                            <figcaption>
+                                <h3>Notre safranière</h3>
+                                <p>La culture de notre safran nous prends beaucoup
+                                    de temps, mais le travail de la terre est plein de belles
+                                    surprises</p>
+                            </figcaption>
+                        </figure>
+                    </a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="header-section text-justify col-md-10 col-md-offset-1">
+                    <h3>Nos engagements</h3>
+                    <div class="subtitle">Qualité naturelle</div>
+                    <p>Dans un soucis d’éco-responsabilité, nous nous engageons à ne pas utiliser d’engrais ou de
+                        pesticide chimiques, en accord avec les principes de l’agriculture biologique.</p>
+                    <div class="subtitle">Échelle humaine</div>
+                    <p>Notre safranière est une exploitation familiale et le restera toujours. Passionnés par notre
+                        produit et sa culture, nous souhaitons maîtriser toutes les étapes de production pour vous
+                        offrir un produit de qualité.</p>
+                    <div class="subtitle">Partage</div>
+                    <p>Le partage est au cœur de nos valeurs. Notre exploitation est ouverte aux visiteurs, n’hésitez
+                        pas à nous contacter pour venir découvrir notre terroir et notre savoir faire.</p>
+                    <hr class="bottom-line"/>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="header-section text-justify col-md-10 col-md-offset-1">
+
+                    <h3>Consommer du safran</h3>
+
+                    <div class="subtitle">Saveurs</div>
+
+                    <p>Le safran est consommé depuis l'antiquité dans le monde entier pour
+                        son goût exceptionnel. A la fois délicat et puissant, il exalte le goût
+                        des aliments et harmonise les saveurs. Le safran donne également aux plats
+                        une couleur dorée très appétissante.</p>
+
+                    <div class="subtitle">Santé</div>
+
+                    <p>Outre ses grandes qualités gustatives, le safran possède de nombreuses propriétés
+                        bénéfiques pour la santé. Le safran est un anti-oxydant riche en bêta-carotène et
+                        en lycopène, deux composants parmi les plus puissants pour lutter contre le vieillissement.
+                    </p>
+                    <p>
+                        Il aide à la digestion et c’est un analgésique naturel qui est par exemple très
+                        efficace sur les problèmes de dentition. Il est également connu pour drainer
+                        les toxines de la peau et la débarrasser des petites éruptions cutanées, ce
+                        qui en fait un produit cosmétique de choix.
+                    </p>
+                    <hr class="bottom-line"/>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-5 col-sm-5 col-md-offset-1 col-sm-offset-1 padleft-right">
+                    <a th:href="@{img/DSC_0184.jpg}" data-lightbox="exploitation">
+                        <figure class="imghvr-fade ih-delay-lg">
+                            <img th:src="@{img/DSC_0184.jpg}" class="img-responsive"/>
+                            <figcaption>
+                                <h3>Notre safranière</h3>
+                                <p>La culture de notre safran nous prends beaucoup
+                                    de temps, mais le travail de la terre est plein de belles
+                                    surprises</p>
+                            </figcaption>
+                        </figure>
+                    </a>
+                </div>
+                <div class="col-md-5 col-sm-5 padleft-right">
+                    <a th:href="@{img/DSC_0210.jpg}" data-lightbox="exploitation">
+                        <figure class="imghvr-fade ih-delay-lg">
+                            <img th:src="@{img/DSC_0210.jpg}" class="img-responsive"/>
+                            <figcaption>
+                                <h3>Notre safranière</h3>
+                                <p>La culture de notre safran nous prends beaucoup
+                                    de temps, mais le travail de la terre est plein de belles
+                                    surprises</p>
+                            </figcaption>
+                        </figure>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+</body>
+</html>
