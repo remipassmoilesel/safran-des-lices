@@ -13,11 +13,10 @@ import java.util.HashMap;
 public class Mappings {
 
     private static final Logger logger = LoggerFactory.getLogger(Mappings.class);
-    public static final String MODEL_ARGUMENT_NAME = "mappings" ;
+    public static final String MODEL_ARGUMENT_NAME = "mappings";
 
     public static final String ROOT = "/";
-
-    public static final String WELCOME= ROOT + "bienvenue";
+    
     public static final String OUR_SAFRAN = ROOT + "notre-safran";
     public static final String OUR_EXPLOITATION = ROOT + "notre-exploitation";
     public static final String ORDER = ROOT + "commander";

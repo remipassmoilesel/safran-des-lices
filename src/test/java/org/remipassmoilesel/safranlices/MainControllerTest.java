@@ -46,7 +46,7 @@ public class MainControllerTest {
     @Test
     public void getPages() throws Exception {
 
-        mockMvc.perform(get(Mappings.WELCOME))
+        mockMvc.perform(get(Mappings.ROOT))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists(Mappings.MODEL_ARGUMENT_NAME));
 
