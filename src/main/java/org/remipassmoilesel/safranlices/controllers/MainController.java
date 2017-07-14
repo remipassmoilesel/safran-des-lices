@@ -49,13 +49,13 @@ public class MainController {
         return Templates.WELCOME;
     }
 
-    @RequestMapping(Mappings.PRODUCTS)
+    @RequestMapping(Mappings.OUR_SAFRAN)
     public String showProducts(Model model) {
         Mappings.includeMappings(model);
-        return Templates.PRODUCTS;
+        return Templates.OUR_SAFRAN;
     }
 
-    @RequestMapping(Mappings.EXPLOITATION)
+    @RequestMapping(Mappings.OUR_EXPLOITATION)
     public String showExploitation(Model model) {
         Mappings.includeMappings(model);
         return Templates.EXPLOITATION;

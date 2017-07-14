@@ -13,10 +13,13 @@ public class DevDataFactory {
 
     private static Random rand = new Random();
     private static List<String> fakePictures = Arrays.asList(
-            "/img/fakeImg1.jpg",
-            "/img/fakeImg3.jpg",
-            "/img/fakeImg2.jpg"
-    );
+            "/img/DSC_0040.jpg",
+            "/img/DSC_0038.jpg",
+            "/img/DSC_0039.jpg",
+            "/img/DSC_0040.jpg",
+            "/img/DSC_0076.jpg",
+            "/img/DSC_0077.jpg"
+            );
 
     public static Product createProduct(String name, String description, String pictures, Double price, Integer quantityAvailable) {
 

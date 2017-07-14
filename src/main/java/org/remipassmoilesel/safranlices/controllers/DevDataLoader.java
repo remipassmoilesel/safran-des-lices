@@ -62,6 +62,8 @@ public class DevDataLoader implements ApplicationRunner {
 
     private void populateProductRepository() {
 
+
+
         List<Product> products = Arrays.asList(
                 DevDataFactory.createProduct("Safran 0.5g", "Pot de 1 gramme de safran", null, 15d, null),
                 DevDataFactory.createProduct("Safran 1g", "Pot de 1 gramme de safran", null, 35d, null),
