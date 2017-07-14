@@ -1,9 +1,23 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="mainDecorator">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="mainDecorator"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Administration</title>
 
-    <style>
+    <style type="text/css">
+        .order {
+            margin-top: 1em;
+            margin-bottom: 2em;
+        }
+        .order ul{
+            list-style: circle;
+        }
+        .orderHeader{
+            padding-top: 1em;
+            font-size: 1.2em;
+            font-weight: bolder;
+        }
     </style>
 
 </head>
@@ -20,34 +34,62 @@
                     <hr class="bottom-line"/>
                 </div>
             </div>
-        </div>
 
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 col-sm-6 padleft-right">
-                    <figure class="imghvr-fade">
-                        <img src="img/course01.jpg" class="img-responsive"/>
-                        <figcaption>
-                            <h3>Lorem ipsum</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam atque, nostrum
-                                veniam
-                                consequatur libero fugiat, similique quis.</p>
-                        </figcaption>
-                        <a href="#"></a>
-                    </figure>
+            <div class="order row" th:each="order, iter : ${orders}">
+                
+                <div class="col-md-offset-1 orderHeader">
+                    Date de la commande:
+                    <span th:text="${#dates.format(order.getDate(), 'dd/MM/yyyy HH:mm ')}">24/01/1988 14:00</span>
+                    &nbsp;
+                    Total: <span th:text="${order.getTotal() + ' €'}">30 €</span>
                 </div>
-                <div class="col-md-6 col-sm-6 padleft-right">
-                    <figure class="imghvr-fade">
-                        <img src="img/course02.jpg" class="img-responsive"/>
-                        <figcaption>
-                            <h3>Lorem ipsum</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam atque, nostrum
-                                veniam consequatur libero fugiat, similique quis.</p>
-                        </figcaption>
-                        <a href="#"></a>
-                    </figure>
+                
+                <div class="col-md-offset-1">
+                    <div>Commande:</div>
+                    <ul>
+                        <li th:each="orderPart : ${baskets.get(iter.index)}">
+                            <span th:text="${orderPart[0].getName()}">Safran 1g</span>
+                            &nbsp;
+                            <span th:text="${orderPart[0].getPrice() + ' €'}">15€</span>
+                            &nbsp;x&nbsp;
+                            <span th:text="${orderPart[1]}">10</span>
+                        </li>
+                    </ul>
                 </div>
+
+                <div class="col-md-offset-1">
+                    <div>
+                        Nom et prénom: <span 
+                            th:text="${order.getFirstName() + ' ' + order.getLastName()}">Jules Jean</span>
+                    </div>
+                    <div>
+                        Téléphone: <span th:text="${order.getPhonenumber()}">0425363698</span>
+                    </div>
+                    <div>
+                        Adresse: <span th:text="${order.getAddress()}">14 rue de la Joconde</span>
+                    </div>
+                    <div>
+                        Type de paiement: <span th:text="${order.getPaymentType()}">CREDIT CARD</span>
+                    </div>
+                    <div th:if="${#strings.isEmpty(order.getComment()) == false}">
+                        Commentaire: <span th:text="${order.getComment()}">Hey !</span>
+                    </div>
+                    <div>
+                        Payée: <span th:text="${order.isPaid()}">true</span>
+                        &nbsp;
+                        <a href="#" th:if="${order.isProcessed() == true}">Marquer comme non-payée</a>
+                        <a href="#" th:if="${order.isProcessed() == false}">Marquer comme payée</a>
+                    </div>
+                    <div>
+                        Traitée: <span th:text="${order.isProcessed()}">true</span>
+                        &nbsp;
+                        <a href="#" th:if="${order.isProcessed() == true}">Marquer comme non-traitée</a>
+                        <a href="#" th:if="${order.isProcessed() == false}">Marquer comme traitée</a>
+                    </div>
+                </div>
+
             </div>
+
         </div>
     </section>
 

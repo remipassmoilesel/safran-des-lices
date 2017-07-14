@@ -1,5 +1,6 @@
 package org.remipassmoilesel.safranlices.utils;
 
+import org.remipassmoilesel.safranlices.entities.Product;
 import org.w3c.dom.Node;
 
 import javax.xml.transform.OutputKeys;
@@ -13,6 +14,9 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -88,6 +92,22 @@ public class Utils {
 
         writer.flush();
         writer.close();
+    }
+
+    public static Double computeTotalForBasket( List<Product> products, HashMap<Long, Integer> basket) {
+
+        Double total = 0d;
+        Iterator<Long> keys = basket.keySet().iterator();
+        while (keys.hasNext()) {
+            Long pId = keys.next();
+            Product p = products.stream()
+                    .filter(pf -> pId.equals(pf.getId()))
+                    .findAny().orElse(null);
+
+            total += p.getPrice() * basket.get(pId);
+        }
+
+        return total;
     }
 
 }

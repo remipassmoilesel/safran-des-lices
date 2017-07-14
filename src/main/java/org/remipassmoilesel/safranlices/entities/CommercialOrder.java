@@ -34,8 +34,14 @@ public class CommercialOrder {
 
     private PaymentType paymentType;
 
+    private Double total;
+
     @Column(columnDefinition = "TEXT")
     private String comment;
+
+    private boolean paid;
+
+    private boolean processed;
 
     public CommercialOrder() {
     }
@@ -132,12 +138,38 @@ public class CommercialOrder {
         this.comment = comment;
     }
 
+    public Double getTotal() {
+        return total;
+    }
+
+    public void setTotal(Double total) {
+        this.total = total;
+    }
+
+    public boolean isPaid() {
+        return paid;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
+    }
+
+    public boolean isProcessed() {
+        return processed;
+    }
+
+    public void setProcessed(boolean processed) {
+        this.processed = processed;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CommercialOrder that = (CommercialOrder) o;
-        return Objects.equals(id, that.id) &&
+        return paid == that.paid &&
+                processed == that.processed &&
+                Objects.equals(id, that.id) &&
                 Objects.equals(date, that.date) &&
                 Objects.equals(products, that.products) &&
                 Objects.equals(quantities, that.quantities) &&
@@ -146,12 +178,13 @@ public class CommercialOrder {
                 Objects.equals(firstName, that.firstName) &&
                 Objects.equals(lastName, that.lastName) &&
                 paymentType == that.paymentType &&
+                Objects.equals(total, that.total) &&
                 Objects.equals(comment, that.comment);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, date, products, quantities, address, phonenumber, firstName, lastName, paymentType, comment);
+        return Objects.hash(id, date, products, quantities, address, phonenumber, firstName, lastName, paymentType, total, comment, paid, processed);
     }
 
     @Override

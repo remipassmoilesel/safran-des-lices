@@ -8,6 +8,7 @@ import org.remipassmoilesel.safranlices.entities.PaymentType;
 import org.remipassmoilesel.safranlices.entities.Product;
 import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
+import org.remipassmoilesel.safranlices.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -162,7 +163,7 @@ public class MainController {
             return "redirect:" + Mappings.BASKET;
         }
 
-        Double total = computeTotal(basket);
+        Double total = Utils.computeTotalForBasket(productRepository.findAll(), basket);
         model.addAttribute("total", total);
 
         Mappings.includeMappings(model);
@@ -215,13 +216,15 @@ public class MainController {
                 paymentType,
                 checkoutForm.getComment());
 
+        order.setTotal(Utils.computeTotalForBasket(products, basket));
+
         orderRepository.save(order);
 
         // reset basket
         resetBasket(session);
 
         //
-        Double total = computeTotal(basket);
+        Double total = Utils.computeTotalForBasket(productRepository.findAll(), basket);
         model.addAttribute("total", total);
         model.addAttribute("paymentType", paymentType.toString());
 
@@ -232,23 +235,6 @@ public class MainController {
     private void resetBasket(HttpSession session) {
         HashMap<Long, Integer> basket = new HashMap<>();
         session.setAttribute("basket", basket);
-    }
-
-    private Double computeTotal(HashMap<Long, Integer> basket) {
-
-        Double total = 0d;
-        Iterator<Long> keys = basket.keySet().iterator();
-        List<Product> products = productRepository.findAll();
-        while (keys.hasNext()) {
-            Long pId = keys.next();
-            Product p = products.stream()
-                    .filter(pf -> pId.equals(pf.getId()))
-                    .findAny().orElse(null);
-
-            total += p.getPrice() * basket.get(pId);
-        }
-
-        return total;
     }
 
     private HashMap<Long, Integer> checkOrCreateBasket(HttpSession session) {

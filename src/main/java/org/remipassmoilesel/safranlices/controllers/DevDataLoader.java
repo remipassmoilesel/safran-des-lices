@@ -7,6 +7,7 @@ import org.remipassmoilesel.safranlices.entities.Product;
 import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
 import org.remipassmoilesel.safranlices.utils.DevDataFactory;
+import org.remipassmoilesel.safranlices.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,8 +63,6 @@ public class DevDataLoader implements ApplicationRunner {
 
     private void populateProductRepository() {
 
-
-
         List<Product> products = Arrays.asList(
                 DevDataFactory.createProduct("Safran 0.5g", "Pot de 1 gramme de safran", null, 15d, null),
                 DevDataFactory.createProduct("Safran 1g", "Pot de 1 gramme de safran", null, 35d, null),
@@ -88,12 +87,19 @@ public class DevDataLoader implements ApplicationRunner {
 
             ArrayList<Product> prds = new ArrayList<>();
             HashMap<Long, Integer> quantities = new HashMap<>();
-            for (int j = 0; j < rand.ints(1, 10).iterator().next(); j++) {
-                prds.add(products.get(rand.nextInt(products.size())));
+            Integer nbrProducts = rand.ints(1, 10).iterator().next();
+            Iterator<Integer> qttIter = rand.ints(1, 6).iterator();
+            for (int j = 0; j < nbrProducts; j++) {
+                Product p = products.get(rand.nextInt(products.size()));
+                prds.add(p);
+                quantities.put(p.getId(), qttIter.next());
             }
 
-            CommercialOrder order = DevDataFactory.createOrder(start.minusDays(i).toDate(), prds, quantities, null,
+            CommercialOrder order = DevDataFactory.createOrder(start.minusDays(i).minusHours(i).toDate(),
+                    prds, quantities, null,
                     null, null, null, null, null);
+
+            order.setTotal(Utils.computeTotalForBasket(products, quantities));
 
             orderRepository.save(order);
         }
