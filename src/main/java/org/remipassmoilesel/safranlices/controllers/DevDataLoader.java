@@ -3,7 +3,9 @@ package org.remipassmoilesel.safranlices.controllers;
 import org.joda.time.DateTime;
 import org.remipassmoilesel.safranlices.SafranLicesApplication;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
+import org.remipassmoilesel.safranlices.entities.Expense;
 import org.remipassmoilesel.safranlices.entities.Product;
+import org.remipassmoilesel.safranlices.repositories.ExpenseRepository;
 import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
 import org.remipassmoilesel.safranlices.utils.DevDataFactory;
@@ -35,6 +37,9 @@ public class DevDataLoader implements ApplicationRunner {
     private OrderRepository orderRepository;
 
     @Autowired
+    private ExpenseRepository expenseRepository;
+
+    @Autowired
     private Environment env;
 
     @Value("${app.db-name}")
@@ -59,6 +64,15 @@ public class DevDataLoader implements ApplicationRunner {
             logger.warn("-- Fake orders added");
         }
 
+        if (expenseRepository.count() < 1) {
+            populateExpenseRepository();
+            logger.warn("-- Fake expenses added");
+        }
+
+    }
+
+    private void populateExpenseRepository() {
+        expenseRepository.save(new Expense("Frais de port", 5.0d));
     }
 
     private void populateProductRepository() {

@@ -4,8 +4,10 @@ import org.remipassmoilesel.safranlices.CheckoutForm;
 import org.remipassmoilesel.safranlices.Mappings;
 import org.remipassmoilesel.safranlices.Templates;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
+import org.remipassmoilesel.safranlices.entities.Expense;
 import org.remipassmoilesel.safranlices.entities.PaymentType;
 import org.remipassmoilesel.safranlices.entities.Product;
+import org.remipassmoilesel.safranlices.repositories.ExpenseRepository;
 import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
 import org.remipassmoilesel.safranlices.utils.Utils;
@@ -37,6 +39,9 @@ public class MainController {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private ExpenseRepository expenseRepository;
 
     @RequestMapping(Mappings.TEMPLATE)
     public String showTemplate(Model model) {
@@ -146,6 +151,17 @@ public class MainController {
 
         model.addAttribute("basket", productsWithQuantities);
 
+        // expenses
+        List<Expense> expenses = expenseRepository.findAll();
+        model.addAttribute("expenses", expenses);
+
+        // total
+        double total = Utils.computeTotalForBasket(products, basket);
+        for (Expense ex : expenses) {
+            total += ex.getValue();
+        }
+        model.addAttribute("total", total);
+
         Mappings.includeMappings(model);
         return Templates.BASKET;
     }
@@ -164,6 +180,12 @@ public class MainController {
         }
 
         Double total = Utils.computeTotalForBasket(productRepository.findAll(), basket);
+
+        List<Expense> expenses = expenseRepository.findAll();
+        for (Expense ex : expenses) {
+            total += ex.getValue();
+        }
+
         model.addAttribute("total", total);
 
         Mappings.includeMappings(model);
