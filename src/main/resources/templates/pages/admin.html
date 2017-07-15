@@ -40,15 +40,6 @@
             list-style: circle;
         }
 
-        .productsTable {
-            width: 100%;
-            margin: 1em;
-        }
-
-        .productsTable td {
-            padding: 0.6em;
-        }
-
         .orderPaid {
             color: inherit;
         }
@@ -65,8 +56,32 @@
             color: #60071f;
         }
 
-        .orderButtons{
+        .orderButtons {
             padding: 0.7em;
+        }
+
+        .productHeader {
+            margin: 0.2em;
+            font-weight: bolder;
+        }
+
+        .productRow {
+            border: solid 1px silver;
+            margin: 0.2em;
+        }
+
+        .productRow input {
+            width: 90%;
+        }
+
+        .productRow div {
+            padding: 0.7em;
+        }
+
+        .errorArea{
+            color: #b70000;
+            font-weight: bolder;
+            padding: 1em;
         }
 
     </style>
@@ -114,23 +129,97 @@
         <h3 class="text-center">Modifier les produits</h3>
 
         <div class="container">
-            <div class="col-md-offset-1 col-md-10">
-                <table class="productsTable">
-                    <tr>
-                        <th>Nom</th>
-                        <th>Quantité disponible</th>
-                        <th>Prix unitaire</th>
-                        <th></th>
-                    </tr>
-                    <tr th:each="product : ${products}">
-                        <td th:text="${product.getName()}">Safran</td>
-                        <td><input type="text" th:value="${product.getQuantityAvailable()}"/></td>
-                        <td><input type="text" th:value="${product.getPrice()}"/></td>
-                        <td><input type="button" value="Modifier"/></td>
-                    </tr>
-                </table>
+            <div class="row">
+                <div class="col-md-offset-1 col-md-10 text-center">
+                    <div class="errorArea">&nbsp;</div>
+                </div>
+            </div>
+
+            <div class="row productHeader">
+                <div class="col-sm-offset-1 col-sm-1">
+                    ID
+                </div>
+
+                <div class="col-sm-2">
+                    Nom
+                </div>
+
+                <div class="col-sm-2">
+                    Quantité disponible
+                </div>
+
+                <div class="col-sm-2">
+                    Prix unitaire
+                </div>
 
             </div>
+
+            <div class="row productRow" th:each="product : ${products}">
+                <form method="get" th:id="${'form' + product.getId()}"
+                      th:action="@{${mappings.get('ADMIN_MODIFICATION')}}">
+
+                    <!-- product id -->
+                    <div class="col-sm-offset-1 col-sm-1" th:text="${product.getId()}">
+                        11
+                    </div>
+
+                    <!-- product name -->
+                    <div class="col-sm-2" th:text="${product.getName()}">
+                        Safran
+                    </div>
+
+                    <!-- quantity available -->
+                    <div class="col-sm-2">
+                        <input name="quantity" type="text" th:value="${product.getQuantityAvailable()}"/>
+                    </div>
+
+                    <!-- unit price -->
+                    <div class="col-sm-2">
+                        <input name="price" type="text" th:value="${product.getPrice()}"/>
+                    </div>
+
+                    <!-- modify button -->
+                    <div class="col-sm-2">
+                        <input type="hidden" name="action" value="product"/>
+                        <input type="hidden" name="id" th:value="${product.getId()}"/>
+                        <input type="button" value="Modifier" th:onClick="${'checkValues(' + product.getId() + ')'}"/>
+                    </div>
+
+                </form>
+            </div>
+
+            <script type="text/javascript">
+                function checkValues(productId) {
+
+                    console.log("check" + productId);
+
+                    var form = $("#form" + productId);
+                    var errorArea = $(".errorArea");
+                    var qtty = form.find("input[name='quantity']").val().trim();
+                    var price = form.find("input[name='price']").val().trim();
+
+                    function showError(htmlError) {
+                        errorArea.css("opacity", 0);
+                        errorArea.html(htmlError);
+                        errorArea.animate({"opacity": 1}, 800);
+                    }
+
+                    showError("");
+
+                    if (qtty.match(/^[0-9]+$/i) === null) {
+                        showError("Quantité invalide: " + qtty + " (produit: " + productId + ")")
+                        return;
+                    }
+
+                    if (price.match(/^[0-9]+$/i) === null) {
+                        showError("Prix invalide: " + price + " (produit: " + productId + ")")
+                        return;
+                    }
+
+                    form.submit();
+                }
+            </script>
+
         </div>
 
     </section>
