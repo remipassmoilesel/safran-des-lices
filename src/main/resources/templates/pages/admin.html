@@ -206,12 +206,12 @@
 
                     showError("");
 
-                    if (qtty.match(/^[0-9]+$/i) === null) {
+                    if (qtty.match(/^[0-9]+(\.[0-9]+)?$/i) === null) {
                         showError("Quantité invalide: " + qtty + " (produit: " + productId + ")")
                         return;
                     }
 
-                    if (price.match(/^[0-9]+$/i) === null) {
+                    if (price.match(/^[0-9]+(\.[0-9]+)?$/i)  === null) {
                         showError("Prix invalide: " + price + " (produit: " + productId + ")")
                         return;
                     }
