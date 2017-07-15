@@ -21,9 +21,38 @@
     <script th:src="@{/bower_components/lightbox2/dist/js/lightbox.js}"></script>
 
     <script th:inline="javascript">
+
         var UrlTree = {
             BASKET: /*[[${#httpServletRequest.getContextPath() + mappings.get('BASKET')}]]*/ null
         };
+
+
+        /*<![CDATA[*/
+
+        /**
+         * Scroll button
+         */
+
+        $(function () {
+            // display button only if needed
+            $(window).scroll(function () {
+                if ($(this).scrollTop() > 100) {
+                    $('#goToTopButton').fadeIn();
+                } else {
+                    $('#goToTopButton').fadeOut();
+                }
+            });
+
+            //Click event to scroll to top
+            $(function () {
+                $('#goToTopButton').click(function () {
+                    $('html, body').animate({scrollTop: 0}, 1100);
+                    return false;
+                });
+            });
+        });
+
+        /*]]>*/
     </script>
 
 </head>
@@ -637,6 +666,9 @@
 <script th:src="@{/bower_components/jquery-easing/jquery.easing.min.js}"></script>
 <script th:src="@{/bower_components/bootstrap/dist/js/bootstrap.min.js}"></script>
 <script th:src="@{/js/custom.js}"></script>
+
+<!-- Scroll to top button -->
+<button id="goToTopButton" title="Remonter" class="fa fa-arrow-up"></button>
 
 </body>
 </html>
