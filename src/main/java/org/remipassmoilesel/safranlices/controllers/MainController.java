@@ -70,7 +70,7 @@ public class MainController {
     @RequestMapping(Mappings.ORDER)
     public String showOrder(Model model) {
 
-        List<Product> products = productRepository.findAll();
+        List<Product> products = productRepository.findAll(false);
         ArrayList<ArrayList<Product>> sorted = new ArrayList<>();
 
         int i = 0;
@@ -137,7 +137,7 @@ public class MainController {
         }
 
         // map quantities and products
-        List<Product> products = productRepository.findAll();
+        List<Product> products = productRepository.findAll(false);
         HashMap<Product, Integer> productsWithQuantities = new HashMap<>();
         Iterator<Long> keys = basket.keySet().iterator();
         while (keys.hasNext()) {
@@ -179,7 +179,8 @@ public class MainController {
             return "redirect:" + Mappings.BASKET;
         }
 
-        Double total = Utils.computeTotalForBasket(productRepository.findAll(), basket);
+        List<Product> products = productRepository.findAll(false);
+        Double total = Utils.computeTotalForBasket(products, basket);
 
         List<Expense> expenses = expenseRepository.findAll();
         for (Expense ex : expenses) {
@@ -245,8 +246,7 @@ public class MainController {
         // reset basket
         resetBasket(session);
 
-        //
-        Double total = Utils.computeTotalForBasket(productRepository.findAll(), basket);
+        Double total = Utils.computeTotalForBasket(productRepository.findAll(false), basket);
         model.addAttribute("total", total);
         model.addAttribute("paymentType", paymentType.toString());
 

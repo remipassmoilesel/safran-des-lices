@@ -95,7 +95,7 @@ public class DevDataLoader implements ApplicationRunner {
 
         Random rand = new Random();
         DateTime start = new DateTime();
-        List<Product> products = productRepository.findAll();
+        List<Product> products = productRepository.findAll(false);
 
         for (int i = 0; i < 50; i++) {
 

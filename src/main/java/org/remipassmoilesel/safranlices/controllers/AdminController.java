@@ -39,7 +39,7 @@ public class AdminController {
     @RequestMapping(Mappings.ADMIN_PAGE)
     public String showTemplate(Model model) {
 
-        List<Product> products = productRepository.findAll();
+        List<Product> products = productRepository.findAll(false);
 
         int limit = 10;
 

@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Safran 1g",
+    "price": "15",
+    "description": "Pot de safran 1g. Idéal pour la cuisine ou pour des préparations diverses",
+    "pictures": "/img/DSC_0040.jpg,/img/DSC_0038.jpg,/img/DSC_0039.jpg,/img/DSC_0040.jpg,/img/DSC_0076.jpg,/img/DSC_0077.jpg",
+    "quantity": "50"
+  },
+  {
+    "name": "Safran 2g",
+    "price": "30",
+    "description": "Pot de safran 2g. Idéal pour la cuisine ou pour des préparations diverses",
+    "pictures": "/img/DSC_0040.jpg,/img/DSC_0038.jpg,/img/DSC_0039.jpg,/img/DSC_0040.jpg,/img/DSC_0076.jpg,/img/DSC_0077.jpg",
+    "quantity": "70"
+  },
+  {
+    "name": "Safran 5g",
+    "price": "75",
+    "description": "Pot de safran 5g. Idéal pour la cuisine ou pour des préparations diverses",
+    "pictures": "/img/DSC_0040.jpg,/img/DSC_0038.jpg,/img/DSC_0039.jpg,/img/DSC_0040.jpg,/img/DSC_0076.jpg,/img/DSC_0077.jpg",
+    "quantity": "100"
+  }
+]

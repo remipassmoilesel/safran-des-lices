@@ -15,7 +15,6 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column
     private String name;
 
     @Column(columnDefinition = "TEXT")
@@ -24,13 +23,14 @@ public class Product {
     @Column(columnDefinition = "TEXT")
     private String pictures;
 
-    @Column
     private Double price;
 
-    @Column
-    private int quantityAvailable;
+    private Integer quantityAvailable;
+
+    private Boolean deleted;
 
     public Product() {
+        this.deleted = false;
     }
 
     public Product(String name, String description, String pictures, Double price, int quantityAvailable) {
@@ -39,6 +39,7 @@ public class Product {
         this.pictures = pictures;
         this.price = price;
         this.quantityAvailable = quantityAvailable;
+        this.deleted = false;
     }
 
     public String getName() {
@@ -81,20 +82,28 @@ public class Product {
         this.id = id;
     }
 
-    public List<String> getPicturesAsList(){
+    public List<String> getPicturesAsList() {
         return Arrays.asList(pictures.split(","));
     }
 
-    public void setPicturesAsList(List<String> paths){
+    public void setPicturesAsList(List<String> paths) {
         pictures = String.join(",", paths);
     }
 
-    public int getQuantityAvailable() {
+    public Integer getQuantityAvailable() {
         return quantityAvailable;
     }
 
-    public void setQuantityAvailable(int quantityAvailable) {
+    public void setQuantityAvailable(Integer quantityAvailable) {
         this.quantityAvailable = quantityAvailable;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 
     @Override
@@ -102,17 +111,18 @@ public class Product {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return quantityAvailable == product.quantityAvailable &&
-                Objects.equals(id, product.id) &&
+        return Objects.equals(id, product.id) &&
                 Objects.equals(name, product.name) &&
                 Objects.equals(description, product.description) &&
                 Objects.equals(pictures, product.pictures) &&
-                Objects.equals(price, product.price);
+                Objects.equals(price, product.price) &&
+                Objects.equals(quantityAvailable, product.quantityAvailable) &&
+                Objects.equals(deleted, product.deleted);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, pictures, price, quantityAvailable);
+        return Objects.hash(id, name, description, pictures, price, quantityAvailable, deleted);
     }
 
     @Override
@@ -124,7 +134,7 @@ public class Product {
                 ", pictures='" + pictures + '\'' +
                 ", price=" + price +
                 ", quantityAvailable=" + quantityAvailable +
+                ", deleted=" + deleted +
                 '}';
     }
-
 }
