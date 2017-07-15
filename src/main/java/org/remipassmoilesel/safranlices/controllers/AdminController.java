@@ -3,7 +3,9 @@ package org.remipassmoilesel.safranlices.controllers;
 import org.remipassmoilesel.safranlices.Mappings;
 import org.remipassmoilesel.safranlices.Templates;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
+import org.remipassmoilesel.safranlices.entities.Expense;
 import org.remipassmoilesel.safranlices.entities.Product;
+import org.remipassmoilesel.safranlices.repositories.ExpenseRepository;
 import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
 import org.slf4j.Logger;
@@ -36,6 +38,9 @@ public class AdminController {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private ExpenseRepository expenseRepository;
+
     @RequestMapping(Mappings.ADMIN_PAGE)
     public String showTemplate(Model model) {
 
@@ -60,6 +65,9 @@ public class AdminController {
         // add products
         model.addAttribute("products", products);
 
+        // add expenses
+        model.addAttribute("expenses", expenseRepository.findAll());
+
         Mappings.includeMappings(model);
         return Templates.ADMIN_TEMPLATE;
     }
@@ -69,6 +77,7 @@ public class AdminController {
                          @RequestParam(value = "action", required = false) String action,
                          @RequestParam(value = "value", required = false) String value,
                          @RequestParam(value = "price", required = false) Double price,
+                         @RequestParam(value = "name", required = false) String name,
                          @RequestParam(value = "quantity", required = false) Integer quantity,
                          @RequestParam(value = "id", required = false) Long id) {
 
@@ -86,12 +95,21 @@ public class AdminController {
             orderRepository.save(order);
         }
 
-        // mark as processed or non processed
+        // modify a product
         if (action.equals("product")) {
             Product p = productRepository.getOne(id);
             p.setPrice(price);
             p.setQuantityAvailable(quantity);
             productRepository.save(p);
+        }
+
+        // modify an expense
+        if (action.equals("expense")) {
+            Expense e = expenseRepository.getOne(id);
+            e.setName(name);
+            e.setValue(Double.valueOf(value));
+
+            expenseRepository.save(e);
         }
 
         return "redirect:" + Mappings.ADMIN_PAGE;

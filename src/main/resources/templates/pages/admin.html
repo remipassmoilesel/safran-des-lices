@@ -78,21 +78,31 @@
             padding: 0.7em;
         }
 
-        .errorArea{
+        .productErrorArea{
             color: #b70000;
             font-weight: bolder;
             padding: 1em;
         }
 
+        .expenseErrorArea{
+            color: #b70000;
+            font-weight: bolder;
+            padding: 1em;
+        }
+
+        h3{
+            margin-top: 3em;
+        }
+
     </style>
 
     <script type="text/javascript">
-        function checkValues(productId) {
+        function checkProduct(productId) {
 
-            console.log("check" + productId);
+            console.log("check product" + productId);
 
-            var form = $("#form" + productId);
-            var errorArea = $(".errorArea");
+            var form = $("#productForm" + productId);
+            var errorArea = $(".productErrorArea");
             var qtty = form.find("input[name='quantity']").val().trim();
             var price = form.find("input[name='price']").val().trim();
 
@@ -105,12 +115,42 @@
             showError("");
 
             if (qtty.match(/^[0-9]+(\.[0-9]+)?$/i) === null) {
-                showError("Quantité invalide: " + qtty + " (produit: " + productId + ")")
+                showError("Quantité invalide: " + qtty + " (produit: " + productId + ")");
                 return;
             }
 
             if (price.match(/^[0-9]+(\.[0-9]+)?$/i)  === null) {
-                showError("Prix invalide: " + price + " (produit: " + productId + ")")
+                showError("Prix invalide: " + price + " (produit: " + productId + ")");
+                return;
+            }
+
+            form.submit();
+        }
+
+        function checkExpense(expenseId) {
+
+            console.log("check product" + expenseId);
+
+            var form = $("#expenseForm" + expenseId);
+            var errorArea = $(".expenseErrorArea");
+            var qtty = form.find("input[name='name']").val().trim();
+            var price = form.find("input[name='value']").val().trim();
+
+            function showError(htmlError) {
+                errorArea.css("opacity", 0);
+                errorArea.html(htmlError);
+                errorArea.animate({"opacity": 1}, 800);
+            }
+
+            showError("");
+
+            if (qtty.match(/^.{5,50}$/i) === null) {
+                showError("Nom invalide: " + qtty + " (frais: " + expenseId + ")");
+                return;
+            }
+
+            if (price.match(/^[0-9]+(\.[0-9]+)?$/i)  === null) {
+                showError("Valeur invalide: " + price + " (frais: " + expenseId + ")");
                 return;
             }
 
@@ -137,6 +177,7 @@
                 <div class="col-md-offset-1 col-md-10 text-left summary">
                     <ul>
                         <li><a href="#modifyProducts">Modifier les produits</a></li>
+                        <li><a href="#modifyExpenses">Modifier les frais</a></li>
                         <li><a href="#lastNonProcessed">Dernières commandes non traitées</a></li>
                         <li><a href="#lastProcessed">Dernières commandes traitées</a></li>
                     </ul>
@@ -150,7 +191,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-offset-1 col-sm-10 text-center">
-                    <div class="errorArea">&nbsp;</div>
+                    <div class="productErrorArea">&nbsp;</div>
                 </div>
             </div>
 
@@ -174,7 +215,7 @@
             </div>
 
             <div class="row productRow" th:each="product : ${products}">
-                <form method="get" th:id="${'form' + product.getId()}"
+                <form method="get" th:id="${'productForm' + product.getId()}"
                       th:action="@{${mappings.get('ADMIN_MODIFICATION')}}">
 
                     <!-- product id -->
@@ -201,7 +242,63 @@
                     <div class="col-sm-2">
                         <input type="hidden" name="action" value="product"/>
                         <input type="hidden" name="id" th:value="${product.getId()}"/>
-                        <input type="button" value="Modifier" th:onClick="${'checkValues(' + product.getId() + ')'}"/>
+                        <input type="button" value="Modifier" th:onClick="${'checkProduct(' + product.getId() + ')'}"/>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+
+        <a name="modifyExpenses"/>
+        <h3 class="text-center">Modifier les frais</h3>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-offset-1 col-sm-10 text-center">
+                    <div class="expenseErrorArea">&nbsp;</div>
+                </div>
+            </div>
+
+            <div class="row productHeader">
+                <div class="col-sm-offset-1 col-sm-1">
+                    ID
+                </div>
+
+                <div class="col-sm-4">
+                    Nom
+                </div>
+
+                <div class="col-sm-2">
+                    Valeur
+                </div>
+
+            </div>
+
+            <div class="row productRow" th:each="expense : ${expenses}">
+                <form method="get" th:id="${'expenseForm' + expense.getId()}"
+                      th:action="@{${mappings.get('ADMIN_MODIFICATION')}}">
+
+                    <!-- expense id -->
+                    <div class="col-sm-offset-1 col-sm-1" th:text="${expense.getId()}">
+                        11
+                    </div>
+
+                    <!-- expense name -->
+                    <div class="col-sm-4">
+                        <input name="name" type="text" th:value="${expense.getName()}"/>
+                    </div>
+
+                    <!-- expense price -->
+                    <div class="col-sm-2">
+                        <input name="value" type="text" th:value="${expense.getValue()}"/>
+                    </div>
+
+                    <!-- modify button -->
+                    <div class="col-sm-2">
+                        <input type="hidden" name="action" value="expense"/>
+                        <input type="hidden" name="id" th:value="${expense.getId()}"/>
+                        <input type="button" value="Modifier" th:onClick="${'checkExpense(' + expense.getId() + ')'}"/>
                     </div>
 
                 </form>
