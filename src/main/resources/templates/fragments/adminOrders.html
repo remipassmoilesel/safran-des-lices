@@ -11,6 +11,9 @@
         <div class="col-md-offset-1 col-md-10">
 
             <div class="orderHeader">
+                <span class="orderLabel">Commande n°</span>
+                <span th:text="${order.getId()}">15</span>
+                &nbsp;
                 <span class="orderLabel">Date de la commande:</span>
                 <span th:text="${#dates.format(order.getDate(), 'dd/MM/yyyy HH:mm ')}">24/01/1988 14:00</span>
                 &nbsp;
@@ -85,17 +88,22 @@
                     &nbsp;
                 </div>
                 <div class="text-right">
-                    <a href="#" th:if="${order.isPaid() == true}" class="btn btn-default" role="button">
+                    <a th:href="@{${mappings.get('ADMIN_MODIFICATION')}(action='paid', value='false', id=${order.getId()})}"
+                       th:if="${order.isPaid() == true}"
+                       class="btn btn-default" role="button">
                         Marquer comme non-payée</a>
-                    <a href="#" th:if="${order.isPaid() == false}" class="btn btn-default" role="button">
+                    <a th:href="@{${mappings.get('ADMIN_MODIFICATION')}(action='paid', value='true', id=${order.getId()})}"
+                       th:if="${order.isPaid() == false}" class="btn btn-default" role="button">
                         Marquer comme payée</a>
 
                     &nbsp;
                     &nbsp;
 
-                    <a href="#" th:if="${order.isProcessed() == true}" class="btn btn-default" role="button">
+                    <a th:href="@{${mappings.get('ADMIN_MODIFICATION')}(action='processed', value='false', id=${order.getId()})}"
+                       th:if="${order.isProcessed() == true}" class="btn btn-default" role="button">
                         Marquer comme non-traitée</a>
-                    <a href="#" th:if="${order.isProcessed() == false}" class="btn btn-default" role="button">
+                    <a th:href="@{${mappings.get('ADMIN_MODIFICATION')}(action='processed', value='true', id=${order.getId()})}"
+                       th:if="${order.isProcessed() == false}" class="btn btn-default" role="button">
                         Marquer comme traitée</a>
                 </div>
 

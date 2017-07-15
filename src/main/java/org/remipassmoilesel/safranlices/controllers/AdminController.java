@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -62,6 +63,29 @@ public class AdminController {
 
         Mappings.includeMappings(model);
         return Templates.ADMIN_TEMPLATE;
+    }
+
+    @RequestMapping(Mappings.ADMIN_MODIFICATION)
+    public String modify(Model model,
+        @RequestParam(value = "action", required = false) String action,
+        @RequestParam(value = "value", required = false) String value,
+        @RequestParam(value = "id", required = false) Long id) {
+
+        // mark as paid or non paid
+        if(action.equals("paid")){
+            CommercialOrder order = orderRepository.findOne(id);
+            order.setPaid(Boolean.valueOf(value));
+            orderRepository.save(order);
+        }
+
+        // mark as processed or non processed
+        if(action.equals("processed")){
+            CommercialOrder order = orderRepository.findOne(id);
+            order.setProcessed(Boolean.valueOf(value));
+            orderRepository.save(order);
+        }
+
+        return "redirect:" + Mappings.ADMIN_PAGE;
     }
 
     private List<List<Object[]>> getBasketsFromOrders(List<CommercialOrder> orders, List<Product> products){

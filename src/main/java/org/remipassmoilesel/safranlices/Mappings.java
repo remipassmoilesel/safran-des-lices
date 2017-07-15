@@ -27,6 +27,7 @@ public class Mappings {
     public static final String ADMIN_PAGE = ROOT + "admin";
     public static final String ADMIN_LOGIN = ROOT + "admin-login";
     public static final String ADMIN_LOGOUT = ROOT + "admin-logout";
+    public static final String ADMIN_MODIFICATION = ROOT + "admin-modification";
 
 
     public static MappingMap getMap() {
