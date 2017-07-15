@@ -9,7 +9,6 @@ import org.remipassmoilesel.safranlices.repositories.ProductRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -67,39 +66,49 @@ public class AdminController {
 
     @RequestMapping(Mappings.ADMIN_MODIFICATION)
     public String modify(Model model,
-        @RequestParam(value = "action", required = false) String action,
-        @RequestParam(value = "value", required = false) String value,
-        @RequestParam(value = "id", required = false) Long id) {
+                         @RequestParam(value = "action", required = false) String action,
+                         @RequestParam(value = "value", required = false) String value,
+                         @RequestParam(value = "price", required = false) Double price,
+                         @RequestParam(value = "quantity", required = false) Integer quantity,
+                         @RequestParam(value = "id", required = false) Long id) {
 
         // mark as paid or non paid
-        if(action.equals("paid")){
+        if (action.equals("paid")) {
             CommercialOrder order = orderRepository.findOne(id);
             order.setPaid(Boolean.valueOf(value));
             orderRepository.save(order);
         }
 
         // mark as processed or non processed
-        if(action.equals("processed")){
+        if (action.equals("processed")) {
             CommercialOrder order = orderRepository.findOne(id);
             order.setProcessed(Boolean.valueOf(value));
             orderRepository.save(order);
         }
 
+        // mark as processed or non processed
+        if (action.equals("product")) {
+            Product p = productRepository.getOne(id);
+            p.setPrice(price);
+            p.setQuantityAvailable(quantity);
+            productRepository.save(p);
+        }
+
         return "redirect:" + Mappings.ADMIN_PAGE;
     }
 
-    private List<List<Object[]>> getBasketsFromOrders(List<CommercialOrder> orders, List<Product> products){
+    private List<List<Object[]>> getBasketsFromOrders(List<CommercialOrder> orders, List<Product> products) {
 
         List<List<Object[]>> baskets = new ArrayList<>();
 
-        for(CommercialOrder order : orders){
+        for (CommercialOrder order : orders) {
 
             HashMap<Long, Integer> qtties = order.getQuantities();
             Iterator<Long> it = qtties.keySet().iterator();
 
             ArrayList<Object[]> bskt = new ArrayList<>();
 
-            while(it.hasNext()){
+            while (it.hasNext()) {
                 Long pId = it.next();
                 Product p = products.stream()
                         .filter(pf -> pId.equals(pf.getId()))
