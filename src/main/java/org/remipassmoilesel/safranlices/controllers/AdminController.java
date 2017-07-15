@@ -55,6 +55,9 @@ public class AdminController {
         model.addAttribute("ordersProcessed", lastOrdersProcessed);
         model.addAttribute("basketsProcessed", getBasketsFromOrders(lastOrdersProcessed, products));
 
+        // add products
+        model.addAttribute("products", products);
+
         Mappings.includeMappings(model);
         return Templates.ADMIN_TEMPLATE;
     }

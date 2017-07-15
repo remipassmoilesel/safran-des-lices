@@ -32,6 +32,15 @@
             list-style: circle;
         }
 
+        .productsTable{
+            width: 100%;
+            margin: 1em;
+        }
+
+        .productsTable td{
+            padding: 0.6em;
+        }
+
     </style>
 
 </head>
@@ -75,6 +84,26 @@
 
         <a name="modifyProducts"/>
         <h3 class="text-center">Modifier les produits</h3>
+
+        <div class="container">
+            <div class="col-md-offset-1 col-md-10">
+                <table class="productsTable">
+                    <tr>
+                        <th>Nom</th>
+                        <th>Quantité disponible</th>
+                        <th>Prix unitaire</th>
+                        <th></th>
+                    </tr>
+                    <tr th:each="product : ${products}">
+                        <td th:text="${product.getName()}">Safran</td>
+                        <td><input type="text" th:value="${product.getQuantityAvailable()}"/></td>
+                        <td><input type="text" th:value="${product.getPrice()}"/></td>
+                        <td><input type="button" value="Modifier"/></td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
 
     </section>
 
