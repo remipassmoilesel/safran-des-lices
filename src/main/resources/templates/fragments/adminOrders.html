@@ -75,19 +75,24 @@
                 </div>
                 <div>
                     <span class="orderLabel">Etat de la commande:</span>
+
                     &nbsp;
-                    <input type="checkbox" name="paid" onclick="return false;"
-                           th:checked="${order.isPaid()}"/>
+                    <span th:classappend="${order.isPaid()} ? orderPaid : orderNonPaid">
+                        <input type="checkbox" name="paid" onclick="return false;" th:checked="${order.isPaid()}"/>
+                        &nbsp;
+                        Commande payée
+                    </span>
                     &nbsp;
-                    Payée
+
+                    <span th:classappend="${order.isProcessed()} ? orderProcessed : orderNonProcessed">
+                        <input type="checkbox" name="processed" onclick="return false;" th:checked="${order.isProcessed()}"/>
+                        &nbsp;
+                        Commande traitée
+                    </span>
                     &nbsp;
-                    <input type="checkbox" name="processed" onclick="return false;"
-                           th:checked="${order.isProcessed()}"/>
-                    &nbsp;
-                    Traitée
-                    &nbsp;
+
                 </div>
-                <div class="text-right">
+                <div class="text-right orderButtons">
                     <a th:href="@{${mappings.get('ADMIN_MODIFICATION')}(action='paid', value='false', id=${order.getId()})}"
                        th:if="${order.isPaid() == true}"
                        class="btn btn-default" role="button">
