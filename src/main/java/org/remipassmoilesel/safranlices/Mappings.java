@@ -18,7 +18,7 @@ public class Mappings {
     public static final String ROOT = "/";
 
     public static final String OUR_SAFRAN = ROOT + "notre-safran";
-    public static final String OUR_EXPLOITATION = ROOT + "notre-exploitation";
+    public static final String OUR_EXPLOITATION = ROOT + "notre-safraniere";
     public static final String ORDER = ROOT + "commander";
     public static final String BASKET = ROOT + "mon-panier";
     public static final String CHECKOUT = ROOT + "paiement-securise";
