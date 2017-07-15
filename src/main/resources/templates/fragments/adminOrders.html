@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Administration</title>
+</head>
+<body>
+<div th:fragment="adminOrders" class="container">
+
+    <div class="order row" th:each="order, iter : ${orders}">
+
+        <div class="col-md-offset-1 col-md-10">
+
+            <div class="orderHeader">
+                <span class="orderLabel">Date de la commande:</span>
+                <span th:text="${#dates.format(order.getDate(), 'dd/MM/yyyy HH:mm ')}">24/01/1988 14:00</span>
+                &nbsp;
+                <span class="orderLabel">Total:</span> <span th:text="${order.getTotal() + ' €'}">30 €</span>
+            </div>
+
+            <div>
+                <div class="orderLabel">Commande:</div>
+                <ul>
+                    <li th:each="orderPart : ${baskets.get(iter.index)}">
+                        <span th:text="${orderPart[0].getName()}">Safran 1g</span>
+                        &nbsp;
+                        <span th:text="${orderPart[0].getPrice() + ' €'}">15€</span>
+                        &nbsp;x&nbsp;
+                        <span th:text="${orderPart[1]}">10</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div>
+                <div>
+                    <span class="orderLabel">Nom et prénom:</span>
+                    <span th:text="${order.getFirstName() + ' ' + order.getLastName()}">Jules Jean</span>
+                </div>
+                <div>
+                    <span class="orderLabel">Téléphone:</span> <span
+                        th:text="${order.getPhonenumber()}">0425363698</span>
+                </div>
+                <div>
+                    <span class="orderLabel">Adresse:</span> <span
+                        th:text="${order.getAddress()}">14 rue de la Joconde</span>
+                </div>
+                <div th:if="${#strings.isEmpty(order.getComment()) == false}">
+                    <span class="orderLabel">Commentaire:</span> <span
+                        th:text="${order.getComment()}">Hey !</span>
+                </div>
+            </div>
+
+            <div>
+                <div>
+                    <span class="orderLabel">Type de paiement:</span>
+                    &nbsp;
+                    <!--<span th:text="${order.getPaymentType()}">CREDIT CARD</span>-->
+                    <input type="checkbox" name="paymentType" value="CREDIT_CARD" onclick="return false;"
+                           th:checked="${order.getPaymentType() == T(org.remipassmoilesel.safranlices.entities.PaymentType).CREDIT_CARD}"/>
+                    &nbsp;
+                    Carte de crédit
+                    &nbsp;
+                    <input type="checkbox" name="paymentType" value="BANK_CHECK" onclick="return false;"
+                           th:checked="${order.getPaymentType() == T(org.remipassmoilesel.safranlices.entities.PaymentType).BANK_CHECK}"/>
+                    &nbsp;
+                    Chèque de banque
+                    &nbsp;
+                    <input type="checkbox" name="paymentType" value="PAYPAL" onclick="return false;"
+                           th:checked="${order.getPaymentType() == T(org.remipassmoilesel.safranlices.entities.PaymentType).PAYPAL}"/>
+                    &nbsp;
+                    Paypal
+                    &nbsp;
+                </div>
+                <div>
+                    <span class="orderLabel">Etat de la commande:</span>
+                    &nbsp;
+                    <input type="checkbox" name="paid" onclick="return false;"
+                           th:checked="${order.isPaid()}"/>
+                    &nbsp;
+                    Payée
+                    &nbsp;
+                    <input type="checkbox" name="processed" onclick="return false;"
+                           th:checked="${order.isProcessed()}"/>
+                    &nbsp;
+                    Traitée
+                    &nbsp;
+                </div>
+                <div class="text-right">
+                    <a href="#" th:if="${order.isPaid() == true}" class="btn btn-default" role="button">
+                        Marquer comme non-payée</a>
+                    <a href="#" th:if="${order.isPaid() == false}" class="btn btn-default" role="button">
+                        Marquer comme payée</a>
+
+                    &nbsp;
+                    &nbsp;
+
+                    <a href="#" th:if="${order.isProcessed() == true}" class="btn btn-default" role="button">
+                        Marquer comme non-traitée</a>
+                    <a href="#" th:if="${order.isProcessed() == false}" class="btn btn-default" role="button">
+                        Marquer comme traitée</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

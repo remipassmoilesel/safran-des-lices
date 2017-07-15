@@ -6,13 +6,11 @@ import org.remipassmoilesel.safranlices.entities.CommercialOrder;
 import org.remipassmoilesel.safranlices.entities.Product;
 import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
-import org.remipassmoilesel.safranlices.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,12 +39,31 @@ public class AdminController {
     @RequestMapping(Mappings.ADMIN_PAGE)
     public String showTemplate(Model model) {
 
-        Page<CommercialOrder> lastOrders = orderRepository.findLasts(new PageRequest(1, 20));
-        List<CommercialOrder> ordersList = lastOrders.getContent();
         List<Product> products = productRepository.findAll();
+
+        // orders non processed
+        List<CommercialOrder> lastOrdersToProcess = orderRepository.findLasts(
+                new PageRequest(1, 20), false).getContent();
+
+        model.addAttribute("ordersToProcess", lastOrdersToProcess);
+        model.addAttribute("basketsToProcess", getBasketsFromOrders(lastOrdersToProcess, products));
+
+        // orders processed
+        List<CommercialOrder> lastOrdersProcessed = orderRepository.findLasts(
+                new PageRequest(1, 20), true).getContent();
+
+        model.addAttribute("ordersProcessed", lastOrdersProcessed);
+        model.addAttribute("basketsProcessed", getBasketsFromOrders(lastOrdersProcessed, products));
+
+        Mappings.includeMappings(model);
+        return Templates.ADMIN_TEMPLATE;
+    }
+
+    private List<List<Object[]>> getBasketsFromOrders(List<CommercialOrder> orders, List<Product> products){
+
         List<List<Object[]>> baskets = new ArrayList<>();
 
-        for(CommercialOrder order : ordersList){
+        for(CommercialOrder order : orders){
 
             HashMap<Long, Integer> qtties = order.getQuantities();
             Iterator<Long> it = qtties.keySet().iterator();
@@ -65,11 +82,7 @@ public class AdminController {
             baskets.add(bskt);
         }
 
-        model.addAttribute("orders", ordersList);
-        model.addAttribute("baskets", baskets);
-
-        Mappings.includeMappings(model);
-        return Templates.ADMIN_TEMPLATE;
+        return baskets;
     }
 
     @RequestMapping(value = Mappings.ADMIN_LOGIN, method = RequestMethod.GET)

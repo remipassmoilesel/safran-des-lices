@@ -9,15 +9,29 @@
         .order {
             margin-top: 1em;
             margin-bottom: 2em;
+            background: #c0a7bcdd;
         }
-        .order ul{
+
+        .order ul {
             list-style: circle;
         }
-        .orderHeader{
+
+        .orderHeader {
             padding-top: 1em;
             font-size: 1.2em;
             font-weight: bolder;
         }
+
+        .orderLabel {
+            font-weight: bolder;
+            font-size: 0.9em;
+            color: gray;
+        }
+
+        .summary ul {
+            list-style: circle;
+        }
+
     </style>
 
 </head>
@@ -25,72 +39,43 @@
 <div layout:fragment="content">
 
     <section id="courses" class="section-padding">
+
         <div class="container">
+
             <div class="row">
                 <div class="header-section text-center">
-                    <h2>Admin</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Exercitationem nesciunt vitae,<br/>
-                        maiores, magni dolorum aliquam.</p>
+                    <h2>Administration</h2>
                     <hr class="bottom-line"/>
                 </div>
             </div>
 
-            <div class="order row" th:each="order, iter : ${orders}">
-                
-                <div class="col-md-offset-1 orderHeader">
-                    Date de la commande:
-                    <span th:text="${#dates.format(order.getDate(), 'dd/MM/yyyy HH:mm ')}">24/01/1988 14:00</span>
-                    &nbsp;
-                    Total: <span th:text="${order.getTotal() + ' €'}">30 €</span>
-                </div>
-                
-                <div class="col-md-offset-1">
-                    <div>Commande:</div>
+            <div class="row">
+                <div class="col-md-offset-1 col-md-10 text-left summary">
                     <ul>
-                        <li th:each="orderPart : ${baskets.get(iter.index)}">
-                            <span th:text="${orderPart[0].getName()}">Safran 1g</span>
-                            &nbsp;
-                            <span th:text="${orderPart[0].getPrice() + ' €'}">15€</span>
-                            &nbsp;x&nbsp;
-                            <span th:text="${orderPart[1]}">10</span>
-                        </li>
+                        <li><a href="#lastNonProcessed">Dernières commandes non traitées</a></li>
+                        <li><a href="#lastProcessed">Dernières commandes traitées</a></li>
+                        <li><a href="#modifyProducts">Modifier les produits</a></li>
                     </ul>
                 </div>
-
-                <div class="col-md-offset-1">
-                    <div>
-                        Nom et prénom: <span 
-                            th:text="${order.getFirstName() + ' ' + order.getLastName()}">Jules Jean</span>
-                    </div>
-                    <div>
-                        Téléphone: <span th:text="${order.getPhonenumber()}">0425363698</span>
-                    </div>
-                    <div>
-                        Adresse: <span th:text="${order.getAddress()}">14 rue de la Joconde</span>
-                    </div>
-                    <div>
-                        Type de paiement: <span th:text="${order.getPaymentType()}">CREDIT CARD</span>
-                    </div>
-                    <div th:if="${#strings.isEmpty(order.getComment()) == false}">
-                        Commentaire: <span th:text="${order.getComment()}">Hey !</span>
-                    </div>
-                    <div>
-                        Payée: <span th:text="${order.isPaid()}">true</span>
-                        &nbsp;
-                        <a href="#" th:if="${order.isProcessed() == true}">Marquer comme non-payée</a>
-                        <a href="#" th:if="${order.isProcessed() == false}">Marquer comme payée</a>
-                    </div>
-                    <div>
-                        Traitée: <span th:text="${order.isProcessed()}">true</span>
-                        &nbsp;
-                        <a href="#" th:if="${order.isProcessed() == true}">Marquer comme non-traitée</a>
-                        <a href="#" th:if="${order.isProcessed() == false}">Marquer comme traitée</a>
-                    </div>
-                </div>
-
             </div>
-
         </div>
+
+        <a name="lastNonProcessed"/>
+        <h3 class="text-center">Dernières commandes non traitées</h3>
+        <div th:replace="fragments/adminOrders :: adminOrders(orders=${ordersToProcess}, baskets=${basketsToProcess})">
+            Orders to process
+        </div>
+
+        <a name="lastProcessed"/>
+        <h3 class="text-center">Dernières commandes traitées</h3>
+        <div th:replace="fragments/adminOrders :: adminOrders(orders=${ordersProcessed}, baskets=${basketsProcessed})">
+            Orders processed
+        </div>
+
+
+        <a name="modifyProducts"/>
+        <h3 class="text-center">Modifier les produits</h3>
+
     </section>
 
 </div>

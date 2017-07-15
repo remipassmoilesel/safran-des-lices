@@ -100,6 +100,8 @@ public class DevDataLoader implements ApplicationRunner {
                     null, null, null, null, null);
 
             order.setTotal(Utils.computeTotalForBasket(products, quantities));
+            order.setProcessed(i % 2 == 0);
+            order.setPaid(rand.nextBoolean());
 
             orderRepository.save(order);
         }
