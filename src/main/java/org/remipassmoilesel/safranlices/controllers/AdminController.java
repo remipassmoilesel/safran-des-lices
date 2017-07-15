@@ -41,16 +41,18 @@ public class AdminController {
 
         List<Product> products = productRepository.findAll();
 
+        int limit = 10;
+
         // orders non processed
         List<CommercialOrder> lastOrdersToProcess = orderRepository.findLasts(
-                new PageRequest(1, 20), false).getContent();
+                new PageRequest(1, limit), false).getContent();
 
         model.addAttribute("ordersToProcess", lastOrdersToProcess);
         model.addAttribute("basketsToProcess", getBasketsFromOrders(lastOrdersToProcess, products));
 
         // orders processed
         List<CommercialOrder> lastOrdersProcessed = orderRepository.findLasts(
-                new PageRequest(1, 20), true).getContent();
+                new PageRequest(1, limit), true).getContent();
 
         model.addAttribute("ordersProcessed", lastOrdersProcessed);
         model.addAttribute("basketsProcessed", getBasketsFromOrders(lastOrdersProcessed, products));
