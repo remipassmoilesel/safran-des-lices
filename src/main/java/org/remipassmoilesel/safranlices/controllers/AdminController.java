@@ -77,11 +77,11 @@ public class AdminController {
     public String modify(Model model,
                          HttpServletResponse response,
                          @RequestParam(value = "action") String action,
+                         @RequestParam(value = "id") Long id,
                          @RequestParam(value = "value", required = false) String value,
                          @RequestParam(value = "price", required = false) Double price,
                          @RequestParam(value = "name", required = false) String name,
-                         @RequestParam(value = "quantity", required = false) Integer quantity,
-                         @RequestParam(value = "id", required = false) Long id) throws IOException {
+                         @RequestParam(value = "quantity", required = false) Integer quantity) throws IOException {
 
         // mark as paid or non paid
         if (action.equals("paid")) {
@@ -121,6 +121,7 @@ public class AdminController {
             return "redirect:" + Mappings.ADMIN_PAGE;
         }
 
+        // nothing to do
         response.sendError(400, "Bad request");
         return null;
     }
