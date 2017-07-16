@@ -9,6 +9,20 @@
         ul {
             list-style: circle;
         }
+
+        .total{
+            font-weight: bolder;
+        }
+
+        .buttons{
+            text-align: center;
+            margin-top: 2em
+        }
+        
+        .buttons a{
+            margin: 1em
+        }
+
     </style>
 </head>
 <body>
@@ -77,11 +91,11 @@
             </div>
 
             <div class="row">
-                <div class="text-center">Total: <span th:text="${total + ' €'}"></span></div>
+                <div class="text-center total">Total: <span th:text="${total + ' €'}"></span></div>
             </div>
 
             <div class="row">
-                <div style="text-align: center; margin-top: 2em">
+                <div class="buttons">
 
                     <a th:href="@{${mappings.get('BASKET') + '?reset=true'}}" class="btn btn-default">
                         Vider mon panier
