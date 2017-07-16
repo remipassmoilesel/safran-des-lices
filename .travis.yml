@@ -20,4 +20,7 @@ env:
     - SAFRANLICES_FR_ACTIVE_PROFILE=dev
     - SAFRANLICES_FR_PRODUCTS_SOURCE=./products.json
     - SAFRANLICES_FR_EXPENSES_SOURCE=./expenses.json
+    - SAFRANLICES_FR_MAIL_HOST=smtp.mail.com
+    - SAFRANLICES_FR_MAIL_FROM=user@mail.com
+    - SAFRANLICES_FR_MAIL_ADMIN_USERS=user1@mail.com,user2@mail.com,user3@mail.com
 script: mvn clean verify
