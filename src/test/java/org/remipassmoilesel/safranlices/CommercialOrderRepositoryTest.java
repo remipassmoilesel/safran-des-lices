@@ -45,7 +45,7 @@ public class CommercialOrderRepositoryTest {
 
 
         // create and save products
-        List<Product> products = productRepository.findAll();
+        List<Product> products = productRepository.findAll(false);
 
         int nbr = 10;
         for (int i = 0; i < nbr; i++) {

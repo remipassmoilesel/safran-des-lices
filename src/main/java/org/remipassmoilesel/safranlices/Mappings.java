@@ -24,10 +24,13 @@ public class Mappings {
     public static final String CHECKOUT = ROOT + "paiement-securise";
     public static final String TEMPLATE = ROOT + "template";
 
+    public static final String SEND_MAIL = ROOT + "send-mail";
+
     public static final String ADMIN_PAGE = ROOT + "admin";
     public static final String ADMIN_LOGIN = ADMIN_PAGE + "/login";
     public static final String ADMIN_LOGOUT = ADMIN_PAGE + "/logout";
     public static final String ADMIN_MODIFICATION = ADMIN_PAGE + "/modification";
+
 
 
     public static MappingMap getMap() {

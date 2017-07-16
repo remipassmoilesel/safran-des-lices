@@ -14,12 +14,16 @@ import org.remipassmoilesel.safranlices.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -42,6 +46,15 @@ public class MainController {
 
     @Autowired
     private ExpenseRepository expenseRepository;
+
+    @Autowired
+    private JavaMailSender javaMailSender;
+
+    @Value("${app.mail.from}")
+    private String mailFrom;
+
+    @Value("${app.mail.to}")
+    private String mailTo;
 
     @RequestMapping(Mappings.TEMPLATE)
     public String showTemplate(Model model) {
@@ -250,8 +263,45 @@ public class MainController {
         model.addAttribute("total", total);
         model.addAttribute("paymentType", paymentType.toString());
 
+        // send notification
+        try {
+            sendOrderNotifications(order, null);
+        } catch (Exception e) {
+            logger.error("Unable to send mail notification", e);
+        }
+
         Mappings.includeMappings(model);
         return Templates.CHECKOUT_RESULT;
+    }
+
+    public void sendOrderNotifications(CommercialOrder order, String additionalRecipient) throws Exception {
+
+        // send admin notification
+        List<String> adminDests = Arrays.asList(mailTo.split(","));
+        SimpleMailMessage adminMessage = new SimpleMailMessage();
+        adminMessage.setFrom(mailFrom);
+        adminMessage.setTo(adminDests.toArray(new String[adminDests.size()]));
+        adminMessage.setSubject("Safran des Lices - Nouvelle commande");
+        adminMessage.setText("Une nouvelle commande a été passée sur le site du Safran des Lices.\n" +
+                "Total: " + order.getTotal() + " €\n" +
+                "Nom: " + order.getFirstName() + "\n" +
+                "Prénom: " + order.getLastName() + "\n" +
+                "Adresse: " + order.getAddress() + "\n" +
+                "Commentaire: " + order.getComment() + "\n" +
+                "\n\n Rendez-vous sur la page d'administration pour en savoir plus.");
+        javaMailSender.send(adminMessage);
+
+        // send client notification
+        if(additionalRecipient != null){
+            SimpleMailMessage clientMessage = new SimpleMailMessage();
+            clientMessage.setFrom(mailFrom);
+            clientMessage.setTo(additionalRecipient);
+            clientMessage.setSubject("Safran des Lices - Commande enregistrée");
+            clientMessage.setText("Bonjour," +
+                    "\nVotre commande a bien été prise en compte." +
+                    "\n\nMerci et bonne journée.");
+            javaMailSender.send(clientMessage);
+        }
     }
 
     private void resetBasket(HttpSession session) {

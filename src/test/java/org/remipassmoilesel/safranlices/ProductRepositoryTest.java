@@ -42,7 +42,7 @@ public class ProductRepositoryTest {
             productRepository.save(product);
         }
 
-        assertTrue(productRepository.findAll().size() >= nbr);
+        assertTrue(productRepository.findAll(false).size() >= nbr);
 
     }
 

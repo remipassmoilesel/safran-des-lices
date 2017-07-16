@@ -20,5 +20,8 @@ export SAFRANLICES_FR_ACTIVE_PROFILE=dev
 export SAFRANLICES_FR_PRODUCTS_SOURCE=./products.json
 export SAFRANLICES_FR_EXPENSES_SOURCE=./expenses.json
 
+export SAFRANLICES_FR_MAIL_HOST=smtp.mail.com
+export SAFRANLICES_FR_MAIL_FROM=user@mail.com
+export SAFRANLICES_FR_MAIL_ADMIN_USERS=user1@mail.com,user2@mail.com,user3@mail.com
 
 
