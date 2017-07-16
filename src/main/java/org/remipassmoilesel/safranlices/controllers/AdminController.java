@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -74,18 +75,21 @@ public class AdminController {
 
     @RequestMapping(Mappings.ADMIN_MODIFICATION)
     public String modify(Model model,
-                         @RequestParam(value = "action", required = false) String action,
+                         HttpServletResponse response,
+                         @RequestParam(value = "action") String action,
                          @RequestParam(value = "value", required = false) String value,
                          @RequestParam(value = "price", required = false) Double price,
                          @RequestParam(value = "name", required = false) String name,
                          @RequestParam(value = "quantity", required = false) Integer quantity,
-                         @RequestParam(value = "id", required = false) Long id) {
+                         @RequestParam(value = "id", required = false) Long id) throws IOException {
 
         // mark as paid or non paid
         if (action.equals("paid")) {
             CommercialOrder order = orderRepository.findOne(id);
             order.setPaid(Boolean.valueOf(value));
             orderRepository.save(order);
+
+            return "redirect:" + Mappings.ADMIN_PAGE;
         }
 
         // mark as processed or non processed
@@ -93,6 +97,8 @@ public class AdminController {
             CommercialOrder order = orderRepository.findOne(id);
             order.setProcessed(Boolean.valueOf(value));
             orderRepository.save(order);
+
+            return "redirect:" + Mappings.ADMIN_PAGE;
         }
 
         // modify a product
@@ -101,6 +107,8 @@ public class AdminController {
             p.setPrice(price);
             p.setQuantityAvailable(quantity);
             productRepository.save(p);
+
+            return "redirect:" + Mappings.ADMIN_PAGE;
         }
 
         // modify an expense
@@ -108,11 +116,13 @@ public class AdminController {
             Expense e = expenseRepository.getOne(id);
             e.setName(name);
             e.setValue(Double.valueOf(value));
-
             expenseRepository.save(e);
+
+            return "redirect:" + Mappings.ADMIN_PAGE;
         }
 
-        return "redirect:" + Mappings.ADMIN_PAGE;
+        response.sendError(400, "Bad request");
+        return null;
     }
 
     private List<List<Object[]>> getBasketsFromOrders(List<CommercialOrder> orders, List<Product> products) {
