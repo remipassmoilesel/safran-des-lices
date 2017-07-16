@@ -1,0 +1,23 @@
+language: java
+jdk:
+  - oraclejdk8
+sudo: true
+services:
+  - mysql
+before_script:
+  - ./setup-db.sh
+install: mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+env:
+  global:
+    - SAFRANLICES_FR_DB_NAME=safranlices
+    - SAFRANLICES_FR_DB_URL=jdbc:mysql://localhost:3306/
+    - SAFRANLICES_FR_DB_USERNAME=safranlices
+    - SAFRANLICES_FR_DB_PASSWORD=safranlices
+    - SAFRANLICES_FR_DB_BACKUP_DIRECTORY=./db-backup/
+    - SAFRANLICES_FR_DB_BACKUP_NUMBER=40
+    - SAFRANLICES_FR_ADMIN_LOGIN=admin
+    - SAFRANLICES_FR_ADMIN_PASSWORD=admin
+    - SAFRANLICES_FR_ACTIVE_PROFILE=dev
+    - SAFRANLICES_FR_PRODUCTS_SOURCE=./products.json
+    - SAFRANLICES_FR_EXPENSES_SOURCE=./expenses.json
+script: mvn clean verify

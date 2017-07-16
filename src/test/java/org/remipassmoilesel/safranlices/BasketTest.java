@@ -48,7 +48,7 @@ public class BasketTest {
     }
 
     @Test
-    public void testBasket() throws Exception {
+    public void testBasketModifications() throws Exception {
 
         // show basket
         MvcResult response = mockMvc.perform(get(Mappings.BASKET))
