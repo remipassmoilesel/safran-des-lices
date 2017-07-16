@@ -129,7 +129,7 @@ public class AdminControllerTest {
                 .param("id", p1.getId().toString()))
                 .andExpect(status().is3xxRedirection());
 
-        Product np1 = productRepository.getOne(o1.getId());
+        Product np1 = productRepository.getOne(p1.getId());
         assertTrue(np1.getPrice().equals(newPrice));
         assertTrue(np1.getQuantityAvailable().equals(newQuantity));
 
