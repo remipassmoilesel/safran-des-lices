@@ -26,13 +26,13 @@ var App = {
           errorArea.animate({"opacity": 1}, 700);
         };
 
-        if(firstname.val().trim().length < 5){
-            showErrorMessage("Prénom invalide, 5 caractères minimum");
+        if(firstname.val().trim().length < 3){
+            showErrorMessage("Prénom invalide, 3 caractères minimum");
             return;
         }
 
-        if(lastname.val().trim().length < 5){
-            showErrorMessage("Nom invalide, 5 caractères minimum");
+        if(lastname.val().trim().length < 3){
+            showErrorMessage("Nom invalide, 3 caractères minimum");
             return;
         }
 
