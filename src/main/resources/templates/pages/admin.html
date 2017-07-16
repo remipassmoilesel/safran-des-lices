@@ -214,7 +214,11 @@
 
             </div>
 
-            <div class="row productRow" th:each="product : ${products}">
+            <div class="row productRow text-center" th:if="${#lists.size(products) lt 1}">
+                <i>Aucun produit à afficher</i>
+            </div>
+
+            <div class="row productRow" th:each="product : ${products}" th:if="${#lists.size(products) gt 0}">
                 <form method="get" th:id="${'productForm' + product.getId()}"
                       th:action="@{${mappings.get('ADMIN_MODIFICATION')}}">
 
@@ -260,7 +264,11 @@
                 </div>
             </div>
 
-            <div class="row productHeader">
+            <div class="row productRow text-center" th:if="${#lists.size(expenses) lt 1}">
+                <i>Aucun frais à afficher</i>
+            </div>
+
+            <div class="row productHeader" th:if="${#lists.size(expenses) gt 0}">
                 <div class="col-sm-offset-1 col-sm-1">
                     ID
                 </div>
@@ -275,7 +283,7 @@
 
             </div>
 
-            <div class="row productRow" th:each="expense : ${expenses}">
+            <div class="row productRow" th:each="expense : ${expenses}"  th:if="${#lists.size(expenses) gt 0}">
                 <form method="get" th:id="${'expenseForm' + expense.getId()}"
                       th:action="@{${mappings.get('ADMIN_MODIFICATION')}}">
 

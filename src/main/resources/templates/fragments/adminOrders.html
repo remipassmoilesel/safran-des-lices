@@ -6,7 +6,11 @@
 <body>
 <div th:fragment="adminOrders" class="container">
 
-    <div class="order row" th:each="order, iter : ${orders}">
+    <div class="order row text-center" th:if="${#lists.size(orders) lt 1}">
+        <i>Aucune commande à afficher.</i>
+    </div>
+
+    <div class="order row" th:each="order, iter : ${orders}"  th:if="${#lists.size(orders) gt 0}">
 
         <div class="col-md-offset-1 col-md-10">
 
