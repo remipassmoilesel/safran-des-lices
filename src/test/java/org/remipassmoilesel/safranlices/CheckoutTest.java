@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @ActiveProfiles(SafranLicesApplication.DEV_PROFILE)
-public class BasketTest {
+public class CheckoutTest {
 
     private MockMvc mockMvc;
 
@@ -52,75 +52,6 @@ public class BasketTest {
     @Before
     public void setup() throws IOException {
         mockMvc = MockMvcBuilders.standaloneSetup(mainController).build();
-    }
-
-    @Test
-    public void testBasketModifications() throws Exception {
-
-        // show basket
-        MvcResult response = mockMvc.perform(get(Mappings.BASKET))
-                .andExpect(status().isOk())
-                .andExpect(model().attributeExists(Mappings.MODEL_ARGUMENT_NAME)).andReturn();
-
-        MockHttpSession session = (MockHttpSession) response.getRequest().getSession();
-
-        // add product to basket
-        Integer qtty = 6;
-        List<Product> products = productRepository.findAll(false);
-
-        mockMvc.perform(get(Mappings.BASKET)
-                .session(session)
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("addToCart", "true")
-                .param("qtty", String.valueOf(qtty))
-                .param("id", String.valueOf(products.get(0).getId())))
-                .andExpect(status().is3xxRedirection());
-
-        mockMvc.perform(get(Mappings.BASKET)
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .session(session)
-                .param("addToCart", "true")
-                .param("qtty", String.valueOf(qtty))
-                .param("id", String.valueOf(products.get(1).getId())))
-                .andExpect(status().is3xxRedirection());
-
-        response = mockMvc.perform(get(Mappings.BASKET)
-                .session(session)
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("addToCart", "true")
-                .param("qtty", String.valueOf(qtty))
-                .param("id", String.valueOf(products.get(2).getId())))
-                .andExpect(status().is3xxRedirection()).andReturn();
-
-        HashMap<Long, Integer> basket = (HashMap<Long, Integer>) response.getRequest().getSession().getAttribute(MainController.BASKET_SATTR);
-        Integer q = basket.values().iterator().next();
-        Long pid = basket.keySet().iterator().next();
-        assertTrue(basket.size() == 3);
-        assertTrue(pid.equals(products.get(0).getId()));
-        assertTrue(q.equals(qtty));
-
-        // delete a product
-        response = mockMvc.perform(get(Mappings.BASKET)
-                .session(session)
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("delete", "true")
-                .param("id", String.valueOf(products.get(0).getId())))
-                .andExpect(status().is3xxRedirection()).andReturn();
-
-        basket = (HashMap<Long, Integer>) response.getRequest().getSession().getAttribute(MainController.BASKET_SATTR);
-        assertTrue(basket.size() == 2);
-        assertTrue(basket.keySet().iterator().next() == products.get(1).getId());
-
-        // empty basket
-        mockMvc.perform(get(Mappings.BASKET)
-                .session(session)
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("reset", "true"))
-                .andExpect(status().is3xxRedirection());
-
-        basket = (HashMap<Long, Integer>) response.getRequest().getSession().getAttribute(MainController.BASKET_SATTR);
-        assertTrue(basket.size() == 0);
-
     }
 
     @Test
@@ -173,7 +104,7 @@ public class BasketTest {
                 .andExpect(status().is3xxRedirection());
 
         // show basket
-        response = mockMvc.perform(get(Mappings.BASKET)
+        response = mockMvc.perform(get(Mappings.CHECKOUT)
                 .session(session))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists(Mappings.MODEL_ARGUMENT_NAME))
