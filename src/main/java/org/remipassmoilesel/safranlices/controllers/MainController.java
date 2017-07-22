@@ -1,10 +1,10 @@
 package org.remipassmoilesel.safranlices.controllers;
 
-import org.remipassmoilesel.safranlices.SafranLicesApplication;
-import org.remipassmoilesel.safranlices.forms.CheckoutForm;
 import org.remipassmoilesel.safranlices.Mappings;
+import org.remipassmoilesel.safranlices.SafranLicesApplication;
 import org.remipassmoilesel.safranlices.Templates;
 import org.remipassmoilesel.safranlices.entities.*;
+import org.remipassmoilesel.safranlices.forms.CheckoutForm;
 import org.remipassmoilesel.safranlices.repositories.ExpenseRepository;
 import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
@@ -265,8 +265,16 @@ public class MainController {
         }
 
         // payment is differed
-        if(PaymentType.BANK_CHECK == order.getPaymentType()){
+        if (PaymentType.BANK_CHECK == order.getPaymentType()) {
             model.addAttribute("order", order);
+
+            // send notification to client
+            try {
+                mailer.sendClientNotification(OrderNotificationType.PAYMENT_CONFIRMED, order);
+            } catch (Exception e) {
+                logger.error("Unable to send mail notification", e);
+            }
+
             Mappings.includeMappings(model);
             return Templates.CHECKOUT_END;
         }
@@ -291,7 +299,7 @@ public class MainController {
 
     @RequestMapping(value = Mappings.CHECKOUT_CONFIRMED, method = RequestMethod.GET)
     public String checkoutConfirmed(Model model, HttpSession session,
-                                  @RequestParam(name = "token", required = true) String token){
+                                    @RequestParam(name = "token", required = true) String token) {
 
         CommercialOrder order = (CommercialOrder) session.getAttribute(ORDER_SATTR);
 
@@ -305,10 +313,17 @@ public class MainController {
 
         // test session token
         String stoken = (String) session.getAttribute(PAYMENT_TOKEN_SATTR);
-        if(token == null || stoken == null || token.equals(stoken) == false){
+        if (token == null || stoken == null || token.equals(stoken) == false) {
             Error err = new Error("Invalid token: " + token + " / stoken: " + stoken);
             logger.error("Invalid token: " + token + " / stoken: " + stoken, err);
             throw err;
+        }
+
+        // send notification to client
+        try {
+            mailer.sendClientNotification(OrderNotificationType.PAYMENT_CONFIRMED, order);
+        } catch (Exception e) {
+            logger.error("Unable to send mail notification", e);
         }
 
         model.addAttribute("order", order);
@@ -331,6 +346,13 @@ public class MainController {
         // reset basket
         resetBasket(session);
 
+        // send notification to client
+        try {
+            mailer.sendClientNotification(OrderNotificationType.PAYMENT_FAILED, order);
+        } catch (Exception e) {
+            logger.error("Unable to send mail notification", e);
+        }
+
         model.addAttribute("order", order);
         model.addAttribute("status", "failed");
 
@@ -339,15 +361,29 @@ public class MainController {
 
     }
 
-        @RequestMapping("/send-admin-mail-example")
+    @RequestMapping("/send-admin-mail-example")
     @ResponseBody
-    public void sendAdminMail() throws MessagingException {
+    public void sendAdminMailExample() throws MessagingException {
         List<Product> products = productRepository.findAll(false);
         mailer.sendAdminNotification(DevDataFactory.createOrder(null, products, null, null, null, null, null, null, null, null));
     }
 
+    @RequestMapping("/send-client-order-confirmed-example")
+    @ResponseBody
+    public void sendClientOrderConfirmedMailExample() throws MessagingException {
+        List<Product> products = productRepository.findAll(false);
+        mailer.sendClientNotification(OrderNotificationType.PAYMENT_CONFIRMED, DevDataFactory.createOrder(null, products, null, null, null, null, null, null, null, null));
+    }
+
+    @RequestMapping("/send-client-order-failed-example")
+    @ResponseBody
+    public void sendClientOrderFailedMailExample() throws MessagingException {
+        List<Product> products = productRepository.findAll(false);
+        mailer.sendClientNotification(OrderNotificationType.PAYMENT_FAILED, DevDataFactory.createOrder(null, products, null, null, null, null, null, null, null, null));
+    }
+
     @RequestMapping("/show-admin-mail-example")
-    public String show(Model model) {
+    public String showAdminMailExample(Model model) {
 
         List<Product> products = productRepository.findAll(false);
 
@@ -358,6 +394,34 @@ public class MainController {
         model.addAttribute("productsWithQuantities", productsWithQuantities);
 
         return "mail/admin";
+    }
+
+    @RequestMapping("/show-client-order-confirmed-mail-example")
+    public String showClientOrderConfirmedMailExample(Model model) {
+
+        List<Product> products = productRepository.findAll(false);
+
+        CommercialOrder order = DevDataFactory.createOrder(null, products, null, null, null, null, null, null, null, null);
+        model.addAttribute("order", order);
+
+        HashMap<Product, Integer> productsWithQuantities = Utils.mapProductWithQuantities(products, order);
+        model.addAttribute("productsWithQuantities", productsWithQuantities);
+
+        return "mail/orderConfirmed";
+    }
+
+    @RequestMapping("/show-client-order-failed-mail-example")
+    public String showClientOrderFailedMailExample(Model model) {
+
+        List<Product> products = productRepository.findAll(false);
+
+        CommercialOrder order = DevDataFactory.createOrder(null, products, null, null, null, null, null, null, null, null);
+        model.addAttribute("order", order);
+
+        HashMap<Product, Integer> productsWithQuantities = Utils.mapProductWithQuantities(products, order);
+        model.addAttribute("productsWithQuantities", productsWithQuantities);
+
+        return "mail/orderFailed";
     }
 
     private void resetBasket(HttpSession session) {

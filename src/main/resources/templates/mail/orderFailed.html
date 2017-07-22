@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:remove="all">Commande annulée</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <style type="text/css">
+        body * {
+            font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            font-size: 12px;
+        }
+
+        .mainTable {
+            width: 80%;
+            margin: auto;
+        }
+
+        td {
+            padding: 0.2em;
+        }   
+        
+        th {
+            text-align: left;
+        }
+
+        .footer {
+            margin-top: 2em;
+            padding: 0.2em;
+        }
+
+        .fieldDesc {
+            color: gray;
+            width: 30%;
+        }
+    </style>
+
+</head>
+<body>
+
+<table class="mainTable">
+
+    <tr>
+        <td colspan="2"><h2>Votre commande est annulée</h2></td>
+    </tr>
+
+    <tr>
+        <td colspan="2">Le paiement en ligne a échoué.</td>
+    </tr>
+
+    <tr>
+        <td class="fieldDesc">Date et heure:</td>
+        <td th:text="${#dates.format(order.getDate(), 'dd/MM/yyyy HH:mm ')}">153.5€</td>
+    </tr>
+    <tr>
+        <td class="fieldDesc">Total (hors frais de port):</td>
+        <td th:text="${order.getTotal()}">153.5€</td>
+    </tr>
+    <tr>
+        <td class="fieldDesc">Commande:</td>
+        <td>
+            <table>
+                <tr>
+                    <th>Produit</th>
+                    <th>Prix unitaire</th>
+                    <th>Quantité</th>
+                </tr>
+                <tr th:each="iter : ${productsWithQuantities}">
+                    <td th:text="${iter.key.getName()}">Safran 1g</td>
+                    <td th:text="${iter.key.getPrice()}">15 €</td>
+                    <td th:text="${iter.value}">2</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td class="fieldDesc">Nom et prénom:</td>
+        <td th:text="${order.getFirstName() + ' ' + order.getLastName()}">Jean Claude</td>
+    </tr>
+
+    <tr>
+        <td class="fieldDesc">Adresse:</td>
+        <td th:text="${order.getAddress()}">15 rue de la Longe</td>
+    </tr>
+
+    <tr>
+        <td class="fieldDesc">Numéro de téléphone:</td>
+        <td th:text="${order.getPhonenumber()}">0525878</td>
+    </tr>
+
+    <tr>
+        <td class="fieldDesc">Type de paiement:</td>
+        <td th:text="${order.getPaymentType()}">0525878</td>
+    </tr>
+
+    <tr>
+        <td class="fieldDesc">Commentaire:</td>
+        <td th:text="${order.getComment()}">0525878</td>
+    </tr>
+
+    <tr>
+        <td colspan="2">
+            <div class="footer">
+                Bonne journée !
+            </div>
+        </td>
+    </tr>
+
+</table>
+
+</body>
+</html>

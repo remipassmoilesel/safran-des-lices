@@ -1,5 +1,6 @@
 package org.remipassmoilesel.safranlices.utils;
 
+import org.remipassmoilesel.safranlices.Templates;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
 import org.remipassmoilesel.safranlices.entities.OrderNotificationType;
 import org.remipassmoilesel.safranlices.entities.Product;
@@ -94,7 +95,8 @@ public class Mailer {
         // set body
         HashMap<String, Object> vars = new HashMap<>();
         vars.put("order", order);
-        clientMessage.setContent(getTemplatedMailAsString(step.getMailTemplate(), vars), "text/html");
+        String template = getTemplatedMailAsString(step.getMailTemplate(), vars);
+        clientMessage.setContent(template, "text/html");
 
         // send message
         javaMailSender.send(clientMessage);

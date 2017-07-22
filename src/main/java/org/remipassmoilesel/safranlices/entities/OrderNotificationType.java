@@ -5,9 +5,9 @@ package org.remipassmoilesel.safranlices.entities;
  */
 public enum OrderNotificationType {
 
-    CONFIRMED("Commande confirmée", "orderConfirmed"),
-    CANCELED("Commande annulée", "orderCanceled"),
-    SENT("Commande envoyée", "orderSent");
+    PAYMENT_CONFIRMED("Commande confirmée", "mail/orderConfirmed"),
+    PAYMENT_FAILED("Paiement échoué", "mail/orderFailed"),
+    SENT("Commande envoyée", "mail/orderSent");
 
     private String mailSubject;
     private String mailTemplate;
