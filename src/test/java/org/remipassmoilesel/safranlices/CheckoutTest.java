@@ -113,6 +113,14 @@ public class CheckoutTest {
         Double total = (Double) response.getModelAndView().getModel().get("total");
         assertEquals(total.doubleValue(),
                 p1qtty * p1price + p2qtty * p2price + ex1price + ex2price, 0);
+
+        // try to set payment confirmed when basket is empty
+        mockMvc.perform(get(Mappings.CHECKOUT_CONFIRMED))
+                .andExpect(status().is3xxRedirection());
+        mockMvc.perform(get(Mappings.CHECKOUT_FAILED))
+                .andExpect(status().is3xxRedirection());
+
+
     }
 
 }

@@ -1,5 +1,6 @@
 package org.remipassmoilesel.safranlices.controllers;
 
+import org.remipassmoilesel.safranlices.SafranLicesApplication;
 import org.remipassmoilesel.safranlices.forms.CheckoutForm;
 import org.remipassmoilesel.safranlices.Mappings;
 import org.remipassmoilesel.safranlices.Templates;
@@ -13,9 +14,7 @@ import org.remipassmoilesel.safranlices.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,13 +22,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 /**
@@ -38,7 +36,10 @@ import java.util.*;
 @Controller
 public class MainController {
 
+    public static final String PAYMENT_TOKEN_SATTR = "paymentToken";
     public static final String BASKET_SATTR = "basket";
+    public static final String ORDER_SATTR = "order";
+
     private static final Logger logger = LoggerFactory.getLogger(MainController.class);
 
     @Autowired
@@ -52,6 +53,9 @@ public class MainController {
 
     @Autowired
     private Mailer mailer;
+
+    @Autowired
+    private Environment env;
 
     @RequestMapping(Mappings.TEMPLATE)
     public String showTemplate(Model model) {
@@ -205,7 +209,7 @@ public class MainController {
             @Valid CheckoutForm checkoutForm,
             BindingResult results,
             HttpSession session,
-            Model model) {
+            Model model) throws NoSuchAlgorithmException {
 
         HashMap<Long, Integer> basket = checkOrCreateBasket(session);
 
@@ -222,7 +226,7 @@ public class MainController {
             model.addAttribute("errors", results.getAllErrors());
 
             Mappings.includeMappings(model);
-            return Templates.CHECKOUT_RESULT;
+            return Templates.CHECKOUT_REDIRECT;
         }
 
         // save order
@@ -248,15 +252,10 @@ public class MainController {
                 checkoutForm.getEmail());
 
         order.setTotal(Utils.computeTotalForBasket(products, basket));
-
         orderRepository.save(order);
 
-        // reset basket
-        resetBasket(session);
-
-        Double total = Utils.computeTotalForBasket(productRepository.findAll(false), basket);
-        model.addAttribute("total", total);
-        model.addAttribute("paymentType", paymentType.toString());
+        // include order in session
+        session.setAttribute("order", order);
 
         // send notification
         try {
@@ -265,11 +264,82 @@ public class MainController {
             logger.error("Unable to send mail notification", e);
         }
 
-        Mappings.includeMappings(model);
-        return Templates.CHECKOUT_RESULT;
+        // payment is differed
+        if(PaymentType.BANK_CHECK == order.getPaymentType()){
+            model.addAttribute("order", order);
+            Mappings.includeMappings(model);
+            return Templates.CHECKOUT_END;
+        }
+
+        // payment must be confirmed
+        else {
+
+            // create a token
+            String token = String.valueOf(MessageDigest.getInstance("md5").digest(String.valueOf(System.currentTimeMillis()).getBytes()));
+            session.setAttribute("paymentToken", token);
+
+            // dev vars
+            model.addAttribute("devmode", Arrays.asList(env.getActiveProfiles()).contains(SafranLicesApplication.DEV_PROFILE));
+            model.addAttribute("checkoutConfirmedLink", Mappings.CHECKOUT_CONFIRMED + "?token=" + token);
+            model.addAttribute("checkoutFailedLink", Mappings.CHECKOUT_FAILED);
+
+            Mappings.includeMappings(model);
+            return Templates.CHECKOUT_REDIRECT;
+        }
+
     }
 
-    @RequestMapping("/send-admin-mail-example")
+    @RequestMapping(value = Mappings.CHECKOUT_CONFIRMED, method = RequestMethod.GET)
+    public String checkoutConfirmed(Model model, HttpSession session,
+                                  @RequestParam(name = "token", required = true) String token){
+
+        CommercialOrder order = (CommercialOrder) session.getAttribute(ORDER_SATTR);
+
+        // check if basket is not empty
+        if (order == null) {
+            return "redirect:" + Mappings.BASKET;
+        }
+
+        // reset basket
+        resetBasket(session);
+
+        // test session token
+        String stoken = (String) session.getAttribute(PAYMENT_TOKEN_SATTR);
+        if(token == null || stoken == null || token.equals(stoken) == false){
+            Error err = new Error("Invalid token: " + token + " / stoken: " + stoken);
+            logger.error("Invalid token: " + token + " / stoken: " + stoken, err);
+            throw err;
+        }
+
+        model.addAttribute("order", order);
+        model.addAttribute("status", "confirmed");
+
+        Mappings.includeMappings(model);
+        return Templates.CHECKOUT_END;
+    }
+
+    @RequestMapping(value = Mappings.CHECKOUT_FAILED, method = RequestMethod.GET)
+    public String checkoutFailed(HttpSession session, Model model) {
+
+        CommercialOrder order = (CommercialOrder) session.getAttribute(ORDER_SATTR);
+
+        // check if basket is not empty
+        if (order == null) {
+            return "redirect:" + Mappings.BASKET;
+        }
+
+        // reset basket
+        resetBasket(session);
+
+        model.addAttribute("order", order);
+        model.addAttribute("status", "failed");
+
+        Mappings.includeMappings(model);
+        return Templates.CHECKOUT_END;
+
+    }
+
+        @RequestMapping("/send-admin-mail-example")
     @ResponseBody
     public void sendAdminMail() throws MessagingException {
         List<Product> products = productRepository.findAll(false);

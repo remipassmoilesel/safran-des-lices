@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorator="mainDecorator">
+<head>
+    <title>Fin de la commande</title>
+
+    <style>
+
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <section id="courses" class="section-padding">
+
+        <div class="container" th:if="${order.getPaymentType().toString()} eq 'BANK_CHECK'">
+            <div class="row">
+                <div class="header-section text-center">
+                    <h2>Commande réussie</h2>
+                    <p>Votre commande a bien été prise en compte. Elle sera envoyée dès réception de
+                        votre paiement à l'adresse: </p>
+                    <p>
+                        Safran des lices<br/>
+                        3 rue des oiseaux<br/>
+                        34000 Murviel-Lès-Montpellier
+                    </p>
+                    <hr class="bottom-line"/>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="container" th:if="${order.getPaymentType().toString()} ne 'BANK_CHECK'">
+            <div class="row" th:if="${status} eq 'confirmed'">
+                <div class="header-section text-center">
+                    <h2>Commande réussie</h2>
+                    <p>Votre commande a bien été prise en compte. Elle sera envoyée très bientôt.</p>
+                    <p>Pensez à vérifier vos mails, y compris le dossier "spam".</p>
+                    <br/>
+                    <p>Bonne journée !</p>
+                    <hr class="bottom-line"/>
+                </div>
+            </div>
+
+            <div class="row" th:if="${status} eq 'failed'">
+                <div class="header-section text-center">
+                    <h2>Echec du paiement</h2>
+                    <p>Le paiement en ligne a échoué.</p>
+                    <p>En cas de problème n'hésitez pas à nous contacter par mail à l'adresse
+                        suivante: <a href="changeme@mail.com">changeme@mail.com</a></p>
+                    <br/>
+                    <hr class="bottom-line"/>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+</div>
+</body>
+</html>

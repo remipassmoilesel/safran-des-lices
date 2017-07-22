@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorator="mainDecorator">
+<head>
+    <title>Payer mon panier</title>
+
+    <style>
+
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <section id="courses" class="section-padding">
+
+        <div class="container">
+            <div class="row">
+                <div class="header-section text-center">
+                    <h2>Redirection</h2>
+                    <p>Vous allez être redirigé vers le site de paiment en ligne. Veuillez patienter...</p>
+                    <hr class="bottom-line"/>
+
+                    <div th:if="${devmode eq true}">
+                        <br/>
+                        <br/>
+                        <p>Ces liens n'apparaissent que sur la version d'essai du site.</p>
+                        <p><a th:href="${checkoutConfirmedLink}">Simuler un paiement accepté</a></p>
+                        <p><a th:href="${checkoutFailedLink}">Simuler un paiement refusé</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+</div>
+</body>
+</html>

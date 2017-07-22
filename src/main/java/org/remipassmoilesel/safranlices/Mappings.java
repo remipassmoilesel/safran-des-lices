@@ -22,6 +22,8 @@ public class Mappings {
     public static final String ORDER = ROOT + "commander";
     public static final String BASKET = ROOT + "mon-panier";
     public static final String CHECKOUT = ROOT + "paiement-securise";
+    public static final String CHECKOUT_CONFIRMED = "paiement-confirme";
+    public static final String CHECKOUT_FAILED = "paiement-echoue";
     public static final String TEMPLATE = ROOT + "template";
     public static final String LEGAL_MENTIONS = ROOT + "mentions-legales";
     public static final String ERROR = ROOT + "error";
@@ -30,6 +32,7 @@ public class Mappings {
     public static final String ADMIN_LOGIN = ADMIN_PAGE + "/login";
     public static final String ADMIN_LOGOUT = ADMIN_PAGE + "/logout";
     public static final String ADMIN_MODIFICATION = ADMIN_PAGE + "/modification";
+
 
 
     public static MappingMap getMap() {
