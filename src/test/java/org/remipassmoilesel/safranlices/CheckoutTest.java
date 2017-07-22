@@ -1,6 +1,7 @@
 package org.remipassmoilesel.safranlices;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.remipassmoilesel.safranlices.controllers.MainController;
@@ -55,7 +56,7 @@ public class CheckoutTest {
     }
 
     @Test
-    public void testBasketTotal() throws Exception {
+    public void testCheckout() throws Exception {
 
         // create fake products
         Integer p1qtty = 5;
@@ -114,6 +115,11 @@ public class CheckoutTest {
         assertEquals(total.doubleValue(),
                 p1qtty * p1price + p2qtty * p2price + ex1price + ex2price, 0);
 
+    }
+
+    @Test
+    @Ignore
+    public void testRedirection() throws Exception {
         // try to set payment confirmed when basket is empty
         mockMvc.perform(get(Mappings.CHECKOUT_CONFIRMED))
                 .andExpect(status().is3xxRedirection());
