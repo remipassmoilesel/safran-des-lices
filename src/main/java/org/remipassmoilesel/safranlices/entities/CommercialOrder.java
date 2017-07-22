@@ -43,10 +43,12 @@ public class CommercialOrder {
 
     private boolean processed;
 
+    private String email;
+
     public CommercialOrder() {
     }
 
-    public CommercialOrder(Date date, List<Product> products, HashMap<Long, Integer> quantities, String address, String phonenumber, String firstName, String lastName, PaymentType paymentType, String comment) {
+    public CommercialOrder(Date date, List<Product> products, HashMap<Long, Integer> quantities, String address, String phonenumber, String firstName, String lastName, PaymentType paymentType, String comment, String email) {
         this.date = date;
         this.products = products;
         this.quantities = quantities;
@@ -56,6 +58,7 @@ public class CommercialOrder {
         this.lastName = lastName;
         this.paymentType = paymentType;
         this.comment = comment;
+        this.email = email;
     }
 
     public HashMap<Long, Integer> getQuantities() {
@@ -162,6 +165,14 @@ public class CommercialOrder {
         this.processed = processed;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -179,12 +190,13 @@ public class CommercialOrder {
                 Objects.equals(lastName, that.lastName) &&
                 paymentType == that.paymentType &&
                 Objects.equals(total, that.total) &&
-                Objects.equals(comment, that.comment);
+                Objects.equals(comment, that.comment) &&
+                Objects.equals(email, that.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, date, products, quantities, address, phonenumber, firstName, lastName, paymentType, total, comment, paid, processed);
+        return Objects.hash(id, date, products, quantities, address, phonenumber, firstName, lastName, paymentType, total, comment, paid, processed, email);
     }
 
     @Override
@@ -199,7 +211,11 @@ public class CommercialOrder {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", paymentType=" + paymentType +
+                ", total=" + total +
                 ", comment='" + comment + '\'' +
+                ", paid=" + paid +
+                ", processed=" + processed +
+                ", email='" + email + '\'' +
                 '}';
     }
 }
