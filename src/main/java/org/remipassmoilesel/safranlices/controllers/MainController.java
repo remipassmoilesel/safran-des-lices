@@ -80,6 +80,12 @@ public class MainController {
         return Templates.EXPLOITATION;
     }
 
+    @RequestMapping(value = Mappings.LEGAL_MENTIONS)
+    public String showLegalMentions(Model model){
+        Mappings.includeMappings(model);
+        return Templates.LEGAL_MENTIONS;
+    }
+
     @RequestMapping(Mappings.ORDER)
     public String showOrder(Model model) {
 

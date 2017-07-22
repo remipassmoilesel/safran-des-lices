@@ -23,4 +23,5 @@ public class Templates {
     public static final String ADMIN_LOGIN = PAGES_DIR + "adminLogin";
 
 
+    public static final String LEGAL_MENTIONS = PAGES_DIR + "legalMentions";
 }

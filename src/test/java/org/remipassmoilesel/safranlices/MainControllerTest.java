@@ -58,6 +58,10 @@ public class MainControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists(Mappings.MODEL_ARGUMENT_NAME));
 
+        mockMvc.perform(get(Mappings.LEGAL_MENTIONS))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists(Mappings.MODEL_ARGUMENT_NAME));
+
     }
 
     @Test

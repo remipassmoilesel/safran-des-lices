@@ -23,6 +23,7 @@ public class Mappings {
     public static final String BASKET = ROOT + "mon-panier";
     public static final String CHECKOUT = ROOT + "paiement-securise";
     public static final String TEMPLATE = ROOT + "template";
+    public static final String LEGAL_MENTIONS = ROOT + "mentions-legales";
 
     public static final String ADMIN_PAGE = ROOT + "admin";
     public static final String ADMIN_LOGIN = ADMIN_PAGE + "/login";

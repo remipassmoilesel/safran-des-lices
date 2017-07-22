@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorator="mainDecorator">
+<head>
+    <title>Mentions légales</title>
+
+    <style type="text/css">
+        .credits{
+            margin: 1em;
+            font-weight: bolder;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <section id="courses" class="section-padding">
+        <div class="container">
+
+            <div class="row">
+                <div class="header-section text-center">
+                    <h2>Mentions légales</h2>
+                    <hr class="bottom-line"/>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="credits">
+                    Administration et conception du site: Rémi Pace - <a href="https://remi-pace.fr">https://remi-pace.fr</a>
+                </div>
+            </div>
+
+            <div class="col-md-10 col-md-offset-1">
+                <ul>
+                    <li>Thème original créé par <a href="https://bootstrapmade.com/">Free Bootstrap Themes</a></li>
+                    <li>Hébergeur: OVH</li>
+                    <li>Téléphone: 0 820 32 03 63</li>
+                    <li>Siège social : 2 rue Kellermann - 59100 Roubaix - France.</li>
+
+                    <li>Conformément aux articles 39 et suivants de la loi n° 78-17 du 6 janvier 1978
+                        modifiée en 2004 relatives à l’informatique, aux fichiers et aux libertés,
+                        toute personne peut obtenir communication et, le cas échéant, rectification
+                        ou suppression des informations la concernant en s'adressant
+                        au responsable de ce site.</li>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+</div>
+</body>
+</html>
