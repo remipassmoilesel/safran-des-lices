@@ -1,7 +1,9 @@
 package org.remipassmoilesel.safranlices.forms;
 
 import javax.validation.constraints.*;
+import javax.validation.constraints.Pattern;
 import java.util.Objects;
+import java.util.regex.*;
 
 /**
  * Created by remipassmoilesel on 09/07/17.
@@ -38,10 +40,11 @@ public class CheckoutForm {
     @Size(min = 2)
     private String paymentType;
 
-
     private String comment;
-    private String email;
 
+    @NotNull
+    @Pattern(regexp = "^[A-Za-z0-9._+-]+@[A-Za-z0-9.-]+\\.[a-zA-Z]{2,6}$")
+    private String email;
 
     public CheckoutForm() {
     }

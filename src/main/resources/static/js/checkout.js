@@ -19,6 +19,7 @@ var App = {
         var address = form.find("input[name='address']");
         var phonenumber = form.find("input[name='phonenumber']");
         var paymentType = form.find("input[name='paymentType']");
+        var email = form.find("input[name='email']");
 
         var showErrorMessage = function(message){
           errorArea.css("opacity", "0");
@@ -53,6 +54,10 @@ var App = {
 
         if(!phonenumber.val().trim().match(/^\+?[0-9]{4,}$/)){
             showErrorMessage("Numéro de téléphone invalide");
+            return;
+        }
+        if(!email.val().trim().match(/^[A-Za-z0-9._+-]+@[A-Za-z0-9.-]+\.[a-zA-Z]{2,6}$/)){
+            showErrorMessage("Adresse email invalide");
             return;
         }
 
