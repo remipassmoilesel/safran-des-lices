@@ -53,7 +53,7 @@ public class DevDataFactory {
     }
 
     public static CommercialOrder createOrder(Date date, List<Product> products, HashMap<Long, Integer> quantities, String address, String phonenumber,
-                                              String firstName, String lastName, PaymentType paymentType, String comment) {
+                                              String firstName, String lastName, PaymentType paymentType, String comment, String email) {
 
         if (date == null) {
             date = new Date();
@@ -98,7 +98,11 @@ public class DevDataFactory {
             lastName = Utils.generateLoremIpsum(200);
         }
 
-        return new CommercialOrder(date, products, quantities, address, phonenumber, firstName, lastName, paymentType, comment);
+        if (email == null) {
+            email = "jeanEdouard" + System.currentTimeMillis() + "@mail.com";
+        }
+
+        return new CommercialOrder(date, products, quantities, address, phonenumber, firstName, lastName, paymentType, comment, email);
     }
 
 }

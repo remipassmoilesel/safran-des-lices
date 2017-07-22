@@ -111,7 +111,8 @@ public class DevDataLoader implements ApplicationRunner {
 
             CommercialOrder order = DevDataFactory.createOrder(start.minusDays(i).minusHours(i).toDate(),
                     prds, quantities, null,
-                    null, null, null, null, null);
+                    null, null,
+                    null,null, null, null);
 
             order.setTotal(Utils.computeTotalForBasket(products, quantities));
             order.setProcessed(i % 2 == 0);

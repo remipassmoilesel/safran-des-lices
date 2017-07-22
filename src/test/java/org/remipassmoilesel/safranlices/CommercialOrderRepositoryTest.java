@@ -43,14 +43,14 @@ public class CommercialOrderRepositoryTest {
     @Test
     public void testInsert() throws Exception {
 
-
         // create and save products
         List<Product> products = productRepository.findAll(false);
 
         int nbr = 10;
         for (int i = 0; i < nbr; i++) {
             CommercialOrder order = DevDataFactory.createOrder(null, products, null,
-                    null, null, null, null, null, null);
+                    null, null, null,
+                    null, null, null, null);
             orderRepository.save(order);
         }
 

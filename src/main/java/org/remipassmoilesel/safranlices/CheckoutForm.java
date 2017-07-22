@@ -40,20 +40,22 @@ public class CheckoutForm {
 
 
     private String comment;
+    private String email;
 
 
     public CheckoutForm() {
     }
 
-    public CheckoutForm(String firstname, String lastname, String postalcode, String city, String address, String phonnumber, String paymentType, String comment) {
+    public CheckoutForm(String firstname, String lastname, String postalcode, String city, String address, String phonenumber, String paymentType, String comment, String email) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.postalcode = postalcode;
         this.city = city;
         this.address = address;
-        this.phonenumber = phonnumber;
+        this.phonenumber = phonenumber;
         this.paymentType = paymentType;
         this.comment = comment;
+        this.email = email;
     }
 
     public String getFirstname() {
@@ -120,24 +122,12 @@ public class CheckoutForm {
         this.comment = comment;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        CheckoutForm that = (CheckoutForm) o;
-        return Objects.equals(firstname, that.firstname) &&
-                Objects.equals(lastname, that.lastname) &&
-                Objects.equals(postalcode, that.postalcode) &&
-                Objects.equals(city, that.city) &&
-                Objects.equals(address, that.address) &&
-                Objects.equals(phonenumber, that.phonenumber) &&
-                Objects.equals(paymentType, that.paymentType) &&
-                Objects.equals(comment, that.comment);
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(firstname, lastname, postalcode, city, address, phonenumber, paymentType, comment);
+    public String getEmail() {
+        return email;
     }
 
     @Override
@@ -151,6 +141,29 @@ public class CheckoutForm {
                 ", phonenumber='" + phonenumber + '\'' +
                 ", paymentType='" + paymentType + '\'' +
                 ", comment='" + comment + '\'' +
+                ", email='" + email + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CheckoutForm that = (CheckoutForm) o;
+        return Objects.equals(firstname, that.firstname) &&
+                Objects.equals(lastname, that.lastname) &&
+                Objects.equals(postalcode, that.postalcode) &&
+                Objects.equals(city, that.city) &&
+                Objects.equals(address, that.address) &&
+                Objects.equals(phonenumber, that.phonenumber) &&
+                Objects.equals(paymentType, that.paymentType) &&
+                Objects.equals(comment, that.comment) &&
+                Objects.equals(email, that.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstname, lastname, postalcode, city, address, phonenumber, paymentType, comment, email);
+    }
+
 }
