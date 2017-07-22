@@ -8,6 +8,7 @@ import org.remipassmoilesel.safranlices.repositories.ExpenseRepository;
 import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
 import org.remipassmoilesel.safranlices.utils.DevDataFactory;
+import org.remipassmoilesel.safranlices.utils.Mailer;
 import org.remipassmoilesel.safranlices.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,16 +51,7 @@ public class MainController {
     private ExpenseRepository expenseRepository;
 
     @Autowired
-    private JavaMailSender javaMailSender;
-
-    @Autowired
-    private TemplateEngine templateEngine;
-
-    @Value("${app.mail.from}")
-    private String mailFrom;
-
-    @Value("${app.mail.to}")
-    private String mailTo;
+    private Mailer mailer;
 
     @RequestMapping(Mappings.TEMPLATE)
     public String showTemplate(Model model) {
@@ -268,7 +260,7 @@ public class MainController {
 
         // send notification
         try {
-            sendAdminNotification(order);
+            mailer.sendAdminNotification(order);
         } catch (Exception e) {
             logger.error("Unable to send mail notification", e);
         }
@@ -281,7 +273,7 @@ public class MainController {
     @ResponseBody
     public void sendAdminMail() throws MessagingException {
         List<Product> products = productRepository.findAll(false);
-        sendAdminNotification(DevDataFactory.createOrder(null, products, null, null, null, null, null, null, null, null));
+        mailer.sendAdminNotification(DevDataFactory.createOrder(null, products, null, null, null, null, null, null, null, null));
     }
 
     @RequestMapping("/show-admin-mail-example")
@@ -296,67 +288,6 @@ public class MainController {
         model.addAttribute("productsWithQuantities", productsWithQuantities);
 
         return "mail/admin";
-    }
-
-    public String getTemplatedMailAsString(String templateName, HashMap<String, Object> vars) {
-        final Context ctx = new Context();
-
-        Iterator<String> it = vars.keySet().iterator();
-        while (it.hasNext()) {
-            String k = it.next();
-            Object v = vars.get(k);
-            ctx.setVariable(k, v);
-        }
-
-        return this.templateEngine.process(templateName, ctx);
-    }
-
-    public void sendAdminNotification(CommercialOrder order) throws MessagingException {
-
-        // get admin receivers
-        List<String> adminDests = Arrays.asList(mailTo.split(","));
-
-        // create message
-        MimeMessage adminMessage = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(adminMessage, false, "utf-8");
-
-        // set from, to, subject
-        adminMessage.setFrom(mailFrom);
-        helper.setTo(adminDests.toArray(new String[adminDests.size()]));
-        adminMessage.setSubject("Safran des Lices - Nouvelle commande");
-
-        // set body
-        List<Product> products = productRepository.findAll(false);
-        HashMap<Product, Integer> productsWithQuantities = Utils.mapProductWithQuantities(products, order);
-        HashMap<String, Object> vars = new HashMap<>();
-        vars.put("order", order);
-        vars.put("productsWithQuantities", productsWithQuantities);
-        adminMessage.setContent(getTemplatedMailAsString("mail/admin", vars), "text/html");
-
-        // send message
-        javaMailSender.send(adminMessage);
-
-    }
-
-    public void sendClientNotification(OrderNotificationType step, CommercialOrder order) throws MessagingException {
-
-        // create message
-        MimeMessage clientMessage = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(clientMessage, false, "utf-8");
-
-        // set from, to, subject
-        clientMessage.setFrom(mailFrom);
-        helper.setTo(order.getEmail());
-        clientMessage.setSubject("Safran des Lices - " + step.getMailSubject());
-
-        // set body
-        HashMap<String, Object> vars = new HashMap<>();
-        vars.put("order", order);
-        clientMessage.setContent(getTemplatedMailAsString(step.getMailTemplate(), vars), "text/html");
-
-        // send message
-        javaMailSender.send(clientMessage);
-
     }
 
     private void resetBasket(HttpSession session) {
