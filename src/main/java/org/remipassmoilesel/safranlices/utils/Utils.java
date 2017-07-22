@@ -1,6 +1,10 @@
 package org.remipassmoilesel.safranlices.utils;
 
+import org.remipassmoilesel.safranlices.SecurityConfig;
+import org.remipassmoilesel.safranlices.entities.CommercialOrder;
 import org.remipassmoilesel.safranlices.entities.Product;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 
 import javax.xml.transform.OutputKeys;
@@ -24,6 +28,7 @@ import java.util.Random;
  */
 public class Utils {
 
+    private static final Logger logger = LoggerFactory.getLogger(Utils.class);
     private static Random rand = new Random();
 
     /**
@@ -94,7 +99,7 @@ public class Utils {
         writer.close();
     }
 
-    public static Double computeTotalForBasket( List<Product> products, HashMap<Long, Integer> basket) {
+    public static Double computeTotalForBasket(List<Product> products, HashMap<Long, Integer> basket) {
 
         Double total = 0d;
         Iterator<Long> keys = basket.keySet().iterator();
@@ -108,6 +113,25 @@ public class Utils {
         }
 
         return total;
+    }
+
+    public static HashMap<Product, Integer> mapProductWithQuantities(List<Product> allProducts, CommercialOrder order) {
+        HashMap<Long, Integer> basket = order.getQuantities();
+        return mapProductWithQuantities(allProducts, basket);
+    }
+
+    public static HashMap<Product, Integer> mapProductWithQuantities(List<Product> allProducts, HashMap<Long, Integer> basket) {
+        HashMap<Product, Integer> productsWithQuantities = new HashMap<>();
+        Iterator<Long> keys = basket.keySet().iterator();
+        while (keys.hasNext()) {
+            Long pId = keys.next();
+            Product p = allProducts.stream()
+                    .filter(pf -> pId.equals(pf.getId()))
+                    .findAny().orElse(null);
+
+            productsWithQuantities.put(p, basket.get(pId));
+        }
+        return productsWithQuantities;
     }
 
 }
