@@ -8,7 +8,7 @@ public class Templates {
     public static final String PAGES_DIR = "pages/";
 
     public static final String WELCOME = PAGES_DIR + "welcome";
-    public static final String OUR_SAFRAN = PAGES_DIR + "ourSafran";
+    public static final String OUR_SAFRAN = PAGES_DIR + "safran";
     public static final String EXPLOITATION = PAGES_DIR + "ourExploitation";
     public static final String ORDER = PAGES_DIR + "order";
     public static final String BASKET = PAGES_DIR + "basket";
