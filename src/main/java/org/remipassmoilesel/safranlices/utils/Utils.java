@@ -1,6 +1,5 @@
 package org.remipassmoilesel.safranlices.utils;
 
-import org.remipassmoilesel.safranlices.SecurityConfig;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
 import org.remipassmoilesel.safranlices.entities.Product;
 import org.slf4j.Logger;

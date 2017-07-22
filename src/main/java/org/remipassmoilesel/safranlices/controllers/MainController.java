@@ -1,6 +1,6 @@
 package org.remipassmoilesel.safranlices.controllers;
 
-import org.remipassmoilesel.safranlices.CheckoutForm;
+import org.remipassmoilesel.safranlices.forms.CheckoutForm;
 import org.remipassmoilesel.safranlices.Mappings;
 import org.remipassmoilesel.safranlices.Templates;
 import org.remipassmoilesel.safranlices.entities.*;

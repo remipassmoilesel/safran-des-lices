@@ -1,4 +1,4 @@
-package org.remipassmoilesel.safranlices;
+package org.remipassmoilesel.safranlices.forms;
 
 import javax.validation.constraints.*;
 import java.util.Objects;

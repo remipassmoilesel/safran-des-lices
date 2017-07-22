@@ -1,5 +1,6 @@
-package org.remipassmoilesel.safranlices;
+package org.remipassmoilesel.safranlices.config;
 
+import org.remipassmoilesel.safranlices.Mappings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
