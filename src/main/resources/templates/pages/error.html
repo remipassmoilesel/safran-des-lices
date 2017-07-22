@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorator="mainDecorator">
+<head>
+    <title>Erreur</title>
+
+    <style type="text/css">
+
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <section id="courses" class="section-padding">
+        <div class="container">
+
+            <div class="row">
+                <div class="header-section text-center">
+                    <h2>Une erreur est survenue</h2>
+                    <hr class="bottom-line"/>
+                </div>
+            </div>
+
+            <div class="row">
+                <div style="text-align: center">
+                    Veuillez nous en excuser. Vous pouvez revenir à l'accueil du site ci-dessous.
+                    <br/><br/><br/>
+                    <a class="btn btn-default" th:href="@{${mappings.get('ROOT')}}">
+                        Revenir à l'accueil du site</a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+</div>
+</body>
+</html>

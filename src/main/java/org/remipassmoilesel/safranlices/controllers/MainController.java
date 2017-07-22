@@ -23,7 +23,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -81,7 +80,7 @@ public class MainController {
     }
 
     @RequestMapping(value = Mappings.LEGAL_MENTIONS)
-    public String showLegalMentions(Model model){
+    public String showLegalMentions(Model model) {
         Mappings.includeMappings(model);
         return Templates.LEGAL_MENTIONS;
     }
@@ -298,7 +297,7 @@ public class MainController {
         javaMailSender.send(adminMessage);
 
         // send client notification
-        if(additionalRecipient != null){
+        if (additionalRecipient != null) {
             SimpleMailMessage clientMessage = new SimpleMailMessage();
             clientMessage.setFrom(mailFrom);
             clientMessage.setTo(additionalRecipient);

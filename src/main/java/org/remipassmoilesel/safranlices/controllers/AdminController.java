@@ -70,7 +70,7 @@ public class AdminController {
         model.addAttribute("expenses", expenseRepository.findAll());
 
         Mappings.includeMappings(model);
-        return Templates.ADMIN_TEMPLATE;
+        return Templates.ADMIN;
     }
 
     @RequestMapping(Mappings.ADMIN_MODIFICATION)

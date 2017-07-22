@@ -7,6 +7,8 @@ public class Templates {
 
     public static final String PAGES_DIR = "pages/";
 
+    public static final String MAIN_TEMPLATE = "mainDecorator";
+
     public static final String WELCOME = PAGES_DIR + "welcome";
     public static final String OUR_SAFRAN = PAGES_DIR + "safran";
     public static final String EXPLOITATION = PAGES_DIR + "ourExploitation";
@@ -14,14 +16,11 @@ public class Templates {
     public static final String BASKET = PAGES_DIR + "basket";
     public static final String CHECKOUT_FORM = PAGES_DIR + "checkoutForm";
     public static final String CHECKOUT_RESULT = PAGES_DIR + "checkoutResult";
-    public static final String ADMIN_TEMPLATE = PAGES_DIR + "admin";
+    public static final String LEGAL_MENTIONS = PAGES_DIR + "legalMentions";
+    public static final String ERROR = PAGES_DIR + "error";
 
-    public static final String MAIN_TEMPLATE = "mainDecorator";
-
-    public static final String EXAMPLE_CONTENT = PAGES_DIR + "contentExample";
     public static final String ADMIN = PAGES_DIR + "admin";
     public static final String ADMIN_LOGIN = PAGES_DIR + "adminLogin";
+    public static final String EXAMPLE_CONTENT = PAGES_DIR + "contentExample";
 
-
-    public static final String LEGAL_MENTIONS = PAGES_DIR + "legalMentions";
 }
