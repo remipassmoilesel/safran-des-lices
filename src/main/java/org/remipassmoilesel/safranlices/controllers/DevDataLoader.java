@@ -50,7 +50,7 @@ public class DevDataLoader implements ApplicationRunner {
 
         logger.warn("Database name: " + dbName);
 
-        if (Arrays.asList(env.getActiveProfiles()).contains(SafranLicesApplication.DEV_PROFILE) == false) {
+        if (Utils.isDevProfileEnabled(env) == false) {
             return;
         }
 

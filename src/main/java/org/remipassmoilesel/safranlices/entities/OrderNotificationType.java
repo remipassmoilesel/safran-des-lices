@@ -7,7 +7,7 @@ public enum OrderNotificationType {
 
     PAYMENT_CONFIRMED("Commande confirmée", "mail/orderConfirmed"),
     PAYMENT_FAILED("Paiement échoué", "mail/orderFailed"),
-    SENT("Commande envoyée", "mail/orderSent");
+    ORDER_SENT("Commande envoyée", "mail/orderSent");
 
     private String mailSubject;
     private String mailTemplate;

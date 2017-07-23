@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
@@ -283,7 +284,7 @@ public class MainController {
         else {
 
             // create a token
-            String token = String.valueOf(MessageDigest.getInstance("md5").digest(String.valueOf(System.currentTimeMillis()).getBytes()));
+            String token = (new HexBinaryAdapter()).marshal(MessageDigest.getInstance("md5").digest(String.valueOf(System.currentTimeMillis()).getBytes()));
             session.setAttribute("paymentToken", token);
 
             // dev vars
@@ -339,7 +340,7 @@ public class MainController {
 
     @RequestMapping(value = Mappings.CHECKOUT_FAILED, method = RequestMethod.GET)
     public String checkoutFailed(HttpSession session, Model model) {
-        
+
         CommercialOrder order = (CommercialOrder) session.getAttribute(ORDER_SATTR);
 
         // check if basket is not empty

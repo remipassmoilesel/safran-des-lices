@@ -1,9 +1,11 @@
 package org.remipassmoilesel.safranlices.utils;
 
+import org.remipassmoilesel.safranlices.SafranLicesApplication;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
 import org.remipassmoilesel.safranlices.entities.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.env.Environment;
 import org.w3c.dom.Node;
 
 import javax.xml.transform.OutputKeys;
@@ -17,10 +19,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by remipassmoilesel on 12/06/17.
@@ -133,4 +132,7 @@ public class Utils {
         return productsWithQuantities;
     }
 
+    public static boolean isDevProfileEnabled(Environment env) {
+        return Arrays.asList(env.getActiveProfiles()).contains(SafranLicesApplication.DEV_PROFILE);
+    }
 }

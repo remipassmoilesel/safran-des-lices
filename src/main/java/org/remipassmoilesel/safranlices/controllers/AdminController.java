@@ -10,7 +10,6 @@ import org.remipassmoilesel.safranlices.repositories.ExpenseRepository;
 import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
 import org.remipassmoilesel.safranlices.utils.Mailer;
-import org.remipassmoilesel.safranlices.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,7 +128,7 @@ public class AdminController {
         if (action.equals("notify")) {
 
             CommercialOrder order = orderRepository.getOne(id);
-            mailer.sendClientNotification(OrderNotificationType.SENT, order);
+            mailer.sendClientNotification(OrderNotificationType.ORDER_SENT, order);
 
             order.setLastShipmentNotification(new Date());
             orderRepository.save(order);
