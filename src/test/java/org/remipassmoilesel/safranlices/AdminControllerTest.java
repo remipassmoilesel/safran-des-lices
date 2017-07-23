@@ -159,38 +159,4 @@ public class AdminControllerTest {
 
     }
 
-    @Test
-    @Ignore
-    public void testDependencies() throws Exception {
-
-        List<String> dependencies = Arrays.asList(
-                "bower_components/imagehover.css/css/imagehover.min.css",
-                "bower_components/font-awesome/css/font-awesome.min.css",
-                "bower_components/lightbox2/dist/css/lightbox.min.css",
-                "bower_components/bootstrap/dist/css/bootstrap.min.css",
-                "bower_components/jquery/dist/jquery.js",
-                "bower_components/lightbox2/dist/js/lightbox.js",
-                "bower_components/jquery/dist/jquery.min.js",
-                "bower_components/jquery-easing/jquery.easing.min.js",
-                "bower_components/bootstrap/dist/css/bootstrap.min.css",
-                "bower_components/font-awesome/css/font-awesome.min.css",
-                "bower_components/imagehover.css/css/imagehover.min.css",
-                "bower_components/lightbox2/dist/css/lightbox.min.css",
-                "bower_components/jquery/dist/jquery.js",
-                "bower_components/lightbox2/dist/js/lightbox.js",
-                "bower_components/jquery/dist/jquery.min.js",
-                "bower_components/jquery-easing/jquery.easing.min.js",
-                "bower_components/bootstrap/dist/js/bootstrap.min.js",
-                "bower_components/jquery/dist/jquery.min.js",
-                "bower_components/jquery-easing/jquery.easing.min.js",
-                "bower_components/bootstrap/dist/js/bootstrap.min.js",
-                "bower_components/leaflet/dist/leaflet.css",
-                "bower_components/leaflet/dist/leaflet.js");
-
-        // test if ressources are available
-        for(String s : dependencies){
-            mockMvc.perform(get(s)).andExpect(status().isOk());
-        }
-    }
-
 }
