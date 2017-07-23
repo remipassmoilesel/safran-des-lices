@@ -96,7 +96,25 @@
                     &nbsp;
 
                 </div>
+                <div>
+
+                    <div>
+                        <span class="orderLabel">Dernière notification d'envoi:</span>
+                        <span th:text="${order.getLastShipmentNotification() != null ? #dates.format(order.getLastShipmentNotification(), 'dd/MM/yyyy HH:mm') : 'Aucune notification envoyée'}">
+                            24/21/2015
+                        </span>
+                    </div>
+
+                </div>
                 <div class="text-right orderButtons">
+
+                    <a th:href="@{${mappings.get('ADMIN_MODIFICATION')}(action='notify', value='true', id=${order.getId()})}"
+                       class="btn btn-default" role="button">
+                       Envoyer une notification d'envoi</a>
+
+                    &nbsp;
+                    &nbsp;
+
                     <a th:href="@{${mappings.get('ADMIN_MODIFICATION')}(action='paid', value='false', id=${order.getId()})}"
                        th:if="${order.isPaid() == true}"
                        class="btn btn-default" role="button">

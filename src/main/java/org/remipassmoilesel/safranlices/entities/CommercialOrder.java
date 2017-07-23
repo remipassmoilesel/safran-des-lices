@@ -45,6 +45,8 @@ public class CommercialOrder {
 
     private String email;
 
+    private Date lastShipmentNotification;
+
     public CommercialOrder() {
     }
 
@@ -173,6 +175,14 @@ public class CommercialOrder {
         this.email = email;
     }
 
+    public Date getLastShipmentNotification() {
+        return lastShipmentNotification;
+    }
+
+    public void setLastShipmentNotification(Date lastShipmentNotification) {
+        this.lastShipmentNotification = lastShipmentNotification;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -191,12 +201,13 @@ public class CommercialOrder {
                 paymentType == that.paymentType &&
                 Objects.equals(total, that.total) &&
                 Objects.equals(comment, that.comment) &&
-                Objects.equals(email, that.email);
+                Objects.equals(email, that.email) &&
+                Objects.equals(lastShipmentNotification, that.lastShipmentNotification);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, date, products, quantities, address, phonenumber, firstName, lastName, paymentType, total, comment, paid, processed, email);
+        return Objects.hash(id, date, products, quantities, address, phonenumber, firstName, lastName, paymentType, total, comment, paid, processed, email, lastShipmentNotification);
     }
 
     @Override
@@ -216,6 +227,7 @@ public class CommercialOrder {
                 ", paid=" + paid +
                 ", processed=" + processed +
                 ", email='" + email + '\'' +
+                ", lastShipmentNotification=" + lastShipmentNotification +
                 '}';
     }
 }

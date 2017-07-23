@@ -4,10 +4,13 @@ import org.remipassmoilesel.safranlices.Mappings;
 import org.remipassmoilesel.safranlices.Templates;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
 import org.remipassmoilesel.safranlices.entities.Expense;
+import org.remipassmoilesel.safranlices.entities.OrderNotificationType;
 import org.remipassmoilesel.safranlices.entities.Product;
 import org.remipassmoilesel.safranlices.repositories.ExpenseRepository;
 import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
+import org.remipassmoilesel.safranlices.utils.Mailer;
+import org.remipassmoilesel.safranlices.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +21,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by remipassmoilesel on 13/06/17.
@@ -41,6 +42,9 @@ public class AdminController {
 
     @Autowired
     private ExpenseRepository expenseRepository;
+
+    @Autowired
+    private Mailer mailer;
 
     @RequestMapping(Mappings.ADMIN_PAGE)
     public String showTemplate(Model model) {
@@ -81,7 +85,7 @@ public class AdminController {
                          @RequestParam(value = "value", required = false) String value,
                          @RequestParam(value = "price", required = false) Double price,
                          @RequestParam(value = "name", required = false) String name,
-                         @RequestParam(value = "quantity", required = false) Integer quantity) throws IOException {
+                         @RequestParam(value = "quantity", required = false) Integer quantity) throws IOException, MessagingException {
 
         // mark as paid or non paid
         if (action.equals("paid")) {
@@ -117,6 +121,18 @@ public class AdminController {
             e.setName(name);
             e.setValue(Double.valueOf(value));
             expenseRepository.save(e);
+
+            return "redirect:" + Mappings.ADMIN_PAGE;
+        }
+
+        // modify an expense
+        if (action.equals("notify")) {
+
+            CommercialOrder order = orderRepository.getOne(id);
+            mailer.sendClientNotification(OrderNotificationType.SENT, order);
+
+            order.setLastShipmentNotification(new Date());
+            orderRepository.save(order);
 
             return "redirect:" + Mappings.ADMIN_PAGE;
         }
