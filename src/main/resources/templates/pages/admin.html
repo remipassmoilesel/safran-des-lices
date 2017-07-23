@@ -78,19 +78,28 @@
             padding: 0.7em;
         }
 
-        .productErrorArea{
+        .productErrorArea {
             color: #b70000;
             font-weight: bolder;
             padding: 1em;
         }
 
-        .expenseErrorArea{
+        .expenseErrorArea {
             color: #b70000;
             font-weight: bolder;
             padding: 1em;
         }
 
-        h3{
+        .orderWarn {
+            font-weight: bolder;
+            text-align: center;
+            width: 70%;
+            margin: auto;
+            margin-top: 1em;
+            margin-bottom: 1em;
+        }
+
+        h3 {
             margin-top: 3em;
         }
 
@@ -119,7 +128,7 @@
                 return;
             }
 
-            if (price.match(/^[0-9]+(\.[0-9]+)?$/i)  === null) {
+            if (price.match(/^[0-9]+(\.[0-9]+)?$/i) === null) {
                 showError("Prix invalide: " + price + " (produit: " + productId + ")");
                 return;
             }
@@ -149,7 +158,7 @@
                 return;
             }
 
-            if (price.match(/^[0-9]+(\.[0-9]+)?$/i)  === null) {
+            if (price.match(/^[0-9]+(\.[0-9]+)?$/i) === null) {
                 showError("Valeur invalide: " + price + " (frais: " + expenseId + ")");
                 return;
             }
@@ -174,9 +183,9 @@
             </div>
 
             <div>
-                <div class="col-md-offset-1 col-md-10 text-left summary">
-                    <b>Attention: avant d'envoyer une commande vérifiez toujours la bonne
-                        réception du paiement, même si il apparait confirmé ci-dessous.</b>
+                <div class="orderWarn">
+                    Attention: avant d'envoyer une commande vérifiez toujours la bonne
+                    réception du paiement, même si il apparait confirmé ci-dessous.
                 </div>
             </div>
 
@@ -290,7 +299,7 @@
 
             </div>
 
-            <div class="row productRow" th:each="expense : ${expenses}"  th:if="${#lists.size(expenses) gt 0}">
+            <div class="row productRow" th:each="expense : ${expenses}" th:if="${#lists.size(expenses) gt 0}">
                 <form method="get" th:id="${'expenseForm' + expense.getId()}"
                       th:action="@{${mappings.get('ADMIN_MODIFICATION')}}">
 
