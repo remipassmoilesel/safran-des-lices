@@ -118,14 +118,14 @@ public class CheckoutTest {
     }
 
     @Test
-    @Ignore
     public void testRedirection() throws Exception {
+
         // try to set payment confirmed when basket is empty
         mockMvc.perform(get(Mappings.CHECKOUT_CONFIRMED))
                 .andExpect(status().is3xxRedirection());
+
         mockMvc.perform(get(Mappings.CHECKOUT_FAILED))
                 .andExpect(status().is3xxRedirection());
-
 
     }
 

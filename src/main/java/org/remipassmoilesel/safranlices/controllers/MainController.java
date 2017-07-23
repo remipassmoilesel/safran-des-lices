@@ -287,7 +287,7 @@ public class MainController {
             session.setAttribute("paymentToken", token);
 
             // dev vars
-            model.addAttribute("devmode", Arrays.asList(env.getActiveProfiles()).contains(SafranLicesApplication.DEV_PROFILE));
+            model.addAttribute("devmode", Utils.isDevProfileEnabled(env));
             model.addAttribute("checkoutConfirmedLink", Mappings.CHECKOUT_CONFIRMED + "?token=" + token);
             model.addAttribute("checkoutFailedLink", Mappings.CHECKOUT_FAILED);
 
@@ -299,7 +299,11 @@ public class MainController {
 
     @RequestMapping(value = Mappings.CHECKOUT_CONFIRMED, method = RequestMethod.GET)
     public String checkoutConfirmed(Model model, HttpSession session,
-                                    @RequestParam(name = "token", required = true) String token) {
+                                    @RequestParam(name = "token", required = false) String token) {
+
+        if(token == null){
+            return "redirect: " + Mappings.BASKET;
+        }
 
         CommercialOrder order = (CommercialOrder) session.getAttribute(ORDER_SATTR);
 
@@ -335,7 +339,7 @@ public class MainController {
 
     @RequestMapping(value = Mappings.CHECKOUT_FAILED, method = RequestMethod.GET)
     public String checkoutFailed(HttpSession session, Model model) {
-
+        
         CommercialOrder order = (CommercialOrder) session.getAttribute(ORDER_SATTR);
 
         // check if basket is not empty
@@ -359,69 +363,6 @@ public class MainController {
         Mappings.includeMappings(model);
         return Templates.CHECKOUT_END;
 
-    }
-
-    @RequestMapping("/send-admin-mail-example")
-    @ResponseBody
-    public void sendAdminMailExample() throws MessagingException {
-        List<Product> products = productRepository.findAll(false);
-        mailer.sendAdminNotification(DevDataFactory.createOrder(null, products, null, null, null, null, null, null, null, null));
-    }
-
-    @RequestMapping("/send-client-order-confirmed-example")
-    @ResponseBody
-    public void sendClientOrderConfirmedMailExample() throws MessagingException {
-        List<Product> products = productRepository.findAll(false);
-        mailer.sendClientNotification(OrderNotificationType.PAYMENT_CONFIRMED, DevDataFactory.createOrder(null, products, null, null, null, null, null, null, null, null));
-    }
-
-    @RequestMapping("/send-client-order-failed-example")
-    @ResponseBody
-    public void sendClientOrderFailedMailExample() throws MessagingException {
-        List<Product> products = productRepository.findAll(false);
-        mailer.sendClientNotification(OrderNotificationType.PAYMENT_FAILED, DevDataFactory.createOrder(null, products, null, null, null, null, null, null, null, null));
-    }
-
-    @RequestMapping("/show-admin-mail-example")
-    public String showAdminMailExample(Model model) {
-
-        List<Product> products = productRepository.findAll(false);
-
-        CommercialOrder order = DevDataFactory.createOrder(null, products, null, null, null, null, null, null, null, null);
-        model.addAttribute("order", order);
-
-        HashMap<Product, Integer> productsWithQuantities = Utils.mapProductWithQuantities(products, order);
-        model.addAttribute("productsWithQuantities", productsWithQuantities);
-
-        return "mail/admin";
-    }
-
-    @RequestMapping("/show-client-order-confirmed-mail-example")
-    public String showClientOrderConfirmedMailExample(Model model) {
-
-        List<Product> products = productRepository.findAll(false);
-
-        CommercialOrder order = DevDataFactory.createOrder(null, products, null, null, null, null, null, null, null, null);
-        model.addAttribute("order", order);
-
-        HashMap<Product, Integer> productsWithQuantities = Utils.mapProductWithQuantities(products, order);
-        model.addAttribute("productsWithQuantities", productsWithQuantities);
-
-        return "mail/orderConfirmed";
-    }
-
-    @RequestMapping("/show-client-order-failed-mail-example")
-    public String showClientOrderFailedMailExample(Model model) {
-
-        List<Product> products = productRepository.findAll(false);
-
-        CommercialOrder order = DevDataFactory.createOrder(null, products, null, null, null, null, null, null, null, null);
-        model.addAttribute("order", order);
-
-        HashMap<Product, Integer> productsWithQuantities = Utils.mapProductWithQuantities(products, order);
-        model.addAttribute("productsWithQuantities", productsWithQuantities);
-
-        return "mail/orderFailed";
     }
 
     private void resetBasket(HttpSession session) {
