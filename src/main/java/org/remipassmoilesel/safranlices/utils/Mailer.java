@@ -93,8 +93,11 @@ public class Mailer {
         clientMessage.setSubject("Safran des Lices - " + step.getMailSubject());
 
         // set body
+        List<Product> products = productRepository.findAll(false);
+        HashMap<Product, Integer> productsWithQuantities = Utils.mapProductWithQuantities(products, order);
         HashMap<String, Object> vars = new HashMap<>();
         vars.put("order", order);
+        vars.put("productsWithQuantities", productsWithQuantities);
         String template = getTemplatedMailAsString(step.getMailTemplate(), vars);
         clientMessage.setContent(template, "text/html");
 
