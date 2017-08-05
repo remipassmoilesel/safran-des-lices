@@ -1,14 +1,12 @@
 package org.remipassmoilesel.safranlices.controllers;
 
 import org.remipassmoilesel.safranlices.Mappings;
-import org.remipassmoilesel.safranlices.SafranLicesApplication;
 import org.remipassmoilesel.safranlices.Templates;
 import org.remipassmoilesel.safranlices.entities.*;
 import org.remipassmoilesel.safranlices.forms.CheckoutForm;
 import org.remipassmoilesel.safranlices.repositories.ExpenseRepository;
 import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
-import org.remipassmoilesel.safranlices.utils.DevDataFactory;
 import org.remipassmoilesel.safranlices.utils.Mailer;
 import org.remipassmoilesel.safranlices.utils.Utils;
 import org.slf4j.Logger;
@@ -21,9 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
@@ -168,10 +164,7 @@ public class MainController {
         model.addAttribute("expenses", expenses);
 
         // total
-        double total = Utils.computeTotalForBasket(products, basket);
-        for (Expense ex : expenses) {
-            total += ex.getValue();
-        }
+        double total = Utils.computeTotalWithExpenses(products, basket, expenses);
         model.addAttribute("total", total);
 
         Mappings.includeMappings(model);
@@ -191,14 +184,11 @@ public class MainController {
             return "redirect:" + Mappings.BASKET;
         }
 
-        List<Product> products = productRepository.findAll(false);
-        Double total = Utils.computeTotalForBasket(products, basket);
-
         List<Expense> expenses = expenseRepository.findAll();
-        for (Expense ex : expenses) {
-            total += ex.getValue();
-        }
+        List<Product> products = productRepository.findAll(false);
 
+        // total
+        double total = Utils.computeTotalWithExpenses(products, basket, expenses);
         model.addAttribute("total", total);
 
         Mappings.includeMappings(model);
@@ -266,15 +256,21 @@ public class MainController {
         }
 
         // payment is differed
-        if (PaymentType.BANK_CHECK == order.getPaymentType()) {
+        if (PaymentType.BANK_CHECK == order.getPaymentType() || PaymentType.BANK_TRANSFER == order.getPaymentType()) {
             model.addAttribute("order", order);
 
             // send notification to client
             try {
-                mailer.sendClientNotification(OrderNotificationType.PAYMENT_CONFIRMED, order);
+                mailer.sendClientNotification(OrderNotificationType.ORDER_CONFIRMED, order);
             } catch (Exception e) {
                 logger.error("Unable to send mail notification", e);
             }
+
+            // compute total
+            List<Expense> expenses = expenseRepository.findAll();
+            double total = Utils.computeTotalWithExpenses(products, basket, expenses);
+            model.addAttribute("total", total);
+
 
             Mappings.includeMappings(model);
             return Templates.CHECKOUT_END;
@@ -313,6 +309,14 @@ public class MainController {
             return "redirect:" + Mappings.BASKET;
         }
 
+        HashMap<Long, Integer> basket = checkOrCreateBasket(session);
+
+        // compute total
+        List<Expense> expenses = expenseRepository.findAll();
+        List<Product> products = productRepository.findAll(false);
+        double total = Utils.computeTotalWithExpenses(products, basket, expenses);
+        model.addAttribute("total", total);
+
         // reset basket
         resetBasket(session);
 
@@ -326,7 +330,7 @@ public class MainController {
 
         // send notification to client
         try {
-            mailer.sendClientNotification(OrderNotificationType.PAYMENT_CONFIRMED, order);
+            mailer.sendClientNotification(OrderNotificationType.ORDER_CONFIRMED, order);
         } catch (Exception e) {
             logger.error("Unable to send mail notification", e);
         }
@@ -347,6 +351,14 @@ public class MainController {
         if (order == null) {
             return "redirect:" + Mappings.BASKET;
         }
+
+        HashMap<Long, Integer> basket = checkOrCreateBasket(session);
+
+        // compute total
+        List<Expense> expenses = expenseRepository.findAll();
+        List<Product> products = productRepository.findAll(false);
+        double total = Utils.computeTotalWithExpenses(products, basket, expenses);
+        model.addAttribute("total", total);
 
         // reset basket
         resetBasket(session);

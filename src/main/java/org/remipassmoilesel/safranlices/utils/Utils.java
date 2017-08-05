@@ -2,6 +2,7 @@ package org.remipassmoilesel.safranlices.utils;
 
 import org.remipassmoilesel.safranlices.SafranLicesApplication;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
+import org.remipassmoilesel.safranlices.entities.Expense;
 import org.remipassmoilesel.safranlices.entities.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,6 +109,16 @@ public class Utils {
                     .findAny().orElse(null);
 
             total += p.getPrice() * basket.get(pId);
+        }
+
+        return total;
+    }
+
+    public static Double computeTotalWithExpenses(List<Product> products, HashMap<Long, Integer> basket, List<Expense> expenses) {
+        Double total = Utils.computeTotalForBasket(products, basket);
+
+        for (Expense ex : expenses) {
+            total += ex.getValue();
         }
 
         return total;

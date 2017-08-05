@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.mail.MessagingException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -64,7 +63,7 @@ public class DevController {
         }
 
         else if ("client-order-confirmed".equals(type)) {
-            mailer.sendClientNotification(OrderNotificationType.PAYMENT_CONFIRMED, order);
+            mailer.sendClientNotification(OrderNotificationType.ORDER_CONFIRMED, order);
         }
 
         else if ("client-order-failed".equals(type)) {

@@ -18,15 +18,35 @@
             <div class="row">
                 <div class="header-section text-center">
                     <h2>Commande réussie</h2>
-                    <p>Votre commande a bien été prise en compte. Elle sera envoyée dès réception de
-                        votre paiement à l'adresse: </p>
+                    <p>Votre commande a bien été prise en compte. Elle sera envoyée dès réception et encaissement <br/>
+                        de votre chèque bancaire à l'adresse postale suivante: </p>
                     <p>
                         Safran des lices<br/>
                         3 rue des oiseaux<br/>
                         34000 Murviel-Lès-Montpellier
                     </p>
+
+                    <p>A l'ordere de: Safran des Lices</p>
+                    <p>Total à payer: <span th:text="${total}"></span> €</p>
+
                     <hr class="bottom-line"/>
 
+                </div>
+            </div>
+        </div>
+
+        <div class="container" th:if="${order.getPaymentType().toString()} eq 'BANK_TRANSFER'">
+            <div class="row">
+                <div class="header-section text-center">
+                    <h2>Commande réussie</h2>
+                    <p>Votre commande a bien été prise en compte. Elle sera envoyée dès réception de <br/>
+                        votre virement bancaire aux coordonnées suivantes: </p>
+                    <p>
+                        Caisse d'Epargne	FR7611315000011234567890138	11315	00001	12345678901	38
+                    </p>
+                    <p>Total à payer: <span th:text="${total}"></span> €</p>
+
+                    <hr class="bottom-line"/>
                 </div>
             </div>
         </div>

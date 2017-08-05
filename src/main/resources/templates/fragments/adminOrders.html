@@ -66,9 +66,9 @@
                     &nbsp;
                     <!--<span th:text="${order.getPaymentType()}">CREDIT CARD</span>-->
                     <input type="checkbox" name="paymentType" value="CREDIT_CARD" onclick="return false;"
-                           th:checked="${order.getPaymentType() == T(org.remipassmoilesel.safranlices.entities.PaymentType).CREDIT_CARD}"/>
+                           th:checked="${order.getPaymentType() == T(org.remipassmoilesel.safranlices.entities.PaymentType).PAYPAL_OR_CREDIT_CARD}"/>
                     &nbsp;
-                    Carte de crédit
+                    Carte de crédit ou compte Paypal
                     &nbsp;
                     <input type="checkbox" name="paymentType" value="BANK_CHECK" onclick="return false;"
                            th:checked="${order.getPaymentType() == T(org.remipassmoilesel.safranlices.entities.PaymentType).BANK_CHECK}"/>
@@ -76,9 +76,9 @@
                     Chèque de banque
                     &nbsp;
                     <input type="checkbox" name="paymentType" value="PAYPAL" onclick="return false;"
-                           th:checked="${order.getPaymentType() == T(org.remipassmoilesel.safranlices.entities.PaymentType).PAYPAL}"/>
+                           th:checked="${order.getPaymentType() == T(org.remipassmoilesel.safranlices.entities.PaymentType).BANK_TRANSFER}"/>
                     &nbsp;
-                    Paypal
+                    Virement bancaire
                     &nbsp;
                 </div>
                 <div>
