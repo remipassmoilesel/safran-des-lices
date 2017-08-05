@@ -1,10 +1,16 @@
-- hosts: vpsfr
+- hosts: "vpsfr"
 
   tasks:
   - name: "Update set-env file"
     copy:
       src: "../setenv-prod.sh"
       dest: "/opt/tomcat/bin/setenv-safran-lices.sh"
+
+  - name: "Enable and start mysql"
+    systemd:
+      name: "mysql"
+      enabled: "yes"
+      state: "started"
 
   - name: "Update git project"
     git:
@@ -19,6 +25,12 @@
 
   - name: "Deploy application"
     copy:
-      remote_src: yes
+      remote_src: "yes"
       src: "/opt/safran-des-lices/target/safran-des-lices-0.0.1-SNAPSHOT.war"
       dest: "/opt/tomcat/webapps/vh_safranlices/ROOT.war"
+
+  - name: "Enable and restart tomcat"
+    systemd:
+      name: "tomcat"
+      enabled: "yes"
+      state: "restarted"
