@@ -19,5 +19,6 @@
 
   - name: "Deploy application"
     copy:
+      remote_src: yes
       src: "/opt/safran-des-lices/target/safran-des-lices-0.0.1-SNAPSHOT.war"
       dest: "/opt/tomcat/webapps/vh_safranlices/ROOT.war"
