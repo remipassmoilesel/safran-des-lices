@@ -1,23 +1,23 @@
-- hosts: vps
+- hosts: vpsfr
 
   tasks:
   - name: "Update set-env file"
     copy:
-      src: ../setenv-prod.sh
-      dest: /opt/tomcat/bin/setenv-safran-lices.sh
+      src: "../setenv-prod.sh"
+      dest: "/opt/tomcat/bin/setenv-safran-lices.sh"
 
   - name: "Update git project"
     git:
-      repo: https://github.com/remipassmoilesel/safran-des-lices
-      dest: /opt/safran-des-lices
+      repo: "https://github.com/remipassmoilesel/safran-des-lices"
+      dest: "/opt/safran-des-lices"
 
-  - name: "Update dependencies"
+  - name: "Update application dependencies"
     raw: "cd /opt/safran-des-lices/src/main/resources/static && bower --allow-root install"
 
-  - name: "Package app"
+  - name: "Package application"
     raw: "source /opt/tomcat/bin/setenv-safran-lices.sh && cd /opt/safran-des-lices && mvn package"
 
-  - name: "Deploy app"
+  - name: "Deploy application"
     copy:
-      src: "/opt/safran-des-lices/safran-des-lices-0.0.1-SNAPSHOT.war"
+      src: "/opt/safran-des-lices/target/safran-des-lices-0.0.1-SNAPSHOT.war"
       dest: "/opt/tomcat/webapps/vh_safranlices/ROOT.war"

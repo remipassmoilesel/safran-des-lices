@@ -21,6 +21,27 @@
                     <p>Vous allez être redirigé vers le site de paiment en ligne. Veuillez patienter...</p>
                     <hr class="bottom-line"/>
 
+                    <form class="paypalForm" action="https://www.paypal.com/cgi-bin/webscr" method="post" style="visibility: hidden">
+                        <input type="hidden" name="cmd" value="_cart">
+                        <input type="hidden" name="business" value="seller@designerfotos.com">
+                        <input type="hidden" name="item_name" value="hat">
+                        <input type="hidden" name="item_number" value="123">
+                        <input type="hidden" name="amount" value="15.00">
+                        <input type="hidden" name="first_name" value="John">
+                        <input type="hidden" name="last_name" value="Doe">
+                        <input type="hidden" name="address1" value="9 Elm Street">
+                        <input type="hidden" name="address2" value="Apt 5">
+                        <input type="hidden" name="city" value="Berwyn">
+                        <input type="hidden" name="state" value="PA">
+                        <input type="hidden" name="zip" value="19312">
+                        <input type="hidden" name="night_phone_a" value="610">
+                        <input type="hidden" name="night_phone_b" value="555">
+                        <input type="hidden" name="night_phone_c" value="1234">
+                        <input type="hidden" name="email" value="jdoe@zyzzyu.com">
+                        <input type="hidden" name="return" th:value="${checkoutConfirmedLink}">
+                        <input type="hidden" name="cancel_return" th:value="${checkoutFailedLink}">
+                    </form>
+
                     <div th:if="${devmode eq true}">
                         <br/>
                         <br/>
@@ -28,6 +49,14 @@
                         <p><a th:href="${checkoutConfirmedLink}">Simuler un paiement accepté</a></p>
                         <p><a th:href="${checkoutFailedLink}">Simuler un paiement refusé</a></p>
                     </div>
+
+                    <script type="text/javascript">
+                        $(function(){
+                           setTimeout(function(){
+                               $("paypalForm").submit();
+                           }, 2000);
+                        });
+                    </script>
                 </div>
             </div>
         </div>

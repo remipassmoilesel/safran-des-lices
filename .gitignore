@@ -3,6 +3,7 @@ target/
 
 playbooks/target.yml
 setenv-prod.sh
+*.retry
 
 bower_components
 *.swp
