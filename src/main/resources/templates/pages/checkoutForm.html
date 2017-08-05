@@ -11,16 +11,28 @@
         .checkoutform .row {
             margin: 0.7em;
         }
-        input[name="postalcode"]{
+
+        input[name="postalcode"] {
             display: inline-block;
             width: 27%;
         }
-        input[name="city"]{
+
+        input[name="city"] {
             display: inline-block;
             width: 70%;
         }
 
-        .errorArea{
+        input[name="shipmentPostalcode"] {
+            display: inline-block;
+            width: 27%;
+        }
+
+        input[name="shipmentCity"] {
+            display: inline-block;
+            width: 70%;
+        }
+
+        .errorArea {
             color: darkred;
             opacity: 0;
             text-align: center;
@@ -73,6 +85,13 @@
                         <input type="text" class="form-control" name="lastname"/>
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="col-md-5 col-md-offset-2">
+                        <b>Adresse de facturation</b>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="col-md-3 col-md-offset-2">
                         Code postal et ville:
@@ -90,6 +109,31 @@
                         <input type="text" class="form-control" name="address"/>
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="col-md-5 col-md-offset-2">
+                        <b>Adresse de livraison (à remplir seulement si différente)</b>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-2">
+                        Code postal et ville:
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="shipmentPostalcode"/>
+                        <input type="text" class="form-control" name="shipmentCity"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-2">
+                        Adresse:
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="shipmentAddress"/>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="col-md-3 col-md-offset-2">
                         Numéro de téléphone:
@@ -149,7 +193,6 @@
                 </div>
             </form>
         </div>
-
 
 
     </section>

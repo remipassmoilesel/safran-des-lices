@@ -13,8 +13,7 @@ import java.util.List;
 public interface OrderRepository extends JpaRepository<CommercialOrder, Long> {
 
     @Query("SELECT c FROM CommercialOrder c WHERE c.processed = :pr ORDER BY date DESC")
-    public Page<CommercialOrder> findLasts(Pageable pageable,
-                                           @Param("pr") boolean processed);
+    public Page<CommercialOrder> findLasts(Pageable pageable, @Param("pr") boolean processed);
 
 }
 

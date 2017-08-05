@@ -47,8 +47,12 @@
                         th:text="${order.getPhonenumber()}">0425363698</span>
                 </div>
                 <div>
-                    <span class="orderLabel">Adresse postale:</span> <span
+                    <span class="orderLabel">Adresse de facturation:</span> <span
                         th:text="${order.getAddress()}">14 rue de la Joconde</span>
+                </div>
+                <div>
+                    <span class="orderLabel">Adresse de livraison:</span> <span
+                        th:text="${order.getShipmentAddress()}">14 rue de la Joconde</span>
                 </div>
                 <div>
                     <span class="orderLabel">Adresse email:</span> <span

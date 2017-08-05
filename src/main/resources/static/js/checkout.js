@@ -17,6 +17,9 @@ var App = {
         var postalcode = form.find("input[name='postalcode']");
         var city = form.find("input[name='city']");
         var address = form.find("input[name='address']");
+        var shipmentPostalcode = form.find("input[name='shipmentPostalcode']");
+        var shipmentcity = form.find("input[name='shipmentCity']");
+        var shipmentaddress = form.find("input[name='shipmentAddress']");
         var phonenumber = form.find("input[name='phonenumber']");
         var paymentType = form.find("input[name='paymentType']");
         var email = form.find("input[name='email']");
@@ -42,13 +45,28 @@ var App = {
             return;
         }
 
-        if(city.val().trim().length < 3){
-            showErrorMessage("Ville invalide, 3 caractères minimum");
+        if(city.val().trim().length < 2){
+            showErrorMessage("Ville invalide, 2 caractères minimum");
             return;
         }
 
         if(address.val().trim().length < 10){
             showErrorMessage("Adresse invalide, 5 caractères minimum");
+            return;
+        }
+
+        if(shipmentPostalcode.val().trim().length > 0 && !shipmentPostalcode.val().trim().match(/^[0-9]+$/)){
+            showErrorMessage("Code postal d'adresse de livraison invalide");
+            return;
+        }
+
+        if(shipmentcity.val().trim().length > 0 && shipmentcity.val().trim().length < 2){
+            showErrorMessage("Ville de livraison invalide, 2 caractères minimum");
+            return;
+        }
+
+        if(shipmentaddress.val().trim().length > 0 && shipmentaddress.val().trim().length < 10){
+            showErrorMessage("Adresse de livraison invalide, 5 caractères minimum");
             return;
         }
 

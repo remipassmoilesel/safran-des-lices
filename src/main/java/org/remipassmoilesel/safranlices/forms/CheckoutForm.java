@@ -33,6 +33,19 @@ public class CheckoutForm {
 
     @NotNull
     @Size(min = 2)
+    @Pattern(regexp = "[0-9]{2,}")
+    private String shipmentPostalcode;
+
+    @NotNull
+    @Size(min = 2)
+    private String shipmentCity;
+
+    @NotNull
+    @Size(min = 2)
+    private String shipmentAddress;
+
+    @NotNull
+    @Size(min = 2)
     @Pattern(regexp = "\\+?[0-9]{2,}")
     private String phonenumber;
 
@@ -133,19 +146,28 @@ public class CheckoutForm {
         return email;
     }
 
-    @Override
-    public String toString() {
-        return "CheckoutForm{" +
-                "firstname='" + firstname + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", postalcode='" + postalcode + '\'' +
-                ", city='" + city + '\'' +
-                ", address='" + address + '\'' +
-                ", phonenumber='" + phonenumber + '\'' +
-                ", paymentType='" + paymentType + '\'' +
-                ", comment='" + comment + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+    public String getShipmentPostalcode() {
+        return shipmentPostalcode;
+    }
+
+    public void setShipmentPostalcode(String shipmentPostalcode) {
+        this.shipmentPostalcode = shipmentPostalcode;
+    }
+
+    public String getShipmentCity() {
+        return shipmentCity;
+    }
+
+    public void setShipmentCity(String shipmentCity) {
+        this.shipmentCity = shipmentCity;
+    }
+
+    public String getShipmentAddress() {
+        return shipmentAddress;
+    }
+
+    public void setShipmentAddress(String shipmentAddress) {
+        this.shipmentAddress = shipmentAddress;
     }
 
     @Override
@@ -158,6 +180,9 @@ public class CheckoutForm {
                 Objects.equals(postalcode, that.postalcode) &&
                 Objects.equals(city, that.city) &&
                 Objects.equals(address, that.address) &&
+                Objects.equals(shipmentPostalcode, that.shipmentPostalcode) &&
+                Objects.equals(shipmentCity, that.shipmentCity) &&
+                Objects.equals(shipmentAddress, that.shipmentAddress) &&
                 Objects.equals(phonenumber, that.phonenumber) &&
                 Objects.equals(paymentType, that.paymentType) &&
                 Objects.equals(comment, that.comment) &&
@@ -166,7 +191,25 @@ public class CheckoutForm {
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstname, lastname, postalcode, city, address, phonenumber, paymentType, comment, email);
+        return Objects.hash(firstname, lastname, postalcode, city, address, shipmentPostalcode, shipmentCity, shipmentAddress, phonenumber, paymentType, comment, email);
+    }
+
+    @Override
+    public String toString() {
+        return "CheckoutForm{" +
+                "firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", postalcode='" + postalcode + '\'' +
+                ", city='" + city + '\'' +
+                ", address='" + address + '\'' +
+                ", shipmentPostalcode='" + shipmentPostalcode + '\'' +
+                ", shipmentCity='" + shipmentCity + '\'' +
+                ", shipmentAddress='" + shipmentAddress + '\'' +
+                ", phonenumber='" + phonenumber + '\'' +
+                ", paymentType='" + paymentType + '\'' +
+                ", comment='" + comment + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 
 }

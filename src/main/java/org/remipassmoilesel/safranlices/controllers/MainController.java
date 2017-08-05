@@ -234,7 +234,7 @@ public class MainController {
                 new Date(),
                 products,
                 basket,
-                checkoutForm.getAddress(),
+                checkoutForm.getAddress() + " " + checkoutForm.getPostalcode() + " " + checkoutForm.getCity(),
                 checkoutForm.getPhonenumber(),
                 checkoutForm.getFirstname(),
                 checkoutForm.getLastname(),
@@ -242,7 +242,10 @@ public class MainController {
                 checkoutForm.getComment(),
                 checkoutForm.getEmail());
 
+        order.setShipmentAddress(checkoutForm.getShipmentAddress() + " " + checkoutForm.getShipmentPostalcode() + " " + checkoutForm.getShipmentCity());
         order.setTotal(Utils.computeTotalForBasket(products, basket));
+        order.setProcessed(false);
+        order.setPaid(false);
         orderRepository.save(order);
 
         // include order in session
@@ -270,7 +273,6 @@ public class MainController {
             List<Expense> expenses = expenseRepository.findAll();
             double total = Utils.computeTotalWithExpenses(products, basket, expenses);
             model.addAttribute("total", total);
-
 
             Mappings.includeMappings(model);
             return Templates.CHECKOUT_END;

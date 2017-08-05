@@ -26,6 +26,8 @@ public class CommercialOrder {
 
     private String address;
 
+    private String shipmentAddress;
+
     private String phonenumber;
 
     private String firstName;
@@ -183,31 +185,12 @@ public class CommercialOrder {
         this.lastShipmentNotification = lastShipmentNotification;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        CommercialOrder that = (CommercialOrder) o;
-        return paid == that.paid &&
-                processed == that.processed &&
-                Objects.equals(id, that.id) &&
-                Objects.equals(date, that.date) &&
-                Objects.equals(products, that.products) &&
-                Objects.equals(quantities, that.quantities) &&
-                Objects.equals(address, that.address) &&
-                Objects.equals(phonenumber, that.phonenumber) &&
-                Objects.equals(firstName, that.firstName) &&
-                Objects.equals(lastName, that.lastName) &&
-                paymentType == that.paymentType &&
-                Objects.equals(total, that.total) &&
-                Objects.equals(comment, that.comment) &&
-                Objects.equals(email, that.email) &&
-                Objects.equals(lastShipmentNotification, that.lastShipmentNotification);
+    public String getShipmentAddress() {
+        return shipmentAddress;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, date, products, quantities, address, phonenumber, firstName, lastName, paymentType, total, comment, paid, processed, email, lastShipmentNotification);
+    public void setShipmentAddress(String shipmentAddress) {
+        this.shipmentAddress = shipmentAddress;
     }
 
     @Override
@@ -218,6 +201,7 @@ public class CommercialOrder {
                 ", products=" + products +
                 ", quantities=" + quantities +
                 ", address='" + address + '\'' +
+                ", shipmentAddress='" + shipmentAddress + '\'' +
                 ", phonenumber='" + phonenumber + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
@@ -230,4 +214,33 @@ public class CommercialOrder {
                 ", lastShipmentNotification=" + lastShipmentNotification +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CommercialOrder that = (CommercialOrder) o;
+        return paid == that.paid &&
+                processed == that.processed &&
+                Objects.equals(id, that.id) &&
+                Objects.equals(date, that.date) &&
+                Objects.equals(products, that.products) &&
+                Objects.equals(quantities, that.quantities) &&
+                Objects.equals(address, that.address) &&
+                Objects.equals(shipmentAddress, that.shipmentAddress) &&
+                Objects.equals(phonenumber, that.phonenumber) &&
+                Objects.equals(firstName, that.firstName) &&
+                Objects.equals(lastName, that.lastName) &&
+                paymentType == that.paymentType &&
+                Objects.equals(total, that.total) &&
+                Objects.equals(comment, that.comment) &&
+                Objects.equals(email, that.email) &&
+                Objects.equals(lastShipmentNotification, that.lastShipmentNotification);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, date, products, quantities, address, shipmentAddress, phonenumber, firstName, lastName, paymentType, total, comment, paid, processed, email, lastShipmentNotification);
+    }
+
 }
