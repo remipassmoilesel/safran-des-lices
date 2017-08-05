@@ -5,8 +5,10 @@
 <head>
     <title>Payer mon panier</title>
 
-    <style>
-
+    <style type="text/css">
+        .paypalForm {
+            visibility: hidden;
+        }
     </style>
 </head>
 <body>
@@ -21,25 +23,26 @@
                     <p>Vous allez être redirigé vers le site de paiment en ligne. Veuillez patienter...</p>
                     <hr class="bottom-line"/>
 
-                    <form class="paypalForm" action="https://www.paypal.com/cgi-bin/webscr" method="post" style="visibility: hidden">
-                        <input type="hidden" name="cmd" value="_cart">
-                        <input type="hidden" name="business" value="seller@designerfotos.com">
-                        <input type="hidden" name="item_name" value="hat">
-                        <input type="hidden" name="item_number" value="123">
-                        <input type="hidden" name="amount" value="15.00">
-                        <input type="hidden" name="first_name" value="John">
-                        <input type="hidden" name="last_name" value="Doe">
-                        <input type="hidden" name="address1" value="9 Elm Street">
-                        <input type="hidden" name="address2" value="Apt 5">
-                        <input type="hidden" name="city" value="Berwyn">
-                        <input type="hidden" name="state" value="PA">
-                        <input type="hidden" name="zip" value="19312">
-                        <input type="hidden" name="night_phone_a" value="610">
-                        <input type="hidden" name="night_phone_b" value="555">
-                        <input type="hidden" name="night_phone_c" value="1234">
-                        <input type="hidden" name="email" value="jdoe@zyzzyu.com">
-                        <input type="hidden" name="return" th:value="${checkoutConfirmedLink}">
-                        <input type="hidden" name="cancel_return" th:value="${checkoutFailedLink}">
+                    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" class="paypalForm">
+                        <input type="hidden" name="cmd" value="_s-xclick"/>
+                        <input type="hidden" name="hosted_button_id" value="28DAU2CSQZAWL"/>
+                        <input type="image" src="https://www.paypalobjects.com/fr_FR/FR/i/btn/btn_buynowCC_LG.gif"
+                               border="0" name="submit" alt="PayPal, le réflexe sécurité pour payer en ligne"/>
+                        <img alt="" border="0" src="https://www.paypalobjects.com/fr_FR/i/scr/pixel.gif" width="1"
+                             height="1"/>
+                        <input type="hidden" name="business" th:value="${mainMailAddress}"/>
+                        <input type="hidden" name="amount" th:value="${total}"/>
+                        <input type="hidden" name="first_name" th:value="${order.getFirstName()}"/>
+                        <input type="hidden" name="last_name" th:value="${order.getLastName()}"/>
+                        <input type="hidden" name="address1" th:value="${order.getAddress()}"/>
+                        <input type="hidden" name="city" th:value="${order.getCity()}"/>
+                        <input type="hidden" name="state" value="France"/>
+                        <input type="hidden" name="zip" th:value="${order.getPostalcode()}"/>
+                        <input type="hidden" name="email" th:value="${order.getEmail()}"/>
+                        <input type="hidden" name="return"
+                               th:value="${'http://127.0.0.1:8085/' + checkoutConfirmedLink}"/>
+                        <input type="hidden" name="cancel_return"
+                               th:value="${'http://127.0.0.1:8085/' + checkoutFailedLink}"/>
                     </form>
 
                     <div th:if="${devmode eq true}">
@@ -51,10 +54,10 @@
                     </div>
 
                     <script type="text/javascript">
-                        $(function(){
-                           setTimeout(function(){
-                               $("paypalForm").submit();
-                           }, 2000);
+                        $(function () {
+                            setTimeout(function () {
+                                $(".paypalForm").submit();
+                            }, 2000);
                         });
                     </script>
                 </div>

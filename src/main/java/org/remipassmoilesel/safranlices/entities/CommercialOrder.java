@@ -25,8 +25,12 @@ public class CommercialOrder {
     private HashMap<Long, Integer> quantities;
 
     private String address;
+    private String postalcode;
+    private String city;
 
     private String shipmentAddress;
+    private String shipmentPostalcode;
+    private String shipmentCity;
 
     private String phonenumber;
 
@@ -52,15 +56,25 @@ public class CommercialOrder {
     public CommercialOrder() {
     }
 
-    public CommercialOrder(Date date, List<Product> products, HashMap<Long, Integer> quantities, String address, String phonenumber, String firstName, String lastName, PaymentType paymentType, String comment, String email) {
+    public CommercialOrder(Date date, List<Product> products, HashMap<Long, Integer> quantities,
+                           String address, String postalcode, String city, String shipmentAddress,
+                           String shipmentPostalcode, String shipmentCity, String phonenumber,
+                           String firstName, String lastName, PaymentType paymentType,
+                           String comment, String email) {
         this.date = date;
         this.products = products;
         this.quantities = quantities;
         this.address = address;
+        this.postalcode = postalcode;
+        this.city = city;
+        this.shipmentAddress = shipmentAddress;
+        this.shipmentPostalcode = shipmentPostalcode;
+        this.shipmentCity = shipmentCity;
         this.phonenumber = phonenumber;
         this.firstName = firstName;
         this.lastName = lastName;
         this.paymentType = paymentType;
+        this.total = total;
         this.comment = comment;
         this.email = email;
     }
@@ -193,26 +207,36 @@ public class CommercialOrder {
         this.shipmentAddress = shipmentAddress;
     }
 
-    @Override
-    public String toString() {
-        return "CommercialOrder{" +
-                "id=" + id +
-                ", date=" + date +
-                ", products=" + products +
-                ", quantities=" + quantities +
-                ", address='" + address + '\'' +
-                ", shipmentAddress='" + shipmentAddress + '\'' +
-                ", phonenumber='" + phonenumber + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", paymentType=" + paymentType +
-                ", total=" + total +
-                ", comment='" + comment + '\'' +
-                ", paid=" + paid +
-                ", processed=" + processed +
-                ", email='" + email + '\'' +
-                ", lastShipmentNotification=" + lastShipmentNotification +
-                '}';
+    public String getPostalcode() {
+        return postalcode;
+    }
+
+    public void setPostalcode(String postalcode) {
+        this.postalcode = postalcode;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getShipmentPostalcode() {
+        return shipmentPostalcode;
+    }
+
+    public void setShipmentPostalcode(String shipmentPostalcode) {
+        this.shipmentPostalcode = shipmentPostalcode;
+    }
+
+    public String getShipmentCity() {
+        return shipmentCity;
+    }
+
+    public void setShipmentCity(String shipmentCity) {
+        this.shipmentCity = shipmentCity;
     }
 
     @Override
@@ -227,7 +251,11 @@ public class CommercialOrder {
                 Objects.equals(products, that.products) &&
                 Objects.equals(quantities, that.quantities) &&
                 Objects.equals(address, that.address) &&
+                Objects.equals(postalcode, that.postalcode) &&
+                Objects.equals(city, that.city) &&
                 Objects.equals(shipmentAddress, that.shipmentAddress) &&
+                Objects.equals(shipmentPostalcode, that.shipmentPostalcode) &&
+                Objects.equals(shipmentCity, that.shipmentCity) &&
                 Objects.equals(phonenumber, that.phonenumber) &&
                 Objects.equals(firstName, that.firstName) &&
                 Objects.equals(lastName, that.lastName) &&
@@ -240,7 +268,33 @@ public class CommercialOrder {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, date, products, quantities, address, shipmentAddress, phonenumber, firstName, lastName, paymentType, total, comment, paid, processed, email, lastShipmentNotification);
+        return Objects.hash(id, date, products, quantities, address, postalcode, city, shipmentAddress, shipmentPostalcode, shipmentCity, phonenumber, firstName, lastName, paymentType, total, comment, paid, processed, email, lastShipmentNotification);
+    }
+
+    @Override
+    public String toString() {
+        return "CommercialOrder{" +
+                "id=" + id +
+                ", date=" + date +
+                ", products=" + products +
+                ", quantities=" + quantities +
+                ", address='" + address + '\'' +
+                ", postalcode='" + postalcode + '\'' +
+                ", city='" + city + '\'' +
+                ", shipmentAddress='" + shipmentAddress + '\'' +
+                ", shipmentPostalcode='" + shipmentPostalcode + '\'' +
+                ", shipmentCity='" + shipmentCity + '\'' +
+                ", phonenumber='" + phonenumber + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", paymentType=" + paymentType +
+                ", total=" + total +
+                ", comment='" + comment + '\'' +
+                ", paid=" + paid +
+                ", processed=" + processed +
+                ", email='" + email + '\'' +
+                ", lastShipmentNotification=" + lastShipmentNotification +
+                '}';
     }
 
 }

@@ -12,6 +12,7 @@ import org.remipassmoilesel.safranlices.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,6 +54,9 @@ public class MainController {
 
     @Autowired
     private Environment env;
+
+    @Value("${app.mail.mainAdress}")
+    private String mainMailAdress;
 
     @RequestMapping(Mappings.TEMPLATE)
     public String showTemplate(Model model) {
@@ -217,7 +221,7 @@ public class MainController {
             model.addAttribute("errors", results.getAllErrors());
 
             Mappings.includeMappings(model);
-            return Templates.CHECKOUT_REDIRECT;
+            return "redirect: " + Mappings.CHECKOUT;
         }
 
         // save order
@@ -234,7 +238,12 @@ public class MainController {
                 new Date(),
                 products,
                 basket,
-                checkoutForm.getAddress() + " " + checkoutForm.getPostalcode() + " " + checkoutForm.getCity(),
+                checkoutForm.getAddress(),
+                checkoutForm.getPostalcode(),
+                checkoutForm.getCity(),
+                checkoutForm.getShipmentAddress(),
+                checkoutForm.getShipmentPostalcode(),
+                checkoutForm.getShipmentCity(),
                 checkoutForm.getPhonenumber(),
                 checkoutForm.getFirstname(),
                 checkoutForm.getLastname(),
@@ -242,8 +251,10 @@ public class MainController {
                 checkoutForm.getComment(),
                 checkoutForm.getEmail());
 
-        order.setShipmentAddress(checkoutForm.getShipmentAddress() + " " + checkoutForm.getShipmentPostalcode() + " " + checkoutForm.getShipmentCity());
-        order.setTotal(Utils.computeTotalForBasket(products, basket));
+        List<Expense> expenses = expenseRepository.findAll();
+        double total = Utils.computeTotalWithExpenses(products, basket, expenses);
+
+        order.setTotal(total);
         order.setProcessed(false);
         order.setPaid(false);
         orderRepository.save(order);
@@ -269,9 +280,6 @@ public class MainController {
                 logger.error("Unable to send mail notification", e);
             }
 
-            // compute total
-            List<Expense> expenses = expenseRepository.findAll();
-            double total = Utils.computeTotalWithExpenses(products, basket, expenses);
             model.addAttribute("total", total);
 
             Mappings.includeMappings(model);
@@ -289,6 +297,9 @@ public class MainController {
             model.addAttribute("devmode", Utils.isDevProfileEnabled(env));
             model.addAttribute("checkoutConfirmedLink", Mappings.CHECKOUT_CONFIRMED + "?token=" + token);
             model.addAttribute("checkoutFailedLink", Mappings.CHECKOUT_FAILED);
+            model.addAttribute("mainMailAddress", mainMailAdress);
+            model.addAttribute("order", order);
+            model.addAttribute("total", total);
 
             Mappings.includeMappings(model);
             return Templates.CHECKOUT_REDIRECT;

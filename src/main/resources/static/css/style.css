@@ -13,7 +13,7 @@
 body {
     font-size: 15px;
     line-height: 1.52;
-    color: #717f86;
+    color: #515a5f;
     font-size: 16px;
     font-family: sans-serif;
     font-weight: 400;
@@ -89,7 +89,7 @@ Navigation bar
 }
 
 .navbar-default .navbar-nav > li > a {
-    color: #717f86;
+    color: #515a5f;
     font-size: 14px;
     font-weight: 700;
 }
