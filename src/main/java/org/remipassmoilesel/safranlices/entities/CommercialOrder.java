@@ -163,6 +163,10 @@ public class CommercialOrder {
         return total;
     }
 
+    public String getRoundedTotalAsString(){
+        return String.valueOf(Math.round(total * 100.0) / 100.0);
+    }
+
     public void setTotal(Double total) {
         this.total = total;
     }
