@@ -124,6 +124,12 @@
             <version>1.4.9</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.mangopay</groupId>
+            <artifactId>mangopay2-java-sdk</artifactId>
+            <version>2.0.0</version>
+        </dependency>
+
     </dependencies>
 
     <repositories>

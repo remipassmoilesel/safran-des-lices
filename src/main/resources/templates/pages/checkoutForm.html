@@ -3,197 +3,125 @@
       xmlns:th="http://www.thymeleaf.org"
       layout:decorator="mainDecorator">
 <head>
-    <title>Paiement sécurisé</title>
 
-    <script th:src="@{js/checkout.js}"></script>
+    <title>Payer mon panier</title>
 
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
     <style>
-        .checkoutform .row {
-            margin: 0.7em;
+        .creditCardTable{
+            margin-top: 1em;
+            margin: auto
         }
-
-        input[name="postalcode"] {
-            display: inline-block;
-            width: 27%;
-        }
-
-        input[name="city"] {
-            display: inline-block;
-            width: 70%;
-        }
-
-        input[name="shipmentPostalcode"] {
-            display: inline-block;
-            width: 27%;
-        }
-
-        input[name="shipmentCity"] {
-            display: inline-block;
-            width: 70%;
-        }
-
-        .errorArea {
-            color: darkred;
-            opacity: 0;
-            text-align: center;
-            padding: 1em;
+        
+        .creditCardTable td{
+            text-align: left;
         }
     </style>
+
 </head>
 <body>
 <div layout:fragment="content">
 
     <section id="courses" class="section-padding">
+
         <div class="container">
             <div class="row">
                 <div class="header-section text-center">
-                    <h2>Paiement sécurisé</h2>
-                    <p>Remplissez ce formulaire avec vos coordonnées pour recevoir votre commande.
-                        <br/>Cette transaction utilise des communications <i>sécurisées</i>.</p>
-                    <hr class="bottom-line"/>
+                    <h2>Paiement en ligne</h2>
+
+                    Le paiement est effectué via une connexion sécurisée. <br/>
+                    Le paiement est géré par l'entreprise française <a href="https://www.mangopay.com/fr/about-us/" target="_blank">MangoPay</a>,
+                     une filliale du groupe Crédit Mutuel.<br/>
+
+                    <table class="creditCardTable">
+                        <tr>
+                            <td>Numéro de carte:</td>
+                            <td><input id="card_number" value="4970100000000154"/></td>
+                        </tr>
+                        <tr>
+                            <td>Date d'expiration (MMAA):</td>
+                            <td><input id="card_expiration_date" value="1020"/></td>
+                        </tr>
+                        <tr>
+                            <td>Code cvx:</td>
+                            <td><input id="card_cvx" value="123"/> (optional for Maestro)</td>
+                        </tr>
+                        <tr><td>&nbsp;</td></tr>
+                        <tr>
+                            <td colspan="2">
+                                <button id="process">Process</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <div id="result"></div>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <script type="text/javascript" th:inline="javascript">
+
+                        $(function () {
+
+                            $("#process").click(function () {
+
+                                var resultDiv = document.getElementById("result");
+                                resultDiv.innerHTML = "Processing...";
+                                resultDiv.style.color = "black";
+
+                                // Card register data prepared on the server
+                                var cardRegisterData = {
+                                    cardRegistrationURL: /*[[${cardRegistrationUrl}]]*/ null,
+                                    preregistrationData: /*[[${preRegistrationData}]]*/ null,
+                                    accessKey: /*[[${accessKey}]]*/ null,
+                                    Id: /*[[${cardId}]]*/ null
+                                };
+
+                                // Card data collected from the user
+                                var cardData = {
+                                    cardNumber: document.getElementById("card_number").value,
+                                    cardExpirationDate: document.getElementById("card_expiration_date").value,
+                                    cardCvx: document.getElementById("card_cvx").value,
+                                    cardType: /*[[${cardType}]]*/ null
+                                };
+
+                                // Set MangoPay API base URL and Client ID
+                                mangoPay.cardRegistration.baseURL = /*[[${mongoApiBaseUrl}]]*/ null;
+                                mangoPay.cardRegistration.clientId = /*[[${mongoApiClientId}]]*/ null
+
+                                // Initialize the CardRegistration Kit
+                                mangoPay.cardRegistration.init(cardRegisterData);
+
+                                // Register card
+                                mangoPay.cardRegistration.registerCard(cardData,
+                                    function (res) {
+                                        var message = 'Card has been succesfully registered under the Card Id ' + res.CardId + '.<br />';
+                                        message += 'Card is now ready to use e.g. in a «Direct PayIn» Object.';
+                                        resultDiv.innerHTML = message;
+                                        resultDiv.style.color = "green";
+                                    },
+                                    function (res) {
+                                        var message = 'Error occured while registering the card.<br />';
+                                        message += 'Code: ' + res.ResultCode + ', message: ' + res.ResultMessage;
+                                        resultDiv.innerHTML = message;
+                                        resultDiv.style.color = "red";
+                                    }
+                                );
+                            });
+
+                        });
+
+
+                    </script>
+
+                    <script type="text/javascript"
+                            th:src="@{bower_components/mangopay-cardregistration-js-kit/kit/mangopay-kit.js}"></script>
+
+
                 </div>
             </div>
         </div>
-
-        <div class="errorArea"></div>
-
-        <div class="container checkoutform">
-
-            <form method="post" th:action="@{${mappings.get('CHECKOUT')}}" id="checkoutForm">
-                <div class="row">
-                    <div class="col-md-3 col-md-offset-2">
-                        Prix total de la commande:
-                    </div>
-                    <div class="col-md-5" th:text="${total + ' €'}">
-                        12.95 €
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-3 col-md-offset-2">
-                        Prénom:
-                    </div>
-                    <div class="col-md-5">
-                        <input type="text" class="form-control" name="firstname"/>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3 col-md-offset-2">
-                        Nom:
-                    </div>
-                    <div class="col-md-5">
-                        <input type="text" class="form-control" name="lastname"/>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-5 col-md-offset-2">
-                        <b>Adresse de facturation</b>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-3 col-md-offset-2">
-                        Code postal et ville:
-                    </div>
-                    <div class="col-md-5">
-                        <input type="text" class="form-control" name="postalcode"/>
-                        <input type="text" class="form-control" name="city"/>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3 col-md-offset-2">
-                        Adresse:
-                    </div>
-                    <div class="col-md-5">
-                        <input type="text" class="form-control" name="address"/>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-5 col-md-offset-2">
-                        <b>Adresse de livraison (à remplir seulement si différente)</b>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-3 col-md-offset-2">
-                        Code postal et ville:
-                    </div>
-                    <div class="col-md-5">
-                        <input type="text" class="form-control" name="shipmentPostalcode"/>
-                        <input type="text" class="form-control" name="shipmentCity"/>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3 col-md-offset-2">
-                        Adresse:
-                    </div>
-                    <div class="col-md-5">
-                        <input type="text" class="form-control" name="shipmentAddress"/>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-3 col-md-offset-2">
-                        Numéro de téléphone:
-                    </div>
-                    <div class="col-md-5">
-                        <input type="text" class="form-control" name="phonenumber"/>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3 col-md-offset-2">
-                        Adresse email:
-                    </div>
-                    <div class="col-md-5">
-                        <input type="text" class="form-control" name="email"/>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3 col-md-offset-2">
-                        Moyen de paiement:
-                    </div>
-                    <div class="col-md-5">
-                        <ul style="margin: 0em; padding: 0em">
-                            <li>
-                                <input type="radio" name="paymentType" value="PAYPAL_OR_CREDIT_CARD" checked="true"/>
-                                Carte de crédit ou compte Paypal
-                            </li>
-                            <li>
-                                <input type="radio" name="paymentType" value="BANK_CHECK"/>
-                                Chèque bancaire
-                            </li>
-                            <li>
-                                <input type="radio" name="paymentType" value="BANK_TRANSFER"/>
-                                Virement bancaire
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3 col-md-offset-2">
-                        Commentaire (facultatif):
-                    </div>
-                    <div class="col-md-5">
-                        <textarea class="form-control" rows="5" name="comment"></textarea>
-                    </div>
-                </div>
-
-                <div style="text-align: center; margin-top: 2em;">
-                    <div class="errorArea"></div>
-                </div>
-
-                <div style="text-align: center; margin-top: 2em;">
-                    <div class="col-md-2 col-md-offset-5">
-                        <button type="button" th:href="@{${mappings.get('CHECKOUT')}}"
-                                class="btn btn-primary">Régler ma commande
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-
 
     </section>
 

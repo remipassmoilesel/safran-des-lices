@@ -84,7 +84,7 @@ public class DevController {
     public String showAdminMailExample(Model model, @RequestParam(value = "type", required = true) String type) throws Exception {
 
         if (Utils.isDevProfileEnabled(env) == false) {
-            return "redirect: " + Mappings.ROOT;
+            return "redirect:" + Mappings.ROOT;
         }
 
         List<Product> products = productRepository.findAll(false);

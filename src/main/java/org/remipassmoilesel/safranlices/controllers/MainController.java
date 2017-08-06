@@ -23,8 +23,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
@@ -176,7 +174,7 @@ public class MainController {
     }
 
 
-    @RequestMapping(value = Mappings.CHECKOUT, method = RequestMethod.GET)
+    @RequestMapping(value = Mappings.BILLING_FORM, method = RequestMethod.GET)
     public String showCheckout(
             HttpSession session,
             Model model) {
@@ -196,10 +194,10 @@ public class MainController {
         model.addAttribute("total", total);
 
         Mappings.includeMappings(model);
-        return Templates.CHECKOUT_FORM;
+        return Templates.BILLING_FORM;
     }
 
-    @RequestMapping(value = Mappings.CHECKOUT, method = RequestMethod.POST)
+    @RequestMapping(value = Mappings.BILLING_FORM, method = RequestMethod.POST)
     public String processCheckout(
             @Valid CheckoutForm checkoutForm,
             BindingResult results,
@@ -221,7 +219,7 @@ public class MainController {
             model.addAttribute("errors", results.getAllErrors());
 
             Mappings.includeMappings(model);
-            return "redirect: " + Mappings.CHECKOUT;
+            return "redirect:" + Mappings.BILLING_FORM;
         }
 
         // save order
@@ -262,16 +260,15 @@ public class MainController {
         // include order in session
         session.setAttribute("order", order);
 
-        // send notification
+        // send admin notification
         try {
             mailer.sendAdminNotification(order);
         } catch (Exception e) {
             logger.error("Unable to send mail notification", e);
         }
 
-        // payment is differed
+        // payment is differed (check or transfer)
         if (PaymentType.BANK_CHECK == order.getPaymentType() || PaymentType.BANK_TRANSFER == order.getPaymentType()) {
-            model.addAttribute("order", order);
 
             // send notification to client
             try {
@@ -280,31 +277,33 @@ public class MainController {
                 logger.error("Unable to send mail notification", e);
             }
 
-            model.addAttribute("total", total);
-
-            Mappings.includeMappings(model);
-            return Templates.CHECKOUT_END;
+            return "redirect:" + Mappings.CHECKOUT_END;
         }
 
-        // payment must be confirmed
+        // payment online
         else {
-
-            // create a token
-            String token = (new HexBinaryAdapter()).marshal(MessageDigest.getInstance("md5").digest(String.valueOf(System.currentTimeMillis()).getBytes()));
-            session.setAttribute("paymentToken", token);
-
-            // dev vars
-            model.addAttribute("devmode", Utils.isDevProfileEnabled(env));
-            model.addAttribute("checkoutConfirmedLink", Mappings.CHECKOUT_CONFIRMED + "?token=" + token);
-            model.addAttribute("checkoutFailedLink", Mappings.CHECKOUT_FAILED);
-            model.addAttribute("mainMailAddress", mainMailAdress);
-            model.addAttribute("order", order);
-            model.addAttribute("total", total);
-
-            Mappings.includeMappings(model);
-            return Templates.CHECKOUT_REDIRECT;
+            return "redirect:" + Mappings.CHECKOUT;
         }
 
+    }
+
+    @RequestMapping(value = Mappings.CHECKOUT_END, method = RequestMethod.GET)
+    public String checkoutEnd(HttpSession session, Model model){
+
+        CommercialOrder order = (CommercialOrder) session.getAttribute(ORDER_SATTR);
+        if(order == null){
+            return "redirect:" + Mappings.BASKET;
+        }
+
+        List<Product> products = productRepository.findAll(false);
+        List<Expense> expenses = expenseRepository.findAll();
+        double total = Utils.computeTotalWithExpenses(products, order.getQuantities(), expenses);
+
+        model.addAttribute("order", order);
+        model.addAttribute("total", total);
+
+        Mappings.includeMappings(model);
+        return Templates.CHECKOUT_END;
     }
 
     @RequestMapping(value = Mappings.CHECKOUT_CONFIRMED, method = RequestMethod.GET)
@@ -312,7 +311,7 @@ public class MainController {
                                     @RequestParam(name = "token", required = false) String token) {
 
         if(token == null){
-            return "redirect: " + Mappings.BASKET;
+            return "redirect:" + Mappings.BASKET;
         }
 
         CommercialOrder order = (CommercialOrder) session.getAttribute(ORDER_SATTR);

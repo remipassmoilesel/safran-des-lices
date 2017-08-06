@@ -1,0 +1,84 @@
+<table class="creditCardTable">
+    <tr>
+        <td>Numéro de carte:</td>
+        <td><input id="card_number" value="4970100000000154"/></td>
+    </tr>
+    <tr>
+        <td>Date d'expiration (MMAA):</td>
+        <td><input id="card_expiration_date" value="1020"/></td>
+    </tr>
+    <tr>
+        <td>Code cvx:</td>
+        <td><input id="card_cvx" value="123"/> (optional for Maestro)</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <button id="process">Process</button>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <div id="result"></div>
+        </td>
+    </tr>
+</table>
+
+<script type="text/javascript">
+
+    $(function () {
+
+        $("#process").click(function () {
+
+            var resultDiv = document.getElementById("result");
+            resultDiv.innerHTML = "Processing...";
+            resultDiv.style.color = "black";
+
+            // Card register data prepared on the server
+            var cardRegisterData = {
+                cardRegistrationURL: 'https://homologation-webpayment.payline.com/webpayment/getToken',
+                preregistrationData: 'S8HjKhXaPXeNlzbaHMqIvw-NVoXNGhm6HXepEEoF6SfbAHfa4_6uTlwCRw4sUIWSS4wCy-yiraxeE65tmxOe8A',
+                accessKey: '1X0m87dmM2LiwFgxPLBJ',
+                Id: '30770236'
+            };
+
+            // Card data collected from the user
+            var cardData = {
+                cardNumber: document.getElementById("card_number").value,
+                cardExpirationDate: document.getElementById("card_expiration_date").value,
+                cardCvx: document.getElementById("card_cvx").value,
+                cardType: 'CB_VISA_MASTERCARD'
+            };
+
+            // Set MangoPay API base URL and Client ID
+            mangoPay.cardRegistration.baseURL = 'https://api.sandbox.mangopay.com';
+            mangoPay.cardRegistration.clientId = 'mklkkopkpjniooibuo'
+
+            // Initialize the CardRegistration Kit
+            mangoPay.cardRegistration.init(cardRegisterData);
+
+            // Register card
+            mangoPay.cardRegistration.registerCard(cardData,
+                function (res) {
+                    var message = 'Card has been succesfully registered under the Card Id ' + res.CardId + '.<br />';
+                    message += 'Card is now ready to use e.g. in a «Direct PayIn» Object.';
+                    resultDiv.innerHTML = message;
+                    resultDiv.style.color = "green";
+                },
+                function (res) {
+                    var message = 'Error occured while registering the card.<br />';
+                    message += 'Code: ' + res.ResultCode + ', message: ' + res.ResultMessage;
+                    resultDiv.innerHTML = message;
+                    resultDiv.style.color = "red";
+                }
+            );
+        });
+
+    });
+
+
+</script>
+
+<script type="text/javascript" src="bower_components/mangopay-cardregistration-js-kit/kit/mangopay-kit.js"></script>

@@ -1,0 +1,56 @@
+<!--
+
+ Debug fragment utility. Usage:
+
+    <div th:replace="fragments/show-debug"></div>
+
+ -->
+
+<div style="width: 100%">
+
+    <table>
+
+        <!--
+            Available objects:
+
+            #ctx: the context object.
+            #vars: the context variables.
+            #locale: the context locale.
+            #request: (only in Web Contexts) the HttpServletRequest object.
+            #response: (only in Web Contexts) the HttpServletResponse object.
+            #session: (only in Web Contexts) the HttpSession object.
+            #servletContext: (only in Web Contexts) the ServletContext object.
+
+        -->
+
+        <tr>
+            <td style="background: black; color: white;">#vars</td>
+        </tr>
+        <tr th:each="var : ${#vars}">
+            <td th:text="${var}">Var</td>
+        </tr>
+
+        <tr>
+            <td>&nbsp;</td>
+        </tr>
+
+        <tr>
+            <td style="background: black; color: white;">#ctx</td>
+        </tr>
+        <tr th:each="var : ${#ctx}">
+            <td th:text="${var}">Var</td>
+        </tr>
+
+
+        <!--
+        <tr>
+            <td th:text="${#execInfo}">execInfo</td>
+        </tr>
+        <tr>
+            <td th:text="${#messages}">messages</td>
+        </tr>
+        -->
+
+    </table>
+
+</div>

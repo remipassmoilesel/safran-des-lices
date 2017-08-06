@@ -15,8 +15,8 @@ public class Templates {
     public static final String EXPLOITATION = PAGES_DIR + "ourExploitation";
     public static final String ORDER = PAGES_DIR + "order";
     public static final String BASKET = PAGES_DIR + "basket";
+    public static final String BILLING_FORM = PAGES_DIR + "billingForm";
     public static final String CHECKOUT_FORM = PAGES_DIR + "checkoutForm";
-    public static final String CHECKOUT_REDIRECT = PAGES_DIR + "checkoutRedirect";
     public static final String CHECKOUT_END = PAGES_DIR + "checkoutEnd";
     public static final String LEGAL_MENTIONS = PAGES_DIR + "legalMentions";
 

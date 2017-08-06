@@ -5,7 +5,7 @@ package org.remipassmoilesel.safranlices.entities;
  */
 public enum PaymentType {
 
-    PAYPAL_OR_CREDIT_CARD,
+    CREDIT_CARD,
 
     BANK_CHECK,
 

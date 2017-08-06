@@ -2,7 +2,7 @@ var App = {
 
     init: function () {
 
-        $("#checkoutForm button").click(function () {
+        $("#billingForm .validButton").click(function () {
             App.checkFormAndSubmit()
         });
 
@@ -10,7 +10,7 @@ var App = {
 
     checkFormAndSubmit: function () {
 
-        var form = $("#checkoutForm");
+        var form = $("#billingForm");
         var errorArea = $(".errorArea");
         var firstname = form.find("input[name='firstname']");
         var lastname = form.find("input[name='lastname']");

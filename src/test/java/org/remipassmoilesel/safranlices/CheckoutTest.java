@@ -1,7 +1,6 @@
 package org.remipassmoilesel.safranlices;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.remipassmoilesel.safranlices.controllers.MainController;
@@ -21,8 +20,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -105,7 +102,7 @@ public class CheckoutTest {
                 .andExpect(status().is3xxRedirection());
 
         // show basket
-        response = mockMvc.perform(get(Mappings.CHECKOUT)
+        response = mockMvc.perform(get(Mappings.BILLING_FORM)
                 .session(session))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists(Mappings.MODEL_ARGUMENT_NAME))

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorator="mainDecorator">
+<head>
+    <title>Paiement sécurisé</title>
+
+    <script th:src="@{js/billing.js}"></script>
+
+    <style>
+        #billingForm .row {
+            margin: 0.7em;
+        }
+
+        input[name="postalcode"] {
+            display: inline-block;
+            width: 27%;
+        }
+
+        input[name="city"] {
+            display: inline-block;
+            width: 70%;
+        }
+
+        input[name="shipmentPostalcode"] {
+            display: inline-block;
+            width: 27%;
+        }
+
+        input[name="shipmentCity"] {
+            display: inline-block;
+            width: 70%;
+        }
+
+        .errorArea {
+            color: darkred;
+            opacity: 0;
+            text-align: center;
+            padding: 1em;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <section id="courses" class="section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="header-section text-center">
+                    <h2>Paiement sécurisé</h2>
+                    <p>Remplissez ce formulaire avec vos coordonnées pour recevoir votre commande.
+                        <br/>Cette transaction utilise des communications <i>sécurisées</i>.</p>
+                    <hr class="bottom-line"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="errorArea"></div>
+
+        <div class="container">
+
+            <form method="post" th:action="@{${mappings.get('BILLING_FORM')}}" id="billingForm">
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-2">
+                        Prix total de la commande:
+                    </div>
+                    <div class="col-md-5" th:text="${total + ' €'}">
+                        12.95 €
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-2">
+                        Prénom:
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="firstname"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-2">
+                        Nom:
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="lastname"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-5 col-md-offset-2">
+                        <b>Adresse de facturation</b>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-2">
+                        Code postal et ville:
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="postalcode"/>
+                        <input type="text" class="form-control" name="city"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-2">
+                        Adresse:
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="address"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-5 col-md-offset-2">
+                        <b>Adresse de livraison (à remplir seulement si différente)</b>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-2">
+                        Code postal et ville:
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="shipmentPostalcode"/>
+                        <input type="text" class="form-control" name="shipmentCity"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-2">
+                        Adresse:
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="shipmentAddress"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-2">
+                        Numéro de téléphone:
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="phonenumber"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-2">
+                        Adresse email:
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="email"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-2">
+                        Moyen de paiement:
+                    </div>
+                    <div class="col-md-5">
+                        <ul style="margin: 0em; padding: 0em">
+                            <li>
+                                <input type="radio" name="paymentType" value="CREDIT_CARD" checked="true"/>
+                                Carte de crédit
+                            </li>
+                            <li>
+                                <input type="radio" name="paymentType" value="BANK_CHECK"/>
+                                Chèque bancaire
+                            </li>
+                            <li>
+                                <input type="radio" name="paymentType" value="BANK_TRANSFER"/>
+                                Virement bancaire
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-2">
+                        Commentaire (facultatif):
+                    </div>
+                    <div class="col-md-5">
+                        <textarea class="form-control" rows="5" name="comment"></textarea>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 2em;">
+                    <div class="errorArea"></div>
+                </div>
+
+                <div style="text-align: center; margin-top: 2em;">
+                    <div class="col-md-2 col-md-offset-5">
+                        <button type="button" class="btn btn-primary validButton">Paiement sécurisé</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+    </section>
+
+</div>
+</body>
+</html>

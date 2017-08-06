@@ -22,6 +22,7 @@
     "jquery-ui": "^1.12.1",
     "jquery-easing": "*",
     "imagehover.css": "*",
-    "leaflet": "^1.1.0"
+    "leaflet": "^1.1.0",
+    "mangopay-cardregistration-js-kit": "^1.2.2"
   }
 }
