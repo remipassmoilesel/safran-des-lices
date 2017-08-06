@@ -33,8 +33,8 @@
             <div class="row">
                 <div class="header-section text-center">
                     <h2>Mon panier</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Exercitationem nesciunt vitae,<br/>
-                        maiores, magni dolorum aliquam.</p>
+                    <p>Sur cette page sont listés les articles que vous souhaitez acheter. <br/>
+                        Vous pouvez sélectionner des produits sur <a th:href="@{${mappings.get('ORDER')}}">la page de commande</a>.</p>
                     <hr class="bottom-line"/>
                 </div>
             </div>
@@ -43,10 +43,7 @@
         <div class="container" th:if="${#maps.size(basket) lt 1}">
             <div class="row">
                 <div class="col-md-10 col-md-offset-2">
-                    <h4>Votre panier est vide.</h4>
-                    <div>Vous pouvez sélectionner des produits sur
-                        <a th:href="@{${mappings.get('ORDER')}}">la page de commande</a>.
-                    </div>
+                    <div class="subtitle">Votre panier est vide.</div>
                 </div>
             </div>
         </div>
