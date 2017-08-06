@@ -10,8 +10,8 @@
     
     <style>
         .creditCardTable{
-            margin-top: 1em;
-            margin: auto
+            width: 60%;
+            margin: auto;
         }
         
         .creditCardTable td{
@@ -34,23 +34,28 @@
                     Le paiement est géré par l'entreprise française <a href="https://www.mangopay.com/fr/about-us/" target="_blank">MangoPay</a>,
                      une filliale du groupe Crédit Mutuel.<br/>
 
+                    <div>&nbsp;</div>
+
                     <table class="creditCardTable">
                         <tr>
+                            <td colspan="2">Cartes acceptées: Visa et Mastercard.</td>
+                        </tr>
+                        <tr>
                             <td>Numéro de carte:</td>
-                            <td><input id="card_number" value="4970100000000154"/></td>
+                            <td><input id="card_number" value="4970100000000154" class="form-control" /></td>
                         </tr>
                         <tr>
                             <td>Date d'expiration (MMAA):</td>
-                            <td><input id="card_expiration_date" value="1020"/></td>
+                            <td><input id="card_expiration_date" value="1020" class="form-control" /></td>
                         </tr>
                         <tr>
                             <td>Code cvx:</td>
-                            <td><input id="card_cvx" value="123"/> (optional for Maestro)</td>
+                            <td><input id="card_cvx" value="123" class="form-control" /></td>
                         </tr>
                         <tr><td>&nbsp;</td></tr>
                         <tr>
-                            <td colspan="2">
-                                <button id="process">Process</button>
+                            <td colspan="2" style="text-align: center">
+                                <button id="process" class="btn btn-primary">Paiement sécurisé</button>
                             </td>
                         </tr>
                         <tr>
