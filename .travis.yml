@@ -23,4 +23,8 @@ env:
     - SAFRANLICES_FR_MAIL_HOST=smtp.mail.com
     - SAFRANLICES_FR_MAIL_FROM=user@mail.com
     - SAFRANLICES_FR_MAIL_ADMIN_USERS=user1@mail.com,user2@mail.com,user3@mail.com
+    - SAFRANLICES_FR_MAIL_MAIN=user1@mail.com
+    - SAFRANLICES_FR_BANKAPI_CLIENT_ID=login
+    - SAFRANLICES_FR_BANKAPI_CLIENT_PWD=password
+
 script: mvn clean verify
