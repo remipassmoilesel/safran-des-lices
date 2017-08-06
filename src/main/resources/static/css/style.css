@@ -997,3 +997,13 @@ Responsive media queries
 #goToTopButton:before {
     color: white;
 }
+
+.btn-primary {
+    background-color: #7f5f91;
+    border-color: gray;
+}
+
+.btn-primary.focus, .btn-primary:focus, .btn-primary:hover {
+    background-color: #6c4384;
+    border-color: #7f5f91;
+}
