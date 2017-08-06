@@ -27,8 +27,7 @@ public class Mappings {
 
     public static final String CHECKOUT_CONFIRMED = ROOT + "paiement-confirme";
     public static final String CHECKOUT_FAILED = ROOT + "paiement-echoue";
-    public static final String GET_REGISTER_CARD_INFORMATIONS = ROOT + "enregistrement-de-carte";
-
+    public static final String CHECKOUT_PREPARE_PAYMENT = "preparer-le-paiement";
 
     public static final String TEMPLATE = ROOT + "template";
     public static final String LEGAL_MENTIONS = ROOT + "mentions-legales";

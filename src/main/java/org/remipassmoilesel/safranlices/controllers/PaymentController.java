@@ -9,11 +9,10 @@ import com.mangopay.core.enumerations.CurrencyIso;
 import com.mangopay.entities.*;
 import com.mangopay.entities.subentities.PayInExecutionDetailsDirect;
 import com.mangopay.entities.subentities.PayInPaymentDetailsCard;
+import org.json.simple.JSONObject;
 import org.remipassmoilesel.safranlices.Mappings;
 import org.remipassmoilesel.safranlices.Templates;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
-import org.remipassmoilesel.safranlices.entities.Expense;
-import org.remipassmoilesel.safranlices.entities.Product;
 import org.remipassmoilesel.safranlices.repositories.ExpenseRepository;
 import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
@@ -23,16 +22,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -77,12 +79,34 @@ public class PaymentController {
             HttpSession session,
             Model model) throws Exception {
 
+        // get current order
+        CommercialOrder order = (CommercialOrder) session.getAttribute(MainController.ORDER_SATTR);
+        if (order == null) {
+            return "redirect:" + Mappings.BASKET;
+        }
+
+        // dev vars
+        model.addAttribute("devmode", Utils.isDevProfileEnabled(env));
+        model.addAttribute("mainMailAddress", mainMailAdress);
+        model.addAttribute("order", order);
+        // TODO: check total, if expenses are included
+        model.addAttribute("total", order.getTotal());
+
+        Mappings.includeMappings(model);
+        return Templates.CHECKOUT_FORM;
+    }
+
+    @RequestMapping(value = Mappings.CHECKOUT_PREPARE_PAYMENT, method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Object preparePayment(HttpSession session) throws Exception {
+
         configureBankApi();
 
         // get current order
         CommercialOrder order = (CommercialOrder) session.getAttribute(MainController.ORDER_SATTR);
         if (order == null) {
-            return "redirect:" + Mappings.BASKET;
+            return new ResponseEntity("Order is empty", HttpStatus.BAD_REQUEST);
         }
 
         UserNatural user = createUser(order);
@@ -92,27 +116,19 @@ public class PaymentController {
 
         CardRegistration cardRegistration = createCardRegistration(user);
 
-        // dev vars
-        model.addAttribute("devmode", Utils.isDevProfileEnabled(env));
-        model.addAttribute("mainMailAddress", mainMailAdress);
-        model.addAttribute("order", order);
-        // TODO: check total, if expenses are included
-        model.addAttribute("total", order.getTotal());
+        JSONObject response = new JSONObject();
+        response.put("preRegistrationData", cardRegistration.getPreregistrationData());
 
-        // TODO: ask for these vars asynchronous ?
-        model.addAttribute("user", user);
-        model.addAttribute("preRegistrationData", cardRegistration.getPreregistrationData());
-        model.addAttribute("accessKey", cardRegistration.getAccessKey());
-        model.addAttribute("cardRegistrationUrl", cardRegistration.getCardRegistrationUrl());
-        model.addAttribute("cardId", cardRegistration.getId());
-        model.addAttribute("cardType", cardRegistration.getCardType().name());
-        model.addAttribute("mongoApiBaseUrl", api.getConfig().getBaseUrl());
-        model.addAttribute("mongoApiClientId", api.getConfig().getClientId());
+        response.put("accessKey", cardRegistration.getAccessKey());
+        response.put("cardRegistrationUrl", cardRegistration.getCardRegistrationUrl());
+        response.put("cardId", cardRegistration.getId());
+        response.put("cardType", cardRegistration.getCardType().name());
+        response.put("mangoApiBaseUrl", api.getConfig().getBaseUrl());
+        response.put("mangoApiClientId", api.getConfig().getClientId());
 
         session.setAttribute(CARD_REGISTRATION_ID_ATTR, cardRegistration.getId());
 
-        Mappings.includeMappings(model);
-        return Templates.CHECKOUT_FORM;
+        return response;
     }
 
     @RequestMapping(value = Mappings.CHECKOUT, method = RequestMethod.POST)

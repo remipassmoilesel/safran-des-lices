@@ -23,7 +23,8 @@
     "jquery-easing": "*",
     "imagehover.css": "*",
     "leaflet": "^1.1.0",
-    "mangopay-cardregistration-js-kit": "^1.2.2"
+    "mangopay-cardregistration-js-kit": "^1.2.2",
+    "animate.css": "^3.5.2"
   },
   "resolutions": {
     "jquery": "^3.2.1"

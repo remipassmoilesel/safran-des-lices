@@ -7,14 +7,16 @@
     <title>Payer mon panier</title>
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    
+
+    <link th:href="@{bower_components/animate.css/animate.css}" type="text/css" rel="stylesheet"/>
+
     <style>
-        .creditCardTable{
+        .creditCardForm {
             width: 60%;
             margin: auto;
         }
-        
-        .creditCardTable td{
+
+        .creditCardForm td {
             text-align: left;
         }
     </style>
@@ -31,102 +33,163 @@
                     <h2>Paiement en ligne</h2>
 
                     Le paiement est effectué via une connexion sécurisée. <br/>
-                    Le paiement est géré par l'entreprise française <a href="https://www.mangopay.com/fr/about-us/" target="_blank">MangoPay</a>,
-                     une filliale du groupe Crédit Mutuel.<br/>
+                    Le paiement est géré par l'entreprise française <a href="https://www.mangopay.com/fr/about-us/"
+                                                                       target="_blank">MangoPay</a>,
+                    une filliale du groupe Crédit Mutuel.<br/>
 
                     <div>&nbsp;</div>
 
-                    <table class="creditCardTable">
+                    <div class="interactionArea">Veuillez patienter ...</div>
+
+                    <div>&nbsp;</div>
+
+                    <table class="creditCardForm">
                         <tr>
                             <td colspan="2">Cartes acceptées: Visa et Mastercard.</td>
                         </tr>
                         <tr>
                             <td>Numéro de carte:</td>
-                            <td><input id="card_number" value="4970100000000154" class="form-control" /></td>
+                            <td><input id="card_number" value="4970100000000154" class="form-control"/></td>
                         </tr>
                         <tr>
                             <td>Date d'expiration (MMAA):</td>
-                            <td><input id="card_expiration_date" value="1020" class="form-control" /></td>
+                            <td><input id="card_expiration_date" value="1020" class="form-control"/></td>
                         </tr>
                         <tr>
                             <td>Code cvx:</td>
-                            <td><input id="card_cvx" value="123" class="form-control" /></td>
+                            <td><input id="card_cvx" value="123" class="form-control"/></td>
                         </tr>
-                        <tr><td>&nbsp;</td></tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
                         <tr>
                             <td colspan="2" style="text-align: center">
                                 <button id="process" class="btn btn-primary">Paiement sécurisé</button>
                             </td>
                         </tr>
-                        <tr>
-                            <td colspan="2">
-                                <div id="result"></div>
-                            </td>
-                        </tr>
                     </table>
+
+
+                    <script th:src="@{bower_components/mangopay-cardregistration-js-kit/kit/mangopay-kit.js}"
+                            type="text/javascript"></script>
+                    <script th:src="@{bower_components/letteringjs/jquery.lettering.js}"
+                            type="text/javascript"></script>
+                    <script th:src="@{bower_components/textillate/jquery.textillate.js}"
+                            type="text/javascript"></script>
 
                     <script type="text/javascript" th:inline="javascript">
 
+                        "use strict";
+
+                        var preparePaymentUrl = /*[[${mappings.get('CHECKOUT_PREPARE_PAYMENT')}]]*/ null;
+
                         $(function () {
 
-                            $("#process").click(function () {
+                            var interArea = $(".interactionArea");
+                            var formTable = $(".creditCardForm");
 
-                                var resultDiv = document.getElementById("result");
-                                resultDiv.innerHTML = "Processing...";
-                                resultDiv.style.color = "black";
+                            var showWaitMessage = function () {
+                                interArea.html("Veullez patienter ...");
+                                interArea.addClass("animated infinite pulse");
+                            };
 
-                                // Card register data prepared on the server
-                                var cardRegisterData = {
-                                    cardRegistrationURL: /*[[${cardRegistrationUrl}]]*/ null,
-                                    preregistrationData: /*[[${preRegistrationData}]]*/ null,
-                                    accessKey: /*[[${accessKey}]]*/ null,
-                                    Id: /*[[${cardId}]]*/ null
-                                };
+                            var stopWaitMessage = function () {
+                                var p = $.Deferred();
+                                interArea.animate({opacity: 0}, 600, function () {
+                                    interArea.html("");
+                                    interArea.removeClass("animated infinite pulse");
+                                    interArea.css({opacity: 1});
+                                    p.resolve();
+                                });
 
-                                // Card data collected from the user
-                                var cardData = {
-                                    cardNumber: document.getElementById("card_number").value,
-                                    cardExpirationDate: document.getElementById("card_expiration_date").value,
-                                    cardCvx: document.getElementById("card_cvx").value,
-                                    cardType: /*[[${cardType}]]*/ null
-                                };
+                                return p;
+                            };
 
-                                // Set MangoPay API base URL and Client ID
-                                mangoPay.cardRegistration.baseURL = /*[[${mongoApiBaseUrl}]]*/ null;
-                                mangoPay.cardRegistration.clientId = /*[[${mongoApiClientId}]]*/ null
+                            var showErrorMessage = function (msg) {
+                                interArea.html(msg);
+                                interArea.css({color: "darkRed"});
+                            };
 
-                                // Initialize the CardRegistration Kit
-                                mangoPay.cardRegistration.init(cardRegisterData);
+                            // prepare payment
+                            showWaitMessage();
+                            $.post(preparePaymentUrl).then(function (response) {
 
-                                // Register card
-                                mangoPay.cardRegistration.registerCard(cardData,
-                                    function (res) {
-                                        var message = 'Card has been succesfully registered under the Card Id ' + res.CardId + '.<br />';
-                                        message += 'Card is now ready to use e.g. in a «Direct PayIn» Object.';
-                                        resultDiv.innerHTML = message;
-                                        resultDiv.style.color = "green";
-                                    },
-                                    function (res) {
-                                        var message = 'Error occured while registering the card.<br />';
-                                        message += 'Code: ' + res.ResultCode + ', message: ' + res.ResultMessage;
-                                        resultDiv.innerHTML = message;
-                                        resultDiv.style.color = "red";
-                                    }
-                                );
-                            });
+                                console.log("response");
+                                console.log(response);
 
+                                formTable.fadeIn(1000, function(){
+                                    stopWaitMessage()
+                                });
+
+                                // process payment on click
+                                $("#process").click(function () {
+
+                                    showWaitMessage();
+
+                                    // Card register data prepared on the server
+                                    var cardRegisterData = {
+                                        cardRegistrationURL: response.cardRegistrationURL,
+                                        preregistrationData: response.preregistrationData,
+                                        accessKey: response.preregistrationData,
+                                        Id: response.cardId
+                                    };
+
+                                    // Card data collected from the user
+                                    var cardData = {
+                                        cardNumber: document.getElementById("card_number").value,
+                                        cardExpirationDate: document.getElementById("card_expiration_date").value,
+                                        cardCvx: document.getElementById("card_cvx").value,
+                                        cardType: response.cardType
+                                    };
+
+                                    // Set MangoPay API base URL and Client ID
+                                    mangoPay.cardRegistration.baseURL = response.mangoApiBaseUrl;
+                                    mangoPay.cardRegistration.clientId = response.mangoApiClientId;
+
+                                    // Initialize the CardRegistration Kit
+                                    mangoPay.cardRegistration.init(cardRegisterData);
+
+                                    // Register card
+                                    // TODO: pay
+                                    mangoPay.cardRegistration.registerCard(cardData,
+                                        function (res) {
+
+                                            stopWaitMessage();
+
+                                            var message = 'Card has been succesfully registered under the Card Id ' + res.CardId + '.<br />';
+                                            message += 'Card is now ready to use e.g. in a «Direct PayIn» Object.';
+                                            interArea.html(message);
+
+                                            console.log("res");
+                                            console.log(res);
+                                        },
+                                        function (res) {
+
+                                            stopWaitMessage();
+
+                                            var message = 'Error occured while registering the card.<br />';
+                                            message += 'Code: ' + res.ResultCode + ', message: ' + res.ResultMessage;
+                                            interArea.html(message);
+
+                                            console.log("res");
+                                            console.log(res);
+                                        }
+                                    );
+                                });
+
+                            })
+                                .catch(function () {
+                                    stopWaitMessage().then(function () {
+                                        showErrorMessage("Une erreur est survenue pendant la préparation du paiement, veuillez réessayer plus tard.");
+                                    });
+                                });
                         });
 
-
                     </script>
-
-                    <script type="text/javascript"
-                            th:src="@{bower_components/mangopay-cardregistration-js-kit/kit/mangopay-kit.js}"></script>
-
-
                 </div>
             </div>
         </div>
+
 
     </section>
 
