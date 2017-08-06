@@ -18,7 +18,9 @@
       dest: "/opt/safran-des-lices"
 
   - name: "Update application dependencies"
-    raw: "cd /opt/safran-des-lices/src/main/resources/static && bower --allow-root install"
+    bower:
+      path: "/opt/safran-des-lices/src/main/resources/static"
+      production: "yes"
 
   - name: "Package application"
     raw: "source /opt/tomcat/bin/setenv-safran-lices.sh && cd /opt/safran-des-lices && mvn package"

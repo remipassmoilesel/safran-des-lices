@@ -1,6 +1,6 @@
 {
   "name": "static",
-  "homepage": "https://github.com/remipassmoilesel/abcmap-fr",
+  "homepage": "https://github.com/remipassmoilesel/safran-des-lices",
   "authors": [
     "remi.passmoilesel <remi.passmoilesel@gmail.com>"
   ],
@@ -24,5 +24,8 @@
     "imagehover.css": "*",
     "leaflet": "^1.1.0",
     "mangopay-cardregistration-js-kit": "^1.2.2"
+  },
+  "resolutions": {
+    "jquery": "^3.2.1"
   }
 }
