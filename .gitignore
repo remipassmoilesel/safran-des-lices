@@ -7,7 +7,6 @@ setenv-prod.sh
 
 bower_components
 *.swp
-.mvn
 .scannerwork
 tomcat-logs
 node_modules
