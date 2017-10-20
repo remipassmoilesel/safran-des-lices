@@ -1,0 +1,21 @@
+version: '3'
+services:
+  webapp:
+    build: ./app
+    image: safra-des-lices:1.0
+    container_name: safra-des-lices
+    ports:
+     - "8080:8080"
+    restart: always
+  db:
+    image: mysql:8.0.3
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: safran-des-lices
+      MYSQL_USER: safran-des-lices
+      MYSQL_PASSWORD: safran-des-lices
+volumes:
+  db_data:

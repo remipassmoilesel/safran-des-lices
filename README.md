@@ -12,8 +12,6 @@ Clone the project:
 
     $ git clone https://github.com/remipassmoilesel/safran-des-lices
     $ cd safran-des-lices
-    $ git submodule init
-    $ git submodule update
     
 Configure a database:
 
@@ -25,3 +23,6 @@ Launch embedded HTTP server:
 
 After visit http://localhost:8085 .
 
+## TODO
+
+Docker compose
