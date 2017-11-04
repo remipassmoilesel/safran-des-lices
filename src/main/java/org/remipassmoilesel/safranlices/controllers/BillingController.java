@@ -10,6 +10,7 @@ import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
 import org.remipassmoilesel.safranlices.utils.Mailer;
 import org.remipassmoilesel.safranlices.utils.ThreadExecutor;
+import org.remipassmoilesel.safranlices.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +21,13 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -188,8 +193,7 @@ public class BillingController {
         }
 
         String billId = PdfBillGenerator.getPdfName(order);
-        String billUrl = Mappings.SHOW_BILL + "?id=" + billId;
-        session.setAttribute(AUTHORIZED_BILL_ID_SATTR,billId );
+        session.setAttribute(AUTHORIZED_BILL_ID_SATTR, billId);
 
         List<Product> products = productRepository.findAll(false);
         List<Expense> expenses = expenseRepository.findAll(false);
@@ -199,10 +203,30 @@ public class BillingController {
 
         model.addAttribute("order", order);
         model.addAttribute("total", total);
-        model.addAttribute("id", billUrl);
+        model.addAttribute("billId", billId);
 
         Mappings.includeMappings(model);
         return Templates.CHECKOUT_END;
+    }
+
+    @RequestMapping(value = Mappings.SHOW_BILL, method = RequestMethod.GET)
+    public String showBill(@RequestParam(value = "id") String billId,
+                           HttpSession session,
+                           HttpServletResponse response) throws IOException {
+
+        // check if user authorization
+        String authorizedPdf = (String) session.getAttribute(AUTHORIZED_BILL_ID_SATTR);
+
+        if (authorizedPdf == null) {
+            logger.error("Access refused on bill display");
+            return "redirect:" + Mappings.ROOT;
+        }
+
+        // display bill
+        Path path = PdfBillGenerator.getPdfAbsolutePath(authorizedPdf);
+
+        Utils.pdfResponse(response, path);
+        return "";
     }
 
     private void generatePdfBillThenNotify(

@@ -36,6 +36,15 @@ public class PdfBillGenerator {
 
     private static List<String> addressContent;
 
+
+    public static String getPdfName(CommercialOrder order) {
+        return order.getFormattedDate("yyyy-MM-dd_HH-mm-ss") + "_" + order.getLastName() + "_" + order.getFirstName() + ".pdf";
+    }
+
+    public static Path getPdfAbsolutePath(String name) {
+        return PDF_ROOT.resolve(name).toAbsolutePath();
+    }
+
     public Path generateBill(CommercialOrder order,
                              List<Product> products, double total) throws IOException, DocumentException {
 
@@ -224,14 +233,6 @@ public class PdfBillGenerator {
         }
     }
 
-    public static String getPdfName(CommercialOrder order) {
-        return order.getFormattedDate("yyyy-MM-dd_HH-mm-ss") + "_" + order.getLastName() + "_" + order.getFirstName() + ".pdf";
-    }
-
-    private Path getPdfAbsolutePath(String name) {
-        return PDF_ROOT.resolve(name).toAbsolutePath();
-    }
-
     private void createPdfRoot() throws IOException {
         if (Files.isDirectory(PDF_ROOT) == false) {
             Files.createDirectories(PDF_ROOT);
@@ -246,4 +247,5 @@ public class PdfBillGenerator {
 
         return addressContent;
     }
+
 }

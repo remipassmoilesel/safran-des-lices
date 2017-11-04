@@ -9,18 +9,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.w3c.dom.Node;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.StringWriter;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Created by remipassmoilesel on 12/06/17.
@@ -107,7 +109,7 @@ public class Utils {
 
         HashMap<Product, Integer> productsWithQuantities = new HashMap<>();
 
-        for(Long productId : basket.getProductIds()){
+        for (Long productId : basket.getProductIds()) {
 
             Product p = allProducts.stream()
                     .filter(pf -> productId.equals(pf.getId()))
@@ -121,5 +123,36 @@ public class Utils {
 
     public static boolean isDevProfileEnabled(Environment env) {
         return Arrays.asList(env.getActiveProfiles()).contains(SafranLicesApplication.DEV_PROFILE);
+    }
+
+
+    public static byte[] readPdf(Path pdfPath) throws IOException {
+
+        // display it
+        try (InputStream pdfInputStream = Files.newInputStream(pdfPath)) {
+
+            byte[] buffer = new byte[8192];
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+            int bytesRead;
+            while ((bytesRead = pdfInputStream.read(buffer)) != -1) {
+                baos.write(buffer, 0, bytesRead);
+            }
+            return baos.toByteArray();
+        }
+
+    }
+
+    public static void pdfResponse(HttpServletResponse response, Path pdfPath) throws IOException {
+
+        byte[] content = readPdf(pdfPath);
+
+        response.setContentType("application/pdf");
+        response.setHeader("Content-disposition", "inline; filename='output.pdf'");
+        response.setContentLength(content.length);
+
+        response.getOutputStream().write(content);
+        response.getOutputStream().flush();
+
     }
 }

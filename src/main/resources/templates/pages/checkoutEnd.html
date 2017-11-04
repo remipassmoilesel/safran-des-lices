@@ -18,17 +18,17 @@
             <div class="header-section text-center">
                 <h2>Commande enregistrée</h2>
 
-                <p>Votre commande a bien été prise en compte.<br/>
-                    Elle sera envoyée dès réception de votre paiement. </p>
+                <p><b>Votre commande a bien été prise en compte.<br/>
+                    Elle sera envoyée dès réception de votre paiement. </b></p>
 
                 <p>Une facture va vous être envoyée par mail dans quelques secondes,<br/>
                 vous pouvez également la consulter
-                    <a th:href="@{${billUrl}}">en cliquant ici</a>.</p>
+                    <a th:href="@{${mappings.get('SHOW_BILL')}(id=${billId})}">en cliquant ici</a>.</p>
 
             </div>
         </div>
 
-        <div class="row checkoutPaymentBlock text-center">
+        <div class="row checkout-payment-block text-center">
 
             <div class="col-md-offset-2 col-md-8" th:if="${order.getPaymentType().toString()} eq 'BANK_CHECK'">
 
