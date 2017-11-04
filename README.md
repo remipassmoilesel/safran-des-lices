@@ -13,6 +13,11 @@ Clone the project:
     $ git clone https://github.com/remipassmoilesel/safran-des-lices
     $ cd safran-des-lices
     
+Install dependencies:    
+    
+    $ src/main/resources/static
+    $ bower install
+    
 Configure a database:
 
     $ ./setup-db.sh

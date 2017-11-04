@@ -6,7 +6,7 @@ setenv-prod.sh
 *.retry
 
 bower_components
-*.swp
+*.swpro
 .scannerwork
 tomcat-logs
 node_modules
