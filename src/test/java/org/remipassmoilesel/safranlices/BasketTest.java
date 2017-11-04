@@ -3,7 +3,7 @@ package org.remipassmoilesel.safranlices;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.remipassmoilesel.safranlices.controllers.MainController;
+import org.remipassmoilesel.safranlices.controllers.OrderController;
 import org.remipassmoilesel.safranlices.entities.Basket;
 import org.remipassmoilesel.safranlices.entities.Expense;
 import org.remipassmoilesel.safranlices.entities.Product;
@@ -42,7 +42,7 @@ public class BasketTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private MainController mainController;
+    private OrderController checkoutController;
 
     @Autowired
     private ProductRepository productRepository;
@@ -52,7 +52,7 @@ public class BasketTest {
 
     @Before
     public void setup() throws IOException {
-        mockMvc = MockMvcBuilders.standaloneSetup(mainController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(checkoutController).build();
     }
 
     @Test

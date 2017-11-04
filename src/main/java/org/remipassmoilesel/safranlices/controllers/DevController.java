@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
+ * Controller used for development purposes
  * Created by remipassmoilesel on 13/06/17.
  */
 @Controller
@@ -60,21 +61,13 @@ public class DevController {
 
         if ("admin".equals(type)) {
             mailer.sendAdminNotification(order);
-        }
-
-        else if ("client-order-confirmed".equals(type)) {
+        } else if ("client-order-confirmed".equals(type)) {
             mailer.sendClientNotification(OrderNotificationType.ORDER_CONFIRMED, order);
-        }
-
-        else if ("client-order-failed".equals(type)) {
+        } else if ("client-order-failed".equals(type)) {
             mailer.sendClientNotification(OrderNotificationType.PAYMENT_FAILED, order);
-        }
-
-        else if ("client-order-sent".equals(type)) {
+        } else if ("client-order-sent".equals(type)) {
             mailer.sendClientNotification(OrderNotificationType.ORDER_SENT, order);
-        }
-
-        else {
+        } else {
             throw new Exception("Unknown type: " + type);
         }
 
@@ -95,23 +88,15 @@ public class DevController {
         HashMap<Product, Integer> productsWithQuantities = Utils.mapProductWithQuantities(products, order);
         model.addAttribute("productsWithQuantities", productsWithQuantities);
 
-        if("admin".equals(type)){
+        if ("admin".equals(type)) {
             return "mail/admin";
-        }
-
-        else if("order-confirmed".equals(type)){
+        } else if ("order-confirmed".equals(type)) {
             return "mail/orderConfirmed";
-        }
-
-        else if("order-failed".equals(type)){
+        } else if ("order-failed".equals(type)) {
             return "mail/orderFailed";
-        }
-
-        else if("order-sent".equals(type)){
+        } else if ("order-sent".equals(type)) {
             return "mail/orderSent";
-        }
-
-        else {
+        } else {
             throw new Exception("Unknown type: " + type);
         }
 

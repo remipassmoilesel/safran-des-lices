@@ -4,19 +4,16 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.remipassmoilesel.safranlices.controllers.MainController;
-import org.remipassmoilesel.safranlices.entities.Product;
+import org.remipassmoilesel.safranlices.controllers.StaticController;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -31,19 +28,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @ActiveProfiles(SafranLicesApplication.DEV_PROFILE)
-public class MainControllerTest {
+public class StaticControllerTest {
 
     private MockMvc mockMvc;
 
     @Autowired
-    private MainController mainController;
-
-    @Autowired
-    private ProductRepository productRepository;
+    private StaticController staticController;
 
     @Before
     public void setup() throws IOException {
-        mockMvc = MockMvcBuilders.standaloneSetup(mainController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(staticController).build();
     }
 
     @Test
@@ -68,48 +62,27 @@ public class MainControllerTest {
     }
 
     @Test
-    public void testProducts() throws Exception {
-
-        // show products
-        MvcResult result = mockMvc.perform(get(Mappings.ORDER))
-                .andExpect(status().isOk())
-                .andExpect(model().attributeExists("products"))
-                .andExpect(model().attributeExists(Mappings.MODEL_ARGUMENT_NAME))
-                .andReturn();
-
-        ArrayList<Product> sortedProducts = (ArrayList<Product>) result.getModelAndView().getModel().get("products");
-        assertTrue(sortedProducts.size() > 0);
-    }
-
-
-    @Test
     @Ignore
-    public void testDependencies() throws Exception {
+    public void testIfDependenciesInstalled() throws Exception {
 
         List<String> dependencies = Arrays.asList(
                 "favicon.ico",
                 "bower_components/imagehover.css/css/imagehover.min.css",
                 "bower_components/font-awesome/css/font-awesome.min.css",
+
                 "bower_components/lightbox2/dist/css/lightbox.min.css",
-                "bower_components/bootstrap/dist/css/bootstrap.min.css",
-                "bower_components/jquery/dist/jquery.js",
                 "bower_components/lightbox2/dist/js/lightbox.js",
-                "bower_components/jquery/dist/jquery.min.js",
-                "bower_components/jquery-easing/jquery.easing.min.js",
+
                 "bower_components/bootstrap/dist/css/bootstrap.min.css",
-                "bower_components/font-awesome/css/font-awesome.min.css",
-                "bower_components/imagehover.css/css/imagehover.min.css",
-                "bower_components/lightbox2/dist/css/lightbox.min.css",
+                "bower_components/bootstrap/dist/js/bootstrap.min.js",
+
                 "bower_components/jquery/dist/jquery.js",
-                "bower_components/lightbox2/dist/js/lightbox.js",
                 "bower_components/jquery/dist/jquery.min.js",
                 "bower_components/jquery-easing/jquery.easing.min.js",
-                "bower_components/bootstrap/dist/js/bootstrap.min.js",
-                "bower_components/jquery/dist/jquery.min.js",
-                "bower_components/jquery-easing/jquery.easing.min.js",
-                "bower_components/bootstrap/dist/js/bootstrap.min.js",
+
                 "bower_components/leaflet/dist/leaflet.css",
-                "bower_components/leaflet/dist/leaflet.js");
+                "bower_components/leaflet/dist/leaflet.js"
+        );
 
         // test if ressources are available
         for(String s : dependencies){

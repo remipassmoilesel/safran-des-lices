@@ -1,4 +1,4 @@
-package org.remipassmoilesel.safranlices.controllers;
+package org.remipassmoilesel.safranlices.controllers.dataLoaders;
 
 import org.joda.time.DateTime;
 import org.remipassmoilesel.safranlices.entities.Basket;

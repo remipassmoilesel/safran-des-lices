@@ -3,7 +3,8 @@ package org.remipassmoilesel.safranlices;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.remipassmoilesel.safranlices.controllers.MainController;
+import org.remipassmoilesel.safranlices.controllers.BillingController;
+import org.remipassmoilesel.safranlices.controllers.OrderController;
 import org.remipassmoilesel.safranlices.entities.Expense;
 import org.remipassmoilesel.safranlices.entities.Product;
 import org.remipassmoilesel.safranlices.repositories.ExpenseRepository;
@@ -20,6 +21,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -34,12 +36,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @ActiveProfiles(SafranLicesApplication.DEV_PROFILE)
-public class CheckoutTest {
+public class BillingTest {
 
     private MockMvc mockMvc;
 
     @Autowired
-    private MainController mainController;
+    private OrderController orderController;
+
+    @Autowired
+    private BillingController checkoutController;
 
     @Autowired
     private ProductRepository productRepository;
@@ -49,7 +54,7 @@ public class CheckoutTest {
 
     @Before
     public void setup() throws IOException {
-        mockMvc = MockMvcBuilders.standaloneSetup(mainController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(orderController, checkoutController).build();
     }
 
     @Test
@@ -114,16 +119,20 @@ public class CheckoutTest {
 
     }
 
+
     @Test
-    public void testRedirection() throws Exception {
+    public void testProducts() throws Exception {
 
-        // try to set payment confirmed when basket is empty
-        mockMvc.perform(get(Mappings.CHECKOUT_CONFIRMED))
-                .andExpect(status().is3xxRedirection());
+        // show products
+        MvcResult result = mockMvc.perform(get(Mappings.ORDER))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("products"))
+                .andExpect(model().attributeExists(Mappings.MODEL_ARGUMENT_NAME))
+                .andReturn();
 
-        mockMvc.perform(get(Mappings.CHECKOUT_FAILED))
-                .andExpect(status().is3xxRedirection());
-
+        ArrayList<Product> sortedProducts = (ArrayList<Product>) result.getModelAndView().getModel().get("products");
+        assertTrue(sortedProducts.size() > 0);
     }
+
 
 }

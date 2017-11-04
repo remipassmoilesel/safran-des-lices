@@ -22,17 +22,13 @@ public class Mappings {
     public static final String ORDER = ROOT + "commander";
     public static final String BASKET = ROOT + "mon-panier";
     public static final String BILLING_FORM = ROOT + "facturation";
-    public static final String CHECKOUT = ROOT + "paiement-securise";
     public static final String CHECKOUT_END = "fin-de-commande";
-
-    public static final String CHECKOUT_CONFIRMED = ROOT + "paiement-confirme";
-    public static final String CHECKOUT_FAILED = ROOT + "paiement-echoue";
-    public static final String CHECKOUT_PREPARE_PAYMENT = "preparer-le-paiement";
 
     public static final String TEMPLATE = ROOT + "template";
     public static final String LEGAL_MENTIONS = ROOT + "mentions-legales";
 
     public static final String ERROR = ROOT + "error";
+
     public static final String ADMIN_PAGE = ROOT + "admin";
     public static final String ADMIN_LOGIN = ADMIN_PAGE + "/login";
     public static final String ADMIN_LOGOUT = ADMIN_PAGE + "/logout";
