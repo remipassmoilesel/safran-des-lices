@@ -4,6 +4,7 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
+import org.remipassmoilesel.safranlices.entities.Expense;
 import org.remipassmoilesel.safranlices.entities.Product;
 import org.remipassmoilesel.safranlices.utils.Utils;
 
@@ -35,7 +36,8 @@ public class PdfBillGenerator {
 
     private static List<String> addressContent;
 
-    public Path generateBill(CommercialOrder order, List<Product> products) throws IOException, DocumentException {
+    public Path generateBill(CommercialOrder order,
+                             List<Product> products, double total) throws IOException, DocumentException {
 
         String pdfName = getPdfName(order);
 
@@ -56,11 +58,53 @@ public class PdfBillGenerator {
             addCommandHeader(document, order);
             addCustomerInformations(document, order);
             addOrder(document, order, products);
+            addExpenses(document, order);
+
+            addTotal(document, total);
 
             document.close();
         }
 
         return absoluteDocPath;
+    }
+
+    private void addExpenses(Document document, CommercialOrder order) throws DocumentException {
+
+        Paragraph header = new Paragraph();
+
+        header.add(Chunk.NEWLINE);
+        Chunk title = new Chunk("Frais");
+        title.setFont(TITLE_2_FONT);
+        header.add(title);
+        header.add(Chunk.NEWLINE);
+        header.add(Chunk.NEWLINE);
+
+        PdfPTable table = new PdfPTable(2);
+
+        table.addCell("Désignation");
+        table.addCell("Montant");
+
+        for (Expense expense : order.getExpenses()) {
+            table.addCell(expense.getName());
+            table.addCell(String.valueOf(expense.getValue()));
+        }
+
+        document.add(header);
+        document.add(table);
+    }
+
+    private void addTotal(Document document, Double total) throws DocumentException {
+
+        Paragraph content = new Paragraph();
+
+        content.add(Chunk.NEWLINE);
+        Chunk title = new Chunk("Total: " + total + " €");
+        title.setFont(TITLE_2_FONT);
+        content.add(title);
+        content.add(Chunk.NEWLINE);
+        content.add(Chunk.NEWLINE);
+
+        document.add(content);
     }
 
     private void addOrder(Document document, CommercialOrder order, List<Product> products) throws DocumentException {
@@ -75,14 +119,14 @@ public class PdfBillGenerator {
 
         PdfPTable table = new PdfPTable(3);
 
-        table.addCell("Nom");
+        table.addCell("Article");
         table.addCell("Prix unitaire");
         table.addCell("Quantité");
 
         HashMap<Product, Integer> productMap = Utils.mapProductWithQuantities(products, order);
 
         Iterator<Product> iter = productMap.keySet().iterator();
-        while(iter.hasNext()){
+        while (iter.hasNext()) {
             Product product = iter.next();
             Integer quantity = productMap.get(product);
 

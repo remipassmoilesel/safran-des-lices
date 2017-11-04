@@ -1,9 +1,6 @@
 package org.remipassmoilesel.safranlices.utils;
 
-import org.remipassmoilesel.safranlices.entities.Basket;
-import org.remipassmoilesel.safranlices.entities.CommercialOrder;
-import org.remipassmoilesel.safranlices.entities.PaymentType;
-import org.remipassmoilesel.safranlices.entities.Product;
+import org.remipassmoilesel.safranlices.entities.*;
 
 import java.util.*;
 
@@ -58,7 +55,8 @@ public class DevDataFactory {
                                               String address, String phonenumber,
                                               String firstName, String lastName,
                                               PaymentType paymentType,
-                                              String comment, String email) {
+                                              String comment, String email,
+                                              List<Expense> expenses) {
 
         if (date == null) {
             date = new Date();
@@ -107,6 +105,10 @@ public class DevDataFactory {
             email = "jeanEdouard" + System.currentTimeMillis() + "@mail.com";
         }
 
+        if (expenses == null) {
+            expenses = Arrays.asList(new Expense("Frais de port", 5d));
+        }
+
         String postalCode = "35582";
         String city = "Montpellier";
         String shipmentAddress = Utils.generateLoremIpsum(20);
@@ -115,7 +117,7 @@ public class DevDataFactory {
 
         return new CommercialOrder(date, products, basket, address, postalCode, city, shipmentAddress,
                 shipmentPostalcode, shipmentCity, phonenumber, firstName, lastName,
-                paymentType, comment, email);
+                paymentType, comment, email, expenses);
     }
 
     public static List<Product> createSampleProductList() {

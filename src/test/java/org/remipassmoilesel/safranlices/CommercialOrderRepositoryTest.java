@@ -14,9 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import static org.junit.Assert.assertTrue;
 
@@ -50,7 +48,7 @@ public class CommercialOrderRepositoryTest {
         for (int i = 0; i < nbr; i++) {
             CommercialOrder order = DevDataFactory.createOrder(null, products, null,
                     null, null, null,
-                    null, null, null, null);
+                    null, null, null, null,null);
             orderRepository.save(order);
         }
 

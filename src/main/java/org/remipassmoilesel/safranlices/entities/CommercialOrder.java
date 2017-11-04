@@ -56,6 +56,9 @@ public class CommercialOrder {
 
     private Date lastShipmentNotification;
 
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    private List<Expense> expenses;
+
     public CommercialOrder() {
     }
 
@@ -68,7 +71,8 @@ public class CommercialOrder {
                            String shipmentCity, String phonenumber,
                            String firstName, String lastName,
                            PaymentType paymentType,
-                           String comment, String email) {
+                           String comment, String email,
+                           List<Expense> expenses) {
         this.date = date;
         this.products = products;
         this.quantities = basket.getProductMap();
@@ -85,6 +89,7 @@ public class CommercialOrder {
         this.total = total;
         this.comment = comment;
         this.email = email;
+        this.expenses = expenses;
     }
 
     public HashMap<Long, Integer> getQuantities() {
@@ -251,37 +256,73 @@ public class CommercialOrder {
         this.shipmentCity = shipmentCity;
     }
 
+    public List<Expense> getExpenses() {
+        return expenses;
+    }
+
+    public void setExpenses(List<Expense> expenses) {
+        this.expenses = expenses;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         CommercialOrder that = (CommercialOrder) o;
-        return paid == that.paid &&
-                processed == that.processed &&
-                Objects.equals(id, that.id) &&
-                Objects.equals(date, that.date) &&
-                Objects.equals(products, that.products) &&
-                Objects.equals(quantities, that.quantities) &&
-                Objects.equals(address, that.address) &&
-                Objects.equals(postalcode, that.postalcode) &&
-                Objects.equals(city, that.city) &&
-                Objects.equals(shipmentAddress, that.shipmentAddress) &&
-                Objects.equals(shipmentPostalcode, that.shipmentPostalcode) &&
-                Objects.equals(shipmentCity, that.shipmentCity) &&
-                Objects.equals(phonenumber, that.phonenumber) &&
-                Objects.equals(firstName, that.firstName) &&
-                Objects.equals(lastName, that.lastName) &&
-                paymentType == that.paymentType &&
-                Objects.equals(total, that.total) &&
-                Objects.equals(comment, that.comment) &&
-                Objects.equals(email, that.email) &&
-                Objects.equals(lastShipmentNotification, that.lastShipmentNotification);
+
+        if (paid != that.paid) return false;
+        if (processed != that.processed) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (date != null ? !date.equals(that.date) : that.date != null) return false;
+        if (products != null ? !products.equals(that.products) : that.products != null) return false;
+        if (quantities != null ? !quantities.equals(that.quantities) : that.quantities != null) return false;
+        if (address != null ? !address.equals(that.address) : that.address != null) return false;
+        if (postalcode != null ? !postalcode.equals(that.postalcode) : that.postalcode != null) return false;
+        if (city != null ? !city.equals(that.city) : that.city != null) return false;
+        if (shipmentAddress != null ? !shipmentAddress.equals(that.shipmentAddress) : that.shipmentAddress != null)
+            return false;
+        if (shipmentPostalcode != null ? !shipmentPostalcode.equals(that.shipmentPostalcode) : that.shipmentPostalcode != null)
+            return false;
+        if (shipmentCity != null ? !shipmentCity.equals(that.shipmentCity) : that.shipmentCity != null) return false;
+        if (phonenumber != null ? !phonenumber.equals(that.phonenumber) : that.phonenumber != null) return false;
+        if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) return false;
+        if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) return false;
+        if (paymentType != that.paymentType) return false;
+        if (total != null ? !total.equals(that.total) : that.total != null) return false;
+        if (comment != null ? !comment.equals(that.comment) : that.comment != null) return false;
+        if (email != null ? !email.equals(that.email) : that.email != null) return false;
+        if (lastShipmentNotification != null ? !lastShipmentNotification.equals(that.lastShipmentNotification) : that.lastShipmentNotification != null)
+            return false;
+        return expenses != null ? expenses.equals(that.expenses) : that.expenses == null;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, date, products, quantities, address, postalcode, city, shipmentAddress, shipmentPostalcode, shipmentCity, phonenumber, firstName, lastName, paymentType, total, comment, paid, processed, email, lastShipmentNotification);
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (date != null ? date.hashCode() : 0);
+        result = 31 * result + (products != null ? products.hashCode() : 0);
+        result = 31 * result + (quantities != null ? quantities.hashCode() : 0);
+        result = 31 * result + (address != null ? address.hashCode() : 0);
+        result = 31 * result + (postalcode != null ? postalcode.hashCode() : 0);
+        result = 31 * result + (city != null ? city.hashCode() : 0);
+        result = 31 * result + (shipmentAddress != null ? shipmentAddress.hashCode() : 0);
+        result = 31 * result + (shipmentPostalcode != null ? shipmentPostalcode.hashCode() : 0);
+        result = 31 * result + (shipmentCity != null ? shipmentCity.hashCode() : 0);
+        result = 31 * result + (phonenumber != null ? phonenumber.hashCode() : 0);
+        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + (paymentType != null ? paymentType.hashCode() : 0);
+        result = 31 * result + (total != null ? total.hashCode() : 0);
+        result = 31 * result + (comment != null ? comment.hashCode() : 0);
+        result = 31 * result + (paid ? 1 : 0);
+        result = 31 * result + (processed ? 1 : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (lastShipmentNotification != null ? lastShipmentNotification.hashCode() : 0);
+        result = 31 * result + (expenses != null ? expenses.hashCode() : 0);
+        return result;
     }
+
 
     @Override
     public String toString() {
@@ -306,6 +347,7 @@ public class CommercialOrder {
                 ", processed=" + processed +
                 ", email='" + email + '\'' +
                 ", lastShipmentNotification=" + lastShipmentNotification +
+                ", expenses=" + expenses +
                 '}';
     }
 

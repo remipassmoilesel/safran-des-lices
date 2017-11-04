@@ -3,6 +3,7 @@ package org.remipassmoilesel.safranlices.controllers;
 import org.remipassmoilesel.safranlices.Mappings;
 import org.remipassmoilesel.safranlices.bill.PdfBillGenerator;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
+import org.remipassmoilesel.safranlices.entities.Expense;
 import org.remipassmoilesel.safranlices.entities.OrderNotificationType;
 import org.remipassmoilesel.safranlices.entities.Product;
 import org.remipassmoilesel.safranlices.repositories.ExpenseRepository;
@@ -66,16 +67,15 @@ public class DevController {
         PdfBillGenerator generator = new PdfBillGenerator();
 
         // create a fake order
-        List<Product> products = DevDataFactory.createSampleProductList();
-        for (Product prod : products) {
-            prod.setId((long) products.indexOf(prod));
-        }
+        List<Product> products = productRepository.findAll(false);
 
         CommercialOrder order = DevDataFactory.createOrder(null, products, null, null,
-                null, null, null, null, null, null);
+                null, null, null, null, null, null, null);
+
+        List<Expense> expenses = expenseRepository.findAll();
 
         // generate pdf
-        Path pdfPath = generator.generateBill(order, products);
+        Path pdfPath = generator.generateBill(order, products, 88.8);
 
         // display it
         InputStream pdfInputStream = Files.newInputStream(pdfPath);
@@ -101,7 +101,8 @@ public class DevController {
         }
 
         List<Product> products = productRepository.findAll(false);
-        CommercialOrder order = DevDataFactory.createOrder(null, products, null, null, null, null, null, null, null, null);
+        CommercialOrder order = DevDataFactory.createOrder(null, products, null, null, null,
+                null, null, null, null, null, null);
 
         if ("admin".equals(type)) {
             mailer.sendAdminNotification(order);
@@ -126,7 +127,8 @@ public class DevController {
 
         List<Product> products = productRepository.findAll(false);
 
-        CommercialOrder order = DevDataFactory.createOrder(null, products, null, null, null, null, null, null, null, null);
+        CommercialOrder order = DevDataFactory.createOrder(null, products, null, null,
+                null, null, null, null, null, null, null);
         model.addAttribute("order", order);
 
         HashMap<Product, Integer> productsWithQuantities = Utils.mapProductWithQuantities(products, order);

@@ -2,12 +2,14 @@ package org.remipassmoilesel.safranlices.controllers;
 
 import org.remipassmoilesel.safranlices.Mappings;
 import org.remipassmoilesel.safranlices.Templates;
+import org.remipassmoilesel.safranlices.bill.PdfBillGenerator;
 import org.remipassmoilesel.safranlices.entities.*;
 import org.remipassmoilesel.safranlices.forms.CheckoutForm;
 import org.remipassmoilesel.safranlices.repositories.ExpenseRepository;
 import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
 import org.remipassmoilesel.safranlices.utils.Mailer;
+import org.remipassmoilesel.safranlices.utils.ThreadExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +46,9 @@ public class BillingController {
 
     @Autowired
     private ExpenseRepository expenseRepository;
+
+    @Autowired
+    private ThreadExecutor executor;
 
     @Autowired
     private Mailer mailer;
@@ -128,6 +133,8 @@ public class BillingController {
 
         PaymentType paymentType = PaymentType.valueOf(checkoutForm.getPaymentType());
 
+        List<Expense> expenses = expenseRepository.findAll();
+
         CommercialOrder order = new CommercialOrder(
                 new Date(),
                 products,
@@ -143,9 +150,9 @@ public class BillingController {
                 checkoutForm.getLastname(),
                 paymentType,
                 checkoutForm.getComment(),
-                checkoutForm.getEmail());
+                checkoutForm.getEmail(),
+                expenses);
 
-        List<Expense> expenses = expenseRepository.findAll();
         double total = basket.computeTotalWithExpenses(products, expenses);
 
         order.setTotal(total);
@@ -163,12 +170,9 @@ public class BillingController {
             logger.error("Unable to send mail notification", e);
         }
 
-        // send notification to client
-        try {
-            mailer.sendClientNotification(OrderNotificationType.ORDER_CONFIRMED, order);
-        } catch (Exception e) {
-            logger.error("Unable to send mail notification", e);
-        }
+        executor.execute(() -> {
+            this.generatePdfBillThenNotify(order, products, expenses, total);
+        });
 
         return "redirect:" + Mappings.CHECKOUT_END;
 
@@ -193,6 +197,26 @@ public class BillingController {
 
         Mappings.includeMappings(model);
         return Templates.CHECKOUT_END;
+    }
+
+    private void generatePdfBillThenNotify(CommercialOrder order, List<Product> products,
+                                           List<Expense> expenses, double total) {
+
+        PdfBillGenerator billGenerator = new PdfBillGenerator();
+
+        try {
+            billGenerator.generateBill(order, products, total);
+        } catch (Exception e) {
+            logger.error("Unable to generate bill", e);
+        }
+
+        // send notification to client
+        try {
+            mailer.sendClientNotification(OrderNotificationType.ORDER_CONFIRMED, order);
+        } catch (Exception e) {
+            logger.error("Unable to send mail notification", e);
+        }
+
     }
 
 }

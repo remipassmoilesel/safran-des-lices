@@ -109,7 +109,7 @@ public class DevDataLoader implements ApplicationRunner {
                     products, basket, null,
                     null, null,
                     null,null,
-                    null, null);
+                    null, null, null);
 
             order.setTotal(basket.computeTotalForBasket(products));
             order.setProcessed(i % 2 == 0);
