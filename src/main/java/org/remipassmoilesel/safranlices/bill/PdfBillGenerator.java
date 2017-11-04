@@ -224,7 +224,7 @@ public class PdfBillGenerator {
         }
     }
 
-    private String getPdfName(CommercialOrder order) {
+    public static String getPdfName(CommercialOrder order) {
         return order.getFormattedDate("yyyy-MM-dd_HH-mm-ss") + "_" + order.getLastName() + "_" + order.getFirstName() + ".pdf";
     }
 

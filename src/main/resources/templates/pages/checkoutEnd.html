@@ -18,17 +18,19 @@
             <div class="header-section text-center">
                 <h2>Commande enregistrée</h2>
 
-                <p>Votre commande a bien été prise en compte.
+                <p>Votre commande a bien été prise en compte.<br/>
                     Elle sera envoyée dès réception de votre paiement. </p>
 
-                <p>Votre facture est disponible </p>
+                <p>Une facture va vous être envoyée par mail dans quelques secondes,<br/>
+                vous pouvez également la consulter
+                    <a th:href="@{${billUrl}}">en cliquant ici</a>.</p>
 
             </div>
         </div>
 
-        <div class="row checkoutPaymentBlock">
+        <div class="row checkoutPaymentBlock text-center">
 
-            <div class="col-md-offset-2 col-md-5" th:if="${order.getPaymentType().toString()} eq 'BANK_CHECK'">
+            <div class="col-md-offset-2 col-md-8" th:if="${order.getPaymentType().toString()} eq 'BANK_CHECK'">
 
                 <p>Veuillez libéller votre chèque à l'ordre de:</p>
                 <pre>
@@ -39,7 +41,7 @@
 
             </div>
 
-            <div class="col-md-offset-2 col-md-5" th:if="${order.getPaymentType().toString()} eq 'BANK_TRANSFER'">
+            <div class="col-md-offset-2 col-md-8" th:if="${order.getPaymentType().toString()} eq 'BANK_TRANSFER'">
                 <p>Veuillez effectuer un virement bancaire aux coordonnées suivantes: </p>
                 <pre>
     Caisse d'Epargne
@@ -48,7 +50,7 @@
 
                 <p><b>Montant total à payer: <span th:text="${total}"></span> €</b></p>
 
-                <p>Merci, et à très bientôt !</p>
+                <p><b>Merci, et à très bientôt !</b></p>
 
             </div>
 

@@ -22,7 +22,8 @@ public class Mappings {
     public static final String ORDER = ROOT + "commander";
     public static final String BASKET = ROOT + "mon-panier";
     public static final String BILLING_FORM = ROOT + "facturation";
-    public static final String CHECKOUT_END = "fin-de-commande";
+    public static final String CHECKOUT_END = ROOT + "fin-de-commande";
+    public static final String SHOW_BILL = ROOT + "facture";
 
     public static final String TEMPLATE = ROOT + "template";
     public static final String LEGAL_MENTIONS = ROOT + "mentions-legales";

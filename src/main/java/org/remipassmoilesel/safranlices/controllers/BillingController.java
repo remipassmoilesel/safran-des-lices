@@ -34,7 +34,7 @@ import java.util.List;
 @Controller
 public class BillingController {
 
-    public static final String PAYMENT_TOKEN_SATTR = "paymentToken";
+    private String AUTHORIZED_BILL_ID_SATTR = "authorized_bill";
 
     private static final Logger logger = LoggerFactory.getLogger(BillingController.class);
 
@@ -58,6 +58,7 @@ public class BillingController {
 
     @Value("${app.mail.mainAdress}")
     private String mainMailAdress;
+
 
     /**
      * Show billing form with current total or order,
@@ -171,7 +172,7 @@ public class BillingController {
         }
 
         executor.execute(() -> {
-            this.generatePdfBillThenNotify(order, products, expenses, total);
+            this.generatePdfBillThenNotify(order, products, total);
         });
 
         return "redirect:" + Mappings.CHECKOUT_END;
@@ -186,6 +187,10 @@ public class BillingController {
             return "redirect:" + Mappings.BASKET;
         }
 
+        String billId = PdfBillGenerator.getPdfName(order);
+        String billUrl = Mappings.SHOW_BILL + "?id=" + billId;
+        session.setAttribute(AUTHORIZED_BILL_ID_SATTR,billId );
+
         List<Product> products = productRepository.findAll(false);
         List<Expense> expenses = expenseRepository.findAll(false);
 
@@ -194,13 +199,16 @@ public class BillingController {
 
         model.addAttribute("order", order);
         model.addAttribute("total", total);
+        model.addAttribute("id", billUrl);
 
         Mappings.includeMappings(model);
         return Templates.CHECKOUT_END;
     }
 
-    private void generatePdfBillThenNotify(CommercialOrder order, List<Product> products,
-                                           List<Expense> expenses, double total) {
+    private void generatePdfBillThenNotify(
+            CommercialOrder order,
+            List<Product> products,
+            double total) {
 
         PdfBillGenerator billGenerator = new PdfBillGenerator();
 

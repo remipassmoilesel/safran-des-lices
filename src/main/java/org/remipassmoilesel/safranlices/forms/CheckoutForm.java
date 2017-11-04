@@ -31,20 +31,12 @@ public class CheckoutForm {
     @Size(min = 2)
     private String address;
 
-    @NotNull
-    @Size(min = 2)
-    @Pattern(regexp = "[0-9]{2,}")
     private String shipmentPostalcode;
 
-    @NotNull
-    @Size(min = 2)
     private String shipmentCity;
 
-    @NotNull
-    @Size(min = 2)
     private String shipmentAddress;
 
-    @NotNull
     @Size(min = 2)
     @Pattern(regexp = "\\+?[0-9]{2,}")
     private String phonenumber;
