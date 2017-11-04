@@ -64,8 +64,16 @@ public class DevController {
         }
 
         PdfBillGenerator generator = new PdfBillGenerator();
-        Path pdfPath = generator.generateBill("hey.pdf", null, null);
 
+        // create a fake order
+        List<Product> products = DevDataFactory.createSampleProductList();
+        CommercialOrder order = DevDataFactory.createOrder(null, products, null, null,
+                null, null, null, null, null, null);
+
+        // generate pdf
+        Path pdfPath = generator.generateBill(order, products);
+
+        // display it
         InputStream pdfInputStream = Files.newInputStream(pdfPath);
         byte[] content = readPdf(pdfInputStream);
 

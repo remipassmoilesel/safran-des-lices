@@ -118,4 +118,13 @@ public class DevDataFactory {
                 paymentType, comment, email);
     }
 
+    public static List<Product> createSampleProductList() {
+        return Arrays.asList(
+                DevDataFactory.createProduct("Safran 0.5g", "Pot de 1 gramme de safran", null, 15d, null),
+                DevDataFactory.createProduct("Safran 1g", "Pot de 1 gramme de safran", null, 35d, null),
+                DevDataFactory.createProduct("Safran 2g", "Pot de 1 gramme de safran", null, 60d, null),
+                DevDataFactory.createProduct("Sel au safran 100g", "Sel parfumé au safran, peut être utilisé pour saler", null, 15d, null),
+                DevDataFactory.createProduct("Sirop de safran 35ml", "Sirop de safran, peut être utilisé pour siroter", null, 15d, null)
+        );
+    }
 }

@@ -2,6 +2,8 @@ package org.remipassmoilesel.safranlices.bill;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
 import org.remipassmoilesel.safranlices.entities.Product;
 
@@ -23,17 +25,21 @@ public class PdfBillGenerator {
     private static final float MAX_HEIGHT = 750f;
 
     public static Path PDF_ROOT = Paths.get("./pdf-bills");
-    public static Path LOGO_PATH = Paths.get("./src/main/resources/bill/safran-lices-logo.jpg").toAbsolutePath();
-    public static Path ADDRESS_FILE_PATH = Paths.get("./src/main/resources/bill/address.txt").toAbsolutePath();
+    private static Path LOGO_PATH = Paths.get("./src/main/resources/bill/safran-lices-logo.jpg").toAbsolutePath();
+    private static Path ADDRESS_FILE_PATH = Paths.get("./src/main/resources/bill/address.txt").toAbsolutePath();
+
+    private static Font TITLE_FONT = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD);
 
     private static List<String> addressContent;
 
-    public Path generateBill(String name, CommercialOrder order, List<Product> products) throws IOException, DocumentException {
+    public Path generateBill(CommercialOrder order, List<Product> products) throws IOException, DocumentException {
+
+        String pdfName = getPdfName(order);
 
         createPdfRoot();
-        deletePreviousPdf(name);
+        deletePreviousPdf(pdfName);
 
-        Path absoluteDocPath = getPdfAbsolutePath(name);
+        Path absoluteDocPath = getPdfAbsolutePath(pdfName);
         Document document = new Document();
 
         try (OutputStream docOutput = Files.newOutputStream(absoluteDocPath)) {
@@ -44,11 +50,29 @@ public class PdfBillGenerator {
             addLogo(document);
             addAddressBloc(document);
 
+            addCommandHeader(document, order);
+
 
             document.close();
         }
 
         return absoluteDocPath;
+    }
+
+    private void addCommandHeader(Document document, CommercialOrder order) throws DocumentException {
+
+        Paragraph header = new Paragraph();
+        header.add(Chunk.NEWLINE);
+        header.add(Chunk.NEWLINE);
+
+        String formattedDate = DateTimeFormat.forPattern("dd/MM/yyyy").print(new DateTime(order.getDate()));
+        Chunk title = new Chunk("Commande du " + formattedDate);
+        title.setFont(TITLE_FONT);
+
+        header.add(title);
+
+        document.add(header);
+
     }
 
     private void addAddressBloc(Document document) throws IOException, DocumentException {
@@ -86,6 +110,10 @@ public class PdfBillGenerator {
         if (Files.isRegularFile(pdfPath)) {
             Files.delete(pdfPath);
         }
+    }
+
+    private String getPdfName(CommercialOrder order) {
+        return order.getDate() + "_" + order.getLastName() + "_" + order.getFirstName() + ".pdf";
     }
 
     private Path getPdfAbsolutePath(String name) {
