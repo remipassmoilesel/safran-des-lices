@@ -128,6 +128,8 @@ public class MainController {
         // current user basket: Article ID / Quantity
         HashMap<Long, Integer> basket = checkOrCreateBasket(session);
 
+        System.out.println(basket);
+
         // empty basket
         if (reset != null && reset == true) {
             resetBasket(session);

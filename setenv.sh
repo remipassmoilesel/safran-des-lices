@@ -3,6 +3,7 @@
 # You can modify these environment vars to modify site behavior
 
 export SAFRANLICES_FR_DB_NAME=safranlices
+
 # Specify JDBC url without database name
 export SAFRANLICES_FR_DB_URL=jdbc:mysql://localhost:3306/
 export SAFRANLICES_FR_DB_USERNAME=safranlices

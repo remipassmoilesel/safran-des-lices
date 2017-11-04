@@ -28,6 +28,7 @@ Launch embedded HTTP server:
 
 After visit http://localhost:8085 .
 
-## TODO
+## IntelliJ configuration
 
-Docker compose
+If you want to embed env vars without use the form of IntelliJ, you can include them 
+temporarily in your /etc/environment file (see setenv.sh)
