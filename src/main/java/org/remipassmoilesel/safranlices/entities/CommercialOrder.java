@@ -56,14 +56,19 @@ public class CommercialOrder {
     public CommercialOrder() {
     }
 
-    public CommercialOrder(Date date, List<Product> products, HashMap<Long, Integer> quantities,
-                           String address, String postalcode, String city, String shipmentAddress,
-                           String shipmentPostalcode, String shipmentCity, String phonenumber,
-                           String firstName, String lastName, PaymentType paymentType,
+    public CommercialOrder(Date date,
+                           List<Product> products,
+                           Basket basket,
+                           String address, String postalcode,
+                           String city, String shipmentAddress,
+                           String shipmentPostalcode,
+                           String shipmentCity, String phonenumber,
+                           String firstName, String lastName,
+                           PaymentType paymentType,
                            String comment, String email) {
         this.date = date;
         this.products = products;
-        this.quantities = quantities;
+        this.quantities = basket.getProductMap();
         this.address = address;
         this.postalcode = postalcode;
         this.city = city;

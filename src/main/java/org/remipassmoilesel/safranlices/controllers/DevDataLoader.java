@@ -1,7 +1,7 @@
 package org.remipassmoilesel.safranlices.controllers;
 
 import org.joda.time.DateTime;
-import org.remipassmoilesel.safranlices.SafranLicesApplication;
+import org.remipassmoilesel.safranlices.entities.Basket;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
 import org.remipassmoilesel.safranlices.entities.Expense;
 import org.remipassmoilesel.safranlices.entities.Product;
@@ -99,22 +99,25 @@ public class DevDataLoader implements ApplicationRunner {
 
         for (int i = 0; i < 50; i++) {
 
-            ArrayList<Product> prds = new ArrayList<>();
-            HashMap<Long, Integer> quantities = new HashMap<>();
-            Integer nbrProducts = rand.ints(1, 10).iterator().next();
-            Iterator<Integer> qttIter = rand.ints(1, 6).iterator();
-            for (int j = 0; j < nbrProducts; j++) {
-                Product p = products.get(rand.nextInt(products.size()));
-                prds.add(p);
-                quantities.put(p.getId(), qttIter.next());
+            Basket basket = new Basket();
+
+            Integer numberOfProductsOrdered = rand.ints(1, 10).iterator().next();
+            Iterator<Integer> randomQuantities = rand.ints(1, 6).iterator();
+
+            for (int j = 0; j < numberOfProductsOrdered; j++) {
+                Long randomProductId = products.get(rand.nextInt(products.size())).getId();
+                Integer randomQuantity = randomQuantities.next();
+                basket.addProduct(randomProductId, randomQuantity);
             }
 
-            CommercialOrder order = DevDataFactory.createOrder(start.minusDays(i).minusHours(i).toDate(),
-                    prds, quantities, null,
+            CommercialOrder order = DevDataFactory.createOrder(
+                    start.minusDays(i).minusHours(i).toDate(),
+                    products, basket, null,
                     null, null,
-                    null,null, null, null);
+                    null,null,
+                    null, null);
 
-            order.setTotal(Utils.computeTotalForBasket(products, quantities));
+            order.setTotal(basket.computeTotalForBasket(products));
             order.setProcessed(i % 2 == 0);
             order.setPaid(rand.nextBoolean());
 

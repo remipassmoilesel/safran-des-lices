@@ -12,6 +12,7 @@ import com.mangopay.entities.subentities.PayInPaymentDetailsCard;
 import org.json.simple.JSONObject;
 import org.remipassmoilesel.safranlices.Mappings;
 import org.remipassmoilesel.safranlices.Templates;
+import org.remipassmoilesel.safranlices.entities.Basket;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
 import org.remipassmoilesel.safranlices.repositories.ExpenseRepository;
 import org.remipassmoilesel.safranlices.repositories.OrderRepository;
@@ -80,7 +81,7 @@ public class PaymentController {
             Model model) throws Exception {
 
         // get current order
-        CommercialOrder order = (CommercialOrder) session.getAttribute(MainController.ORDER_SATTR);
+        CommercialOrder order = (CommercialOrder) session.getAttribute(Basket.ORDER_SATTR);
         if (order == null) {
             return "redirect:" + Mappings.BASKET;
         }
@@ -104,7 +105,7 @@ public class PaymentController {
         configureBankApi();
 
         // get current order
-        CommercialOrder order = (CommercialOrder) session.getAttribute(MainController.ORDER_SATTR);
+        CommercialOrder order = (CommercialOrder) session.getAttribute(Basket.ORDER_SATTR);
         if (order == null) {
             return new ResponseEntity("Order is empty", HttpStatus.BAD_REQUEST);
         }

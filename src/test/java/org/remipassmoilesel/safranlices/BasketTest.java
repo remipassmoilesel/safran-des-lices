@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.remipassmoilesel.safranlices.controllers.MainController;
+import org.remipassmoilesel.safranlices.entities.Basket;
 import org.remipassmoilesel.safranlices.entities.Expense;
 import org.remipassmoilesel.safranlices.entities.Product;
 import org.remipassmoilesel.safranlices.repositories.ExpenseRepository;
@@ -92,7 +93,7 @@ public class BasketTest {
                 .param("id", String.valueOf(products.get(2).getId())))
                 .andExpect(status().is3xxRedirection()).andReturn();
 
-        HashMap<Long, Integer> basket = (HashMap<Long, Integer>) response.getRequest().getSession().getAttribute(MainController.BASKET_SATTR);
+        HashMap<Long, Integer> basket = (HashMap<Long, Integer>) response.getRequest().getSession().getAttribute(Basket.BASKET_SATTR);
         Integer q = basket.values().iterator().next();
         Long pid = basket.keySet().iterator().next();
         assertTrue(basket.size() == 3);
@@ -107,7 +108,7 @@ public class BasketTest {
                 .param("id", String.valueOf(products.get(0).getId())))
                 .andExpect(status().is3xxRedirection()).andReturn();
 
-        basket = (HashMap<Long, Integer>) response.getRequest().getSession().getAttribute(MainController.BASKET_SATTR);
+        basket = (HashMap<Long, Integer>) response.getRequest().getSession().getAttribute(Basket.BASKET_SATTR);
         assertTrue(basket.size() == 2);
         assertTrue(basket.keySet().iterator().next() == products.get(1).getId());
 
@@ -118,7 +119,7 @@ public class BasketTest {
                 .param("reset", "true"))
                 .andExpect(status().is3xxRedirection());
 
-        basket = (HashMap<Long, Integer>) response.getRequest().getSession().getAttribute(MainController.BASKET_SATTR);
+        basket = (HashMap<Long, Integer>) response.getRequest().getSession().getAttribute(Basket.BASKET_SATTR);
         assertTrue(basket.size() == 0);
 
     }

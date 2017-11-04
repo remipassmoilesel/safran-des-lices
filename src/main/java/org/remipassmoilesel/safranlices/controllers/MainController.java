@@ -24,7 +24,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.security.NoSuchAlgorithmException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by remipassmoilesel on 13/06/17.
@@ -33,8 +36,6 @@ import java.util.*;
 public class MainController {
 
     public static final String PAYMENT_TOKEN_SATTR = "paymentToken";
-    public static final String BASKET_SATTR = "basket";
-    public static final String ORDER_SATTR = "order";
 
     private static final Logger logger = LoggerFactory.getLogger(MainController.class);
 
@@ -117,42 +118,36 @@ public class MainController {
 
     @RequestMapping(value = Mappings.BASKET)
     public String showBasket(
-            @RequestParam(required = false, name = "id") Long id,
+            @RequestParam(required = false, name = "id") Long productId,
             @RequestParam(required = false, name = "addToCart") Boolean addToCart,
-            @RequestParam(required = false, name = "qtty") Integer qtty,
+            @RequestParam(required = false, name = "qtty") Integer productQuantity,
             @RequestParam(required = false, name = "reset") Boolean reset,
             @RequestParam(required = false, name = "delete") Boolean delete,
             HttpSession session,
             Model model) {
 
         // current user basket: Article ID / Quantity
-        HashMap<Long, Integer> basket = checkOrCreateBasket(session);
-
-        System.out.println(basket);
+        Basket basket = Basket.getBasketOrCreate(session);
 
         // empty basket
         if (reset != null && reset == true) {
-            resetBasket(session);
+            basket.resetBasket(session);
             return "redirect:" + Mappings.BASKET;
         }
 
         // delete article
-        if (delete != null && delete == true && id != null) {
-            basket.remove(id);
+        if (delete != null && delete == true && productId != null) {
+            basket.remove(productId);
             session.setAttribute("basket", basket);
 
             return "redirect:" + Mappings.BASKET;
         }
 
         // add something to cart
-        if (addToCart != null && addToCart == true && id != null && qtty != null) {
+        if (addToCart != null && addToCart == true && productId != null && productQuantity != null) {
 
-            if (basket.get(id) != null) {
-                qtty += basket.get(id);
-            }
-
-            basket.put(id, qtty);
-            session.setAttribute(BASKET_SATTR, basket);
+            basket.addProduct(productId, productQuantity);
+            session.setAttribute(Basket.BASKET_SATTR, basket);
 
             return "redirect:" + Mappings.BASKET;
         }
@@ -168,7 +163,7 @@ public class MainController {
         model.addAttribute("expenses", expenses);
 
         // total
-        double total = Utils.computeTotalWithExpenses(products, basket, expenses);
+        double total = basket.computeTotalWithExpenses(products, expenses);
         model.addAttribute("total", total);
 
         Mappings.includeMappings(model);
@@ -181,7 +176,7 @@ public class MainController {
             HttpSession session,
             Model model) {
 
-        HashMap<Long, Integer> basket = checkOrCreateBasket(session);
+        Basket basket = Basket.getBasketOrCreate(session);
 
         // check if basket is not empty
         if (basket.size() < 1) {
@@ -192,7 +187,7 @@ public class MainController {
         List<Product> products = productRepository.findAll(false);
 
         // total
-        double total = Utils.computeTotalWithExpenses(products, basket, expenses);
+        double total = basket.computeTotalWithExpenses(products, expenses);
         model.addAttribute("total", total);
 
         Mappings.includeMappings(model);
@@ -206,7 +201,7 @@ public class MainController {
             HttpSession session,
             Model model) throws NoSuchAlgorithmException {
 
-        HashMap<Long, Integer> basket = checkOrCreateBasket(session);
+        Basket basket = Basket.getBasketOrCreate(session);
 
         // check if basket is not empty
         if (basket.size() < 1) {
@@ -226,9 +221,7 @@ public class MainController {
 
         // save order
         ArrayList<Product> products = new ArrayList<>();
-        Iterator<Long> it = basket.keySet().iterator();
-        while (it.hasNext()) {
-            Long pid = it.next();
+        for (Long pid : basket.getProductIds()) {
             products.add(productRepository.findOne(pid));
         }
 
@@ -252,7 +245,7 @@ public class MainController {
                 checkoutForm.getEmail());
 
         List<Expense> expenses = expenseRepository.findAll();
-        double total = Utils.computeTotalWithExpenses(products, basket, expenses);
+        double total = basket.computeTotalWithExpenses(products, expenses);
 
         order.setTotal(total);
         order.setProcessed(false);
@@ -290,16 +283,18 @@ public class MainController {
     }
 
     @RequestMapping(value = Mappings.CHECKOUT_END, method = RequestMethod.GET)
-    public String checkoutEnd(HttpSession session, Model model){
+    public String checkoutEnd(HttpSession session, Model model) {
 
-        CommercialOrder order = (CommercialOrder) session.getAttribute(ORDER_SATTR);
-        if(order == null){
+        CommercialOrder order = (CommercialOrder) session.getAttribute(Basket.ORDER_SATTR);
+        if (order == null) {
             return "redirect:" + Mappings.BASKET;
         }
 
         List<Product> products = productRepository.findAll(false);
         List<Expense> expenses = expenseRepository.findAll();
-        double total = Utils.computeTotalWithExpenses(products, order.getQuantities(), expenses);
+
+        Basket basket = Basket.getBasketOrCreate(session);
+        double total = basket.computeTotalWithExpenses(products, expenses);
 
         model.addAttribute("order", order);
         model.addAttribute("total", total);
@@ -312,27 +307,27 @@ public class MainController {
     public String checkoutConfirmed(Model model, HttpSession session,
                                     @RequestParam(name = "token", required = false) String token) {
 
-        if(token == null){
+        if (token == null) {
             return "redirect:" + Mappings.BASKET;
         }
 
-        CommercialOrder order = (CommercialOrder) session.getAttribute(ORDER_SATTR);
+        CommercialOrder order = (CommercialOrder) session.getAttribute(Basket.ORDER_SATTR);
 
         // check if basket is not empty
         if (order == null) {
             return "redirect:" + Mappings.BASKET;
         }
 
-        HashMap<Long, Integer> basket = checkOrCreateBasket(session);
+        Basket basket = Basket.getBasketOrCreate(session);
 
         // compute total
         List<Expense> expenses = expenseRepository.findAll();
         List<Product> products = productRepository.findAll(false);
-        double total = Utils.computeTotalWithExpenses(products, basket, expenses);
+        double total = basket.computeTotalWithExpenses(products, expenses);
         model.addAttribute("total", total);
 
         // reset basket
-        resetBasket(session);
+        basket.resetBasket(session);
 
         // test session token
         String stoken = (String) session.getAttribute(PAYMENT_TOKEN_SATTR);
@@ -359,23 +354,24 @@ public class MainController {
     @RequestMapping(value = Mappings.CHECKOUT_FAILED, method = RequestMethod.GET)
     public String checkoutFailed(HttpSession session, Model model) {
 
-        CommercialOrder order = (CommercialOrder) session.getAttribute(ORDER_SATTR);
+        CommercialOrder order = (CommercialOrder) session.getAttribute(Basket.ORDER_SATTR);
 
         // check if basket is not empty
         if (order == null) {
             return "redirect:" + Mappings.BASKET;
         }
 
-        HashMap<Long, Integer> basket = checkOrCreateBasket(session);
+        Basket basket = Basket.getBasketOrCreate(session);
 
         // compute total
         List<Expense> expenses = expenseRepository.findAll();
         List<Product> products = productRepository.findAll(false);
-        double total = Utils.computeTotalWithExpenses(products, basket, expenses);
+
+        double total = basket.computeTotalWithExpenses(products, expenses);
         model.addAttribute("total", total);
 
         // reset basket
-        resetBasket(session);
+        basket.resetBasket(session);
 
         // send notification to client
         try {
@@ -390,21 +386,6 @@ public class MainController {
         Mappings.includeMappings(model);
         return Templates.CHECKOUT_END;
 
-    }
-
-    private void resetBasket(HttpSession session) {
-        HashMap<Long, Integer> basket = new HashMap<>();
-        session.setAttribute("basket", basket);
-    }
-
-    private HashMap<Long, Integer> checkOrCreateBasket(HttpSession session) {
-        HashMap<Long, Integer> basket = (HashMap<Long, Integer>) session.getAttribute(BASKET_SATTR);
-        if (basket == null) {
-            basket = new HashMap<>();
-            session.setAttribute("basket", basket);
-        }
-
-        return basket;
     }
 
 }

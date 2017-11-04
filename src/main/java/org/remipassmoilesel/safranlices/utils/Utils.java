@@ -1,8 +1,8 @@
 package org.remipassmoilesel.safranlices.utils;
 
 import org.remipassmoilesel.safranlices.SafranLicesApplication;
+import org.remipassmoilesel.safranlices.entities.Basket;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
-import org.remipassmoilesel.safranlices.entities.Expense;
 import org.remipassmoilesel.safranlices.entities.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -98,48 +98,24 @@ public class Utils {
         writer.close();
     }
 
-    public static Double computeTotalForBasket(List<Product> products, HashMap<Long, Integer> basket) {
-
-        Double total = 0d;
-        Iterator<Long> keys = basket.keySet().iterator();
-        while (keys.hasNext()) {
-            Long pId = keys.next();
-            Product p = products.stream()
-                    .filter(pf -> pId.equals(pf.getId()))
-                    .findAny().orElse(null);
-
-            total += p.getPrice() * basket.get(pId);
-        }
-
-        return total;
-    }
-
-    public static Double computeTotalWithExpenses(List<Product> products, HashMap<Long, Integer> basket, List<Expense> expenses) {
-        Double total = Utils.computeTotalForBasket(products, basket);
-
-        for (Expense ex : expenses) {
-            total += ex.getValue();
-        }
-
-        return total;
-    }
-
     public static HashMap<Product, Integer> mapProductWithQuantities(List<Product> allProducts, CommercialOrder order) {
-        HashMap<Long, Integer> basket = order.getQuantities();
-        return mapProductWithQuantities(allProducts, basket);
+        HashMap<Long, Integer> productsMap = order.getQuantities();
+        return mapProductWithQuantities(allProducts, new Basket(productsMap));
     }
 
-    public static HashMap<Product, Integer> mapProductWithQuantities(List<Product> allProducts, HashMap<Long, Integer> basket) {
+    public static HashMap<Product, Integer> mapProductWithQuantities(List<Product> allProducts, Basket basket) {
+
         HashMap<Product, Integer> productsWithQuantities = new HashMap<>();
-        Iterator<Long> keys = basket.keySet().iterator();
-        while (keys.hasNext()) {
-            Long pId = keys.next();
+
+        for(Long productId : basket.getProductIds()){
+
             Product p = allProducts.stream()
-                    .filter(pf -> pId.equals(pf.getId()))
+                    .filter(pf -> productId.equals(pf.getId()))
                     .findAny().orElse(null);
 
-            productsWithQuantities.put(p, basket.get(pId));
+            productsWithQuantities.put(p, basket.getQuantityFor(productId));
         }
+
         return productsWithQuantities;
     }
 

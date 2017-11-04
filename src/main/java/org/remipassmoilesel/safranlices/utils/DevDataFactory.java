@@ -1,5 +1,6 @@
 package org.remipassmoilesel.safranlices.utils;
 
+import org.remipassmoilesel.safranlices.entities.Basket;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
 import org.remipassmoilesel.safranlices.entities.PaymentType;
 import org.remipassmoilesel.safranlices.entities.Product;
@@ -19,7 +20,7 @@ public class DevDataFactory {
             "/img/DSC_0040.jpg",
             "/img/DSC_0076.jpg",
             "/img/DSC_0077.jpg"
-            );
+    );
 
     public static Product createProduct(String name, String description, String pictures, Double price, Integer quantityAvailable) {
 
@@ -52,8 +53,11 @@ public class DevDataFactory {
         return new Product(name, description, pictures, price, quantityAvailable);
     }
 
-    public static CommercialOrder createOrder(Date date, List<Product> products, HashMap<Long, Integer> quantities, String address, String phonenumber,
-                                              String firstName, String lastName, PaymentType paymentType,
+    public static CommercialOrder createOrder(Date date,
+                                              List<Product> products, Basket basket,
+                                              String address, String phonenumber,
+                                              String firstName, String lastName,
+                                              PaymentType paymentType,
                                               String comment, String email) {
 
         if (date == null) {
@@ -68,10 +72,10 @@ public class DevDataFactory {
             }
         }
 
-        if(quantities == null){
-            quantities = new HashMap<>();
-            for(Product p : products){
-                quantities.put(p.getId(), rand.nextInt(25));
+        if (basket == null) {
+            basket = new Basket();
+            for (Product p : products) {
+                basket.addProduct(p.getId(), rand.nextInt(25));
             }
         }
 
@@ -109,7 +113,7 @@ public class DevDataFactory {
         String shipmentPostalcode = "6658558";
         String shipmentCity = "Carcassonne";
 
-        return new CommercialOrder(date, products, quantities, address, postalCode, city, shipmentAddress,
+        return new CommercialOrder(date, products, basket, address, postalCode, city, shipmentAddress,
                 shipmentPostalcode, shipmentCity, phonenumber, firstName, lastName,
                 paymentType, comment, email);
     }
