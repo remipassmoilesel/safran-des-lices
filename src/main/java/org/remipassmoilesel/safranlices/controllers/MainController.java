@@ -138,16 +138,13 @@ public class MainController {
         // delete article
         if (delete != null && delete == true && productId != null) {
             basket.remove(productId);
-            session.setAttribute("basket", basket);
 
             return "redirect:" + Mappings.BASKET;
         }
 
         // add something to cart
         if (addToCart != null && addToCart == true && productId != null && productQuantity != null) {
-
             basket.addProduct(productId, productQuantity);
-            session.setAttribute(Basket.BASKET_SATTR, basket);
 
             return "redirect:" + Mappings.BASKET;
         }

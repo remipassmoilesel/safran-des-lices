@@ -15,10 +15,12 @@ public class Basket {
 
         if (productMap == null) {
             basket = new Basket();
-            session.setAttribute("basket", basket.getProductMap());
+            session.setAttribute(BASKET_SATTR, basket.getProductMap());
+        } else {
+            basket = new Basket(productMap);
         }
 
-        return new Basket(productMap);
+        return basket;
     }
 
     public static final String BASKET_SATTR = "basket";
@@ -31,12 +33,17 @@ public class Basket {
      */
     private HashMap<Long, Integer> productMap;
 
-    public Basket(HashMap<Long, Integer> productsMap) {
-        this.productMap = productsMap;
-    }
-
     public Basket() {
         this(new HashMap<>());
+    }
+
+    public Basket(HashMap<Long, Integer> productsMap) {
+
+        if (productsMap == null) {
+            throw new NullPointerException("Product map must not be null");
+        }
+
+        this.productMap = productsMap;
     }
 
     public Double computeTotalForBasket(List<Product> products) {
@@ -68,7 +75,7 @@ public class Basket {
 
     public void resetBasket(HttpSession session) {
         HashMap<Long, Integer> rawBasket = new HashMap<>();
-        session.setAttribute("basket", rawBasket);
+        session.setAttribute(BASKET_SATTR, rawBasket);
     }
 
     public Integer size() {
@@ -76,7 +83,7 @@ public class Basket {
     }
 
     public List<Long> getProductIds() {
-        return Arrays.asList((Long[]) productMap.keySet().toArray());
+        return Arrays.asList(productMap.keySet().toArray(new Long[productMap.size()]));
     }
 
     public HashMap<Long, Integer> getProductMap() {
