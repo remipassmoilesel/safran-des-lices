@@ -46,6 +46,12 @@ public class Basket {
         this.productMap = productsMap;
     }
 
+    /**
+     * Compute total in current currency of products in basket
+     *
+     * @param products
+     * @return
+     */
     public Double computeTotalForBasket(List<Product> products) {
 
         Double total = 0d;
@@ -62,6 +68,13 @@ public class Basket {
         return total;
     }
 
+    /**
+     * Compute total of current basket and add supplementary expenses
+     *
+     * @param products
+     * @param expenses
+     * @return
+     */
     public Double computeTotalWithExpenses(List<Product> products, List<Expense> expenses) {
 
         Double total = computeTotalForBasket(products);
@@ -73,35 +86,73 @@ public class Basket {
         return total;
     }
 
+    /**
+     * Reset basket and save it into current session
+     *
+     * @param session
+     */
     public void resetBasket(HttpSession session) {
         HashMap<Long, Integer> rawBasket = new HashMap<>();
         session.setAttribute(BASKET_SATTR, rawBasket);
     }
 
-    public Integer size() {
+    /**
+     * Return number of different products in basket
+     *
+     * @return
+     */
+    public Integer getNumberOfProducts() {
         return productMap.size();
     }
 
+    /**
+     * Return a list of products ids
+     *
+     * @return
+     */
     public List<Long> getProductIds() {
         return Arrays.asList(productMap.keySet().toArray(new Long[productMap.size()]));
     }
 
+    /**
+     * Return a map with products ids and article numbers
+     *
+     * @return
+     */
     public HashMap<Long, Integer> getProductMap() {
         return productMap;
     }
 
+    /**
+     * Remove a product from basket
+     *
+     * @param productId
+     * @return
+     */
     public Integer remove(Long productId) {
         return productMap.remove(productId);
     }
 
-    public void addProduct(Long id, Integer qtty) {
+    /**
+     * Add a product in basket, and specified quantity
+     *
+     * @param id
+     * @param quantity
+     */
+    public void addProduct(Long id, Integer quantity) {
         if (productMap.get(id) != null) {
-            qtty += productMap.get(id);
+            quantity += productMap.get(id);
         }
 
-        productMap.put(id, qtty);
+        productMap.put(id, quantity);
     }
 
+    /**
+     * Return current quantity of specified product id
+     *
+     * @param productId
+     * @return
+     */
     public Integer getQuantityFor(Long productId) {
         return productMap.get(productId);
     }

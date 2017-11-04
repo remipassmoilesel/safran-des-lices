@@ -176,7 +176,7 @@ public class MainController {
         Basket basket = Basket.getBasketOrCreate(session);
 
         // check if basket is not empty
-        if (basket.size() < 1) {
+        if (basket.getNumberOfProducts() < 1) {
             return "redirect:" + Mappings.BASKET;
         }
 
@@ -201,7 +201,7 @@ public class MainController {
         Basket basket = Basket.getBasketOrCreate(session);
 
         // check if basket is not empty
-        if (basket.size() < 1) {
+        if (basket.getNumberOfProducts() < 1) {
             return "redirect:" + Mappings.BASKET;
         }
 
