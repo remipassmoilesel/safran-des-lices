@@ -14,66 +14,45 @@
 
     <section id="courses" class="section-padding">
 
-        <div class="container" th:if="${order.getPaymentType().toString()} eq 'BANK_CHECK'">
-            <div class="row">
-                <div class="header-section text-center">
-                    <h2>Commande réussie</h2>
-                    <p>Votre commande a bien été prise en compte. Elle sera envoyée dès réception et encaissement <br/>
-                        de votre chèque bancaire à l'adresse postale suivante: </p>
-                    <p>
-                        Safran des lices<br/>
-                        3 rue des oiseaux<br/>
-                        34000 Murviel-Lès-Montpellier
-                    </p>
+        <div class="row">
+            <div class="header-section text-center">
+                <h2>Commande enregistrée</h2>
 
-                    <p>A l'ordere de: Safran des Lices</p>
-                    <p>Total à payer: <span th:text="${total}"></span> €</p>
+                <p>Votre commande a bien été prise en compte.
+                    Elle sera envoyée dès réception de votre paiement. </p>
 
-                    <hr class="bottom-line"/>
+                <p>Votre facture est disponible </p>
 
-                </div>
             </div>
         </div>
 
-        <div class="container" th:if="${order.getPaymentType().toString()} eq 'BANK_TRANSFER'">
-            <div class="row">
-                <div class="header-section text-center">
-                    <h2>Commande réussie</h2>
-                    <p>Votre commande a bien été prise en compte. Elle sera envoyée dès réception de <br/>
-                        votre virement bancaire aux coordonnées suivantes: </p>
-                    <p>
-                        Caisse d'Epargne	FR7611315000011234567890138	11315	00001	12345678901	38
-                    </p>
-                    <p>Total à payer: <span th:text="${total}"></span> €</p>
+        <div class="row">
 
-                    <hr class="bottom-line"/>
-                </div>
+            <div class="col-md-offset-2 col-md-5" th:if="${order.getPaymentType().toString()} eq 'BANK_CHECK'">
+
+                <p>Veuillez libéller votre chèque à l'ordre de:</p>
+                <pre>
+    Safran des lices
+    3 rue des Oiseaux
+    34000 Murviel-Lès-Montpellier
+                </pre>
+
             </div>
+
+            <div class="col-md-offset-2 col-md-5" th:if="${order.getPaymentType().toString()} eq 'BANK_TRANSFER'">
+                <p>Veuillez effectuer un virement bancaire aux coordonnées suivantes: </p>
+                <pre>
+    Caisse d'Epargne
+    FR7611315000011234567890138 11315 00001 12345678901 38
+                </pre>
+
+                <p>Montant total à payer: <span th:text="${total}"></span> €</p>
+
+            </div>
+
         </div>
 
-        <div class="container" th:if="${order.getPaymentType().toString()} ne 'BANK_CHECK'">
-            <div class="row" th:if="${status} eq 'confirmed'">
-                <div class="header-section text-center">
-                    <h2>Commande réussie</h2>
-                    <p>Votre commande a bien été prise en compte. Elle sera envoyée très bientôt.</p>
-                    <p><b>Pensez à vérifier vos mails, y compris le dossier "spam".</b></p>
-                    <br/>
-                    <p>Bonne journée !</p>
-                    <hr class="bottom-line"/>
-                </div>
-            </div>
-
-            <div class="row" th:if="${status} eq 'failed'">
-                <div class="header-section text-center">
-                    <h2>Echec du paiement</h2>
-                    <p>Le paiement en ligne a échoué.</p>
-                    <p>En cas de problème n'hésitez pas à nous contacter par mail à l'adresse
-                        suivante: <a href="changeme@mail.com">changeme@mail.com</a></p>
-                    <br/>
-                    <hr class="bottom-line"/>
-                </div>
-            </div>
-        </div>
+        <hr class="bottom-line"/>
 
     </section>
 

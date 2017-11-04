@@ -1,4 +1,4 @@
-package org.remipassmoilesel.safranlices.controllers.dataLoaders;
+package org.remipassmoilesel.safranlices.dataLoaders;
 
 import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONArray;

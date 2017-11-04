@@ -12,6 +12,7 @@ tomcat-logs
 node_modules
 db-backup
 rsync.sh
+pdf-bills
 
 ### STS ###
 .apt_generated

@@ -1,6 +1,7 @@
 package org.remipassmoilesel.safranlices.controllers;
 
 import org.remipassmoilesel.safranlices.Mappings;
+import org.remipassmoilesel.safranlices.bill.PdfBillGenerator;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
 import org.remipassmoilesel.safranlices.entities.OrderNotificationType;
 import org.remipassmoilesel.safranlices.entities.Product;
@@ -20,6 +21,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 
@@ -46,6 +53,41 @@ public class DevController {
 
     @Autowired
     private Environment env;
+
+    @RequestMapping("/generate-bill")
+    @ResponseBody
+    public void generateBill(HttpServletResponse response)
+            throws Exception {
+
+        if (Utils.isDevProfileEnabled(env) == false) {
+            return;
+        }
+
+        PdfBillGenerator generator = new PdfBillGenerator();
+        Path pdfPath = generator.generateBill("hey.pdf", null, null);
+
+        InputStream pdfInputStream = Files.newInputStream(pdfPath);
+        byte[] content = readPdf(pdfInputStream);
+
+        response.setContentType("application/pdf");
+        response.setHeader("Content-disposition", "inline; filename='output.pdf'");
+        response.setContentLength(content.length);
+
+        response.getOutputStream().write(content);
+        response.getOutputStream().flush();
+
+    }
+
+    public static byte[] readPdf(InputStream stream) throws IOException {
+        byte[] buffer = new byte[8192];
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        int bytesRead;
+        while ((bytesRead = stream.read(buffer)) != -1) {
+            baos.write(buffer, 0, bytesRead);
+        }
+        return baos.toByteArray();
+    }
 
     @RequestMapping("/send-mail-example")
     @ResponseBody
