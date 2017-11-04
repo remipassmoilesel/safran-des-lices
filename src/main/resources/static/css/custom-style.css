@@ -53,3 +53,13 @@
     margin-bottom: 2em;
     font-size: 1.1em;
 }
+
+.billing-form-header{
+    padding-top: 1.5em;
+    padding-bottom: 1em;
+    font-size: 1.1em;
+}
+.billing-form-header i{
+    color: gray;
+    font-size: 1em;
+}

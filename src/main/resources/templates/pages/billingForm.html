@@ -60,12 +60,25 @@
         <div class="container">
 
             <form method="post" th:action="@{${mappings.get('BILLING_FORM')}}" id="billingForm">
+
+                <div class="row billing-form-header">
+                    <div class="col-md-5 col-md-offset-2">
+                        <b>Commande</b>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="col-md-3 col-md-offset-2">
                         Prix total de la commande:
                     </div>
                     <div class="col-md-5" th:text="${total + ' €'}">
                         12.95 €
+                    </div>
+                </div>
+
+                <div class="row billing-form-header">
+                    <div class="col-md-5 col-md-offset-2">
+                        <b>Informations de contact</b>
                     </div>
                 </div>
 
@@ -87,7 +100,25 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-5 col-md-offset-2">
+                    <div class="col-md-3 col-md-offset-2">
+                        Numéro de téléphone:
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="phonenumber"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-2">
+                        Adresse email:
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="email"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-5 col-md-offset-2 billing-form-header">
                         <b>Adresse de facturation</b>
                     </div>
                 </div>
@@ -110,9 +141,10 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row billing-form-header">
                     <div class="col-md-5 col-md-offset-2">
-                        <b>Adresse de livraison (à remplir seulement si différente)</b>
+                        <b>Adresse de livraison </b><br/>
+                        <i>(à remplir seulement si différente de la précédente)</i>
                     </div>
                 </div>
 
@@ -134,22 +166,12 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-3 col-md-offset-2">
-                        Numéro de téléphone:
-                    </div>
-                    <div class="col-md-5">
-                        <input type="text" class="form-control" name="phonenumber"/>
+                <div class="row billing-form-header">
+                    <div class="col-md-5 col-md-offset-2">
+                        <b>Paiement</b>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-3 col-md-offset-2">
-                        Adresse email:
-                    </div>
-                    <div class="col-md-5">
-                        <input type="text" class="form-control" name="email"/>
-                    </div>
-                </div>
+
                 <div class="row">
                     <div class="col-md-3 col-md-offset-2">
                         Moyen de paiement:
@@ -157,16 +179,12 @@
                     <div class="col-md-5">
                         <ul style="margin: 0em; padding: 0em">
                             <li>
-                                <input type="radio" name="paymentType" value="CREDIT_CARD" checked="true"/>
-                                Carte de crédit
+                                <input checked="checked" type="radio" name="paymentType" value="BANK_TRANSFER"/>
+                                Virement bancaire
                             </li>
                             <li>
                                 <input type="radio" name="paymentType" value="BANK_CHECK"/>
                                 Chèque bancaire
-                            </li>
-                            <li>
-                                <input type="radio" name="paymentType" value="BANK_TRANSFER"/>
-                                Virement bancaire
                             </li>
                         </ul>
                     </div>
