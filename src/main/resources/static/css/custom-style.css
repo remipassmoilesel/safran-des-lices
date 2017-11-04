@@ -59,7 +59,12 @@
     padding-bottom: 1em;
     font-size: 1.1em;
 }
+
 .billing-form-header i{
     color: gray;
     font-size: 1em;
+}
+
+.checkoutPaymentBlock{
+    margin-top: 2em;
 }

@@ -138,7 +138,7 @@ public class OrderController {
         model.addAttribute("basket", productsWithQuantities);
 
         // expenses
-        List<Expense> expenses = expenseRepository.findAll();
+        List<Expense> expenses = expenseRepository.findAll(false);
         model.addAttribute("expenses", expenses);
 
         // total

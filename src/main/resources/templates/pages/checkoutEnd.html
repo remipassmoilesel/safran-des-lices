@@ -26,7 +26,7 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row checkoutPaymentBlock">
 
             <div class="col-md-offset-2 col-md-5" th:if="${order.getPaymentType().toString()} eq 'BANK_CHECK'">
 
@@ -46,7 +46,9 @@
     FR7611315000011234567890138 11315 00001 12345678901 38
                 </pre>
 
-                <p>Montant total à payer: <span th:text="${total}"></span> €</p>
+                <p><b>Montant total à payer: <span th:text="${total}"></span> €</b></p>
+
+                <p>Merci, et à très bientôt !</p>
 
             </div>
 

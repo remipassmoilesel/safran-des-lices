@@ -4,7 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.Objects;
 
 /**
  * Created by remipassmoilesel on 15/07/17.
@@ -20,13 +19,18 @@ public class Expense {
 
     private Double value;
 
+    private boolean deleted;
+
+    public Expense() {
+        this.deleted = false;
+    }
+
     public Expense(String name, Double value) {
+        this();
         this.name = name;
         this.value = value;
     }
 
-    public Expense() {
-    }
 
     public Long getId() {
         return id;
@@ -52,19 +56,34 @@ public class Expense {
         this.value = value;
     }
 
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         Expense expense = (Expense) o;
-        return Objects.equals(id, expense.id) &&
-                Objects.equals(name, expense.name) &&
-                Objects.equals(value, expense.value);
+
+        if (deleted != expense.deleted) return false;
+        if (id != null ? !id.equals(expense.id) : expense.id != null) return false;
+        if (name != null ? !name.equals(expense.name) : expense.name != null) return false;
+        return value != null ? value.equals(expense.value) : expense.value == null;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, value);
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (value != null ? value.hashCode() : 0);
+        result = 31 * result + (deleted ? 1 : 0);
+        return result;
     }
 
     @Override
@@ -73,6 +92,7 @@ public class Expense {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", value=" + value +
+                ", deleted=" + deleted +
                 '}';
     }
 }

@@ -134,7 +134,7 @@ public class AdminControllerTest {
         // modify expense
         String newName = "What an expense";
         Double newValue = 522d;
-        Expense e1 = expenseRepository.findAll().get(0);
+        Expense e1 = expenseRepository.findAll(false).get(0);
         e1.setName("");
         e1.setValue(0d);
         expenseRepository.save(e1);

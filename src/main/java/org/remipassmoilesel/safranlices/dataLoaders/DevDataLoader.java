@@ -8,7 +8,6 @@ import org.remipassmoilesel.safranlices.entities.Product;
 import org.remipassmoilesel.safranlices.repositories.ExpenseRepository;
 import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
-import org.remipassmoilesel.safranlices.utils.DevDataFactory;
 import org.remipassmoilesel.safranlices.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,6 +53,11 @@ public class DevDataLoader implements ApplicationRunner {
             return;
         }
 
+        if (expenseRepository.count() < 1) {
+            populateExpenseRepository();
+            logger.warn("-- Fake expenses added");
+        }
+
         if (productRepository.count() < 1) {
             populateProductRepository();
             logger.warn("-- Fake products added");
@@ -62,11 +66,6 @@ public class DevDataLoader implements ApplicationRunner {
         if (orderRepository.count() < 1) {
             populateOrderRepository();
             logger.warn("-- Fake orders added");
-        }
-
-        if (expenseRepository.count() < 1) {
-            populateExpenseRepository();
-            logger.warn("-- Fake expenses added");
         }
 
     }
@@ -90,6 +89,7 @@ public class DevDataLoader implements ApplicationRunner {
         Random rand = new Random();
         DateTime start = new DateTime();
         List<Product> products = productRepository.findAll(false);
+        List<Expense> expenses = expenseRepository.findAll(false);
 
         for (int i = 0; i < 50; i++) {
 
@@ -109,7 +109,7 @@ public class DevDataLoader implements ApplicationRunner {
                     products, basket, null,
                     null, null,
                     null,null,
-                    null, null, null);
+                    null, null, expenses);
 
             order.setTotal(basket.computeTotalForBasket(products));
             order.setProcessed(i % 2 == 0);

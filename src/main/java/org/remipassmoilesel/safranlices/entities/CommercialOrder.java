@@ -56,7 +56,7 @@ public class CommercialOrder {
 
     private Date lastShipmentNotification;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany
     private List<Expense> expenses;
 
     public CommercialOrder() {

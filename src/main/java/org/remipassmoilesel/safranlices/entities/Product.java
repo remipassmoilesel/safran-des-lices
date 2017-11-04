@@ -27,19 +27,19 @@ public class Product {
 
     private Integer quantityAvailable;
 
-    private Boolean deleted;
+    private boolean deleted;
 
     public Product() {
         this.deleted = false;
     }
 
     public Product(String name, String description, String pictures, Double price, int quantityAvailable) {
+        this();
         this.name = name;
         this.description = description;
         this.pictures = pictures;
         this.price = price;
         this.quantityAvailable = quantityAvailable;
-        this.deleted = false;
     }
 
     public String getName() {

@@ -9,7 +9,7 @@ import org.remipassmoilesel.safranlices.entities.Product;
 import org.remipassmoilesel.safranlices.repositories.ExpenseRepository;
 import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
-import org.remipassmoilesel.safranlices.utils.DevDataFactory;
+import org.remipassmoilesel.safranlices.dataLoaders.DevDataFactory;
 import org.remipassmoilesel.safranlices.utils.Mailer;
 import org.remipassmoilesel.safranlices.utils.Utils;
 import org.slf4j.Logger;
@@ -71,8 +71,6 @@ public class DevController {
 
         CommercialOrder order = DevDataFactory.createOrder(null, products, null, null,
                 null, null, null, null, null, null, null);
-
-        List<Expense> expenses = expenseRepository.findAll();
 
         // generate pdf
         Path pdfPath = generator.generateBill(order, products, 88.8);

@@ -79,7 +79,7 @@ public class BillingController {
             return "redirect:" + Mappings.BASKET;
         }
 
-        List<Expense> expenses = expenseRepository.findAll();
+        List<Expense> expenses = expenseRepository.findAll(false);
         List<Product> products = productRepository.findAll(false);
 
         // total
@@ -133,7 +133,7 @@ public class BillingController {
 
         PaymentType paymentType = PaymentType.valueOf(checkoutForm.getPaymentType());
 
-        List<Expense> expenses = expenseRepository.findAll();
+        List<Expense> expenses = expenseRepository.findAll(false);
 
         CommercialOrder order = new CommercialOrder(
                 new Date(),
@@ -187,7 +187,7 @@ public class BillingController {
         }
 
         List<Product> products = productRepository.findAll(false);
-        List<Expense> expenses = expenseRepository.findAll();
+        List<Expense> expenses = expenseRepository.findAll(false);
 
         Basket basket = Basket.getBasketOrCreate(session);
         double total = basket.computeTotalWithExpenses(products, expenses);

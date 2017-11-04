@@ -70,7 +70,7 @@ public class AdminController {
         model.addAttribute("products", products);
 
         // add expenses
-        model.addAttribute("expenses", expenseRepository.findAll());
+        model.addAttribute("expenses", expenseRepository.findAll(false));
 
         Mappings.includeMappings(model);
         return Templates.ADMIN;
