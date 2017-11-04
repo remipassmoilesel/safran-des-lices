@@ -1007,3 +1007,8 @@ Responsive media queries
     background-color: #6c4384;
     border-color: #7f5f91;
 }
+
+.welcome-body p{
+    margin-bottom: 2em;
+    font-size: 1.1em;
+}
