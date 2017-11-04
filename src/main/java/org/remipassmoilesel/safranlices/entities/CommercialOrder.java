@@ -1,5 +1,8 @@
 package org.remipassmoilesel.safranlices.entities;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashMap;
@@ -306,4 +309,7 @@ public class CommercialOrder {
                 '}';
     }
 
+    public String getFormattedDate(String pattern) {
+        return DateTimeFormat.forPattern(pattern).print(new DateTime(date));
+    }
 }

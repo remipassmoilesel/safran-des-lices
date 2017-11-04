@@ -67,6 +67,10 @@ public class DevController {
 
         // create a fake order
         List<Product> products = DevDataFactory.createSampleProductList();
+        for (Product prod : products) {
+            prod.setId((long) products.indexOf(prod));
+        }
+
         CommercialOrder order = DevDataFactory.createOrder(null, products, null, null,
                 null, null, null, null, null, null);
 
@@ -86,16 +90,6 @@ public class DevController {
 
     }
 
-    public static byte[] readPdf(InputStream stream) throws IOException {
-        byte[] buffer = new byte[8192];
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-        int bytesRead;
-        while ((bytesRead = stream.read(buffer)) != -1) {
-            baos.write(buffer, 0, bytesRead);
-        }
-        return baos.toByteArray();
-    }
 
     @RequestMapping("/send-mail-example")
     @ResponseBody
@@ -150,6 +144,18 @@ public class DevController {
             throw new Exception("Unknown type: " + type);
         }
 
+    }
+
+
+    public static byte[] readPdf(InputStream stream) throws IOException {
+        byte[] buffer = new byte[8192];
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        int bytesRead;
+        while ((bytesRead = stream.read(buffer)) != -1) {
+            baos.write(buffer, 0, bytesRead);
+        }
+        return baos.toByteArray();
     }
 
 }

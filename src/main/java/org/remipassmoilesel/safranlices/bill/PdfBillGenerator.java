@@ -1,11 +1,11 @@
 package org.remipassmoilesel.safranlices.bill;
 
 import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
 import org.remipassmoilesel.safranlices.entities.Product;
+import org.remipassmoilesel.safranlices.utils.Utils;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -13,6 +13,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -28,7 +30,8 @@ public class PdfBillGenerator {
     private static Path LOGO_PATH = Paths.get("./src/main/resources/bill/safran-lices-logo.jpg").toAbsolutePath();
     private static Path ADDRESS_FILE_PATH = Paths.get("./src/main/resources/bill/address.txt").toAbsolutePath();
 
-    private static Font TITLE_FONT = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD);
+    private static Font TITLE_1_FONT = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD);
+    private static Font TITLE_2_FONT = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
 
     private static List<String> addressContent;
 
@@ -51,12 +54,76 @@ public class PdfBillGenerator {
             addAddressBloc(document);
 
             addCommandHeader(document, order);
-
+            addCustomerInformations(document, order);
+            addOrder(document, order, products);
 
             document.close();
         }
 
         return absoluteDocPath;
+    }
+
+    private void addOrder(Document document, CommercialOrder order, List<Product> products) throws DocumentException {
+        Paragraph header = new Paragraph();
+
+        header.add(Chunk.NEWLINE);
+        Chunk title = new Chunk("Détail de la commande");
+        title.setFont(TITLE_2_FONT);
+        header.add(title);
+        header.add(Chunk.NEWLINE);
+        header.add(Chunk.NEWLINE);
+
+        PdfPTable table = new PdfPTable(3);
+
+        table.addCell("Nom");
+        table.addCell("Prix unitaire");
+        table.addCell("Quantité");
+
+        HashMap<Product, Integer> productMap = Utils.mapProductWithQuantities(products, order);
+
+        Iterator<Product> iter = productMap.keySet().iterator();
+        while(iter.hasNext()){
+            Product product = iter.next();
+            Integer quantity = productMap.get(product);
+
+            table.addCell(product.getName());
+            table.addCell(String.valueOf(product.getPrice()));
+            table.addCell(String.valueOf(quantity));
+        }
+
+        document.add(header);
+        document.add(table);
+    }
+
+    private void addCustomerInformations(Document document, CommercialOrder order) throws DocumentException {
+        Paragraph header = new Paragraph();
+
+        header.add(Chunk.NEWLINE);
+        Chunk title = new Chunk("Informations client");
+        title.setFont(TITLE_2_FONT);
+        header.add(title);
+        header.add(Chunk.NEWLINE);
+        header.add(Chunk.NEWLINE);
+
+        PdfPTable table = new PdfPTable(2);
+
+        table.addCell("Nom");
+        table.addCell(order.getLastName());
+
+        table.addCell("Prénom");
+        table.addCell(order.getFirstName());
+
+        table.addCell("Adresse");
+        table.addCell(order.getAddress() + " " + order.getPostalcode() + " " + order.getCity());
+
+        table.addCell("Adresse de livraison");
+        table.addCell(order.getShipmentAddress() + " " + order.getShipmentPostalcode() + " " + order.getShipmentCity());
+
+        table.addCell("Téléphone");
+        table.addCell(order.getPhonenumber());
+
+        document.add(header);
+        document.add(table);
     }
 
     private void addCommandHeader(Document document, CommercialOrder order) throws DocumentException {
@@ -65,11 +132,12 @@ public class PdfBillGenerator {
         header.add(Chunk.NEWLINE);
         header.add(Chunk.NEWLINE);
 
-        String formattedDate = DateTimeFormat.forPattern("dd/MM/yyyy").print(new DateTime(order.getDate()));
-        Chunk title = new Chunk("Commande du " + formattedDate);
-        title.setFont(TITLE_FONT);
+        String formattedDate = order.getFormattedDate("dd/MM/yyyy");
+        Chunk title = new Chunk("Facture pour la commande du " + formattedDate);
+        title.setFont(TITLE_1_FONT);
 
         header.add(title);
+        header.add(Chunk.NEWLINE);
 
         document.add(header);
 
@@ -113,7 +181,7 @@ public class PdfBillGenerator {
     }
 
     private String getPdfName(CommercialOrder order) {
-        return order.getDate() + "_" + order.getLastName() + "_" + order.getFirstName() + ".pdf";
+        return order.getFormattedDate("yyyy-MM-dd_HH-mm-ss") + "_" + order.getLastName() + "_" + order.getFirstName() + ".pdf";
     }
 
     private Path getPdfAbsolutePath(String name) {
