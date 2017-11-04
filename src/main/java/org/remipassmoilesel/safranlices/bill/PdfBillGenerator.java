@@ -1,73 +1,83 @@
 package org.remipassmoilesel.safranlices.bill;
 
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfWriter;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
 import org.remipassmoilesel.safranlices.entities.Product;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+/**
+ * Generate pdf bills using IText
+ * <p>
+ * Units are 1/72 inch, A4 is 8.27 x 11.69 inches
+ */
 public class PdfBillGenerator {
 
-    public static Path PDF_ROOT = Paths.get("./pdf-bills");
-    public static Path LOGO_PATH = Paths.get("./src/main/resources/bill/safran-lices-logo.jpg");
+    private static final float MAX_HEIGHT = 750f;
 
-    public Path generateBill(String name, CommercialOrder order, List<Product> products) throws IOException {
+    public static Path PDF_ROOT = Paths.get("./pdf-bills");
+    public static Path LOGO_PATH = Paths.get("./src/main/resources/bill/safran-lices-logo.jpg").toAbsolutePath();
+    public static Path ADDRESS_FILE_PATH = Paths.get("./src/main/resources/bill/address.txt").toAbsolutePath();
+
+    private static List<String> addressContent;
+
+    public Path generateBill(String name, CommercialOrder order, List<Product> products) throws IOException, DocumentException {
 
         createPdfRoot();
         deletePreviousPdf(name);
 
-        PDDocument document = new PDDocument();
+        Path absoluteDocPath = getPdfAbsolutePath(name);
+        Document document = new Document();
 
-        PDPage firstPage = new PDPage();
-        document.addPage(firstPage);
+        try (OutputStream docOutput = Files.newOutputStream(absoluteDocPath)) {
+            PdfWriter.getInstance(document, docOutput);
 
-        PDPageContentStream contentStream = new PDPageContentStream(document, firstPage);
+            document.open();
 
-        addLogo(contentStream, document);
+            addLogo(document);
+            addAddressBloc(document);
 
-        //Begin the Content stream
-        contentStream.beginText();
 
-        //Setting the font to the Content stream
-        contentStream.setFont(PDType1Font.HELVETICA, 12);
+            document.close();
+        }
 
-        //Setting the position for the line
-        contentStream.newLineAtOffset(25, 25);
-
-        String text = "This is the sample document and we are adding content to it.";
-
-        //Adding text in the form of string
-        contentStream.showText(text);
-
-        //Ending the content stream
-        contentStream.endText();
-
-        System.out.println("Content added");
-
-        //Closing the content stream
-        contentStream.close();
-
-        Path absolutePath = getPdfAbsolutePath(name);
-        document.save(absolutePath.toString());
-
-        return absolutePath;
+        return absoluteDocPath;
     }
 
-    private void addLogo(PDPageContentStream contentStream, PDDocument document) throws IOException {
+    private void addAddressBloc(Document document) throws IOException, DocumentException {
 
-        PDImageXObject pdImage = PDImageXObject.createFromFile(LOGO_PATH.toAbsolutePath().toString(), document);
+        Paragraph addressParagraph = new Paragraph();
+
+        for (String l : getAddressContent()) {
+            addressParagraph.add(new Chunk(l));
+            addressParagraph.add(Chunk.NEWLINE);
+        }
+
+        document.add(addressParagraph);
+
+    }
+
+    private void addLogo(Document document) throws IOException, DocumentException {
+
+        Image logo = Image.getInstance(LOGO_PATH.toString());
 
         float scale = 0.1f;
-        contentStream.drawImage(pdImage, 100, 100, pdImage.getWidth() * scale,
-                pdImage.getHeight() * scale);
+        float scaledWidth = logo.getWidth() * scale;
+        float scaledheight = logo.getHeight() * scale;
+        float xPosition = 298 - scaledWidth / 2;
+        float yPosition = MAX_HEIGHT;
+
+        logo.setAbsolutePosition(xPosition, yPosition);
+        logo.scaleAbsolute(scaledWidth, scaledheight);
+
+        document.add(logo);
 
     }
 
@@ -88,4 +98,12 @@ public class PdfBillGenerator {
         }
     }
 
+    public List<String> getAddressContent() throws IOException {
+
+        if (addressContent == null) {
+            addressContent = Files.readAllLines(ADDRESS_FILE_PATH, StandardCharsets.UTF_8);
+        }
+
+        return addressContent;
+    }
 }
