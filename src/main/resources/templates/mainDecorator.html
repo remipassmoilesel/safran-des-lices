@@ -15,46 +15,12 @@
     <link rel="stylesheet" type="text/css" th:href="@{/bower_components/bootstrap/dist/css/bootstrap.min.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/bower_components/imagehover.css/css/imagehover.min.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/bower_components/lightbox2/dist/css/lightbox.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/bower_components/jquery-ui/themes/base/all.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/template-style.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/custom-style.css}"/>
 
-    <script th:src="@{/bower_components/jquery/dist/jquery.js}"></script>
-    <script th:src="@{/bower_components/lightbox2/dist/js/lightbox.js}"></script>
-
-    <script th:inline="javascript">
-
-        var UrlTree = {
-            BASKET: /*[[${#httpServletRequest.getContextPath() + mappings.get('BASKET')}]]*/ null
-        };
-
-
-        /*<![CDATA[*/
-
-        /**
-         * Scroll button
-         */
-
-        $(function () {
-            // display button only if needed
-            $(window).scroll(function () {
-                if ($(this).scrollTop() > 100) {
-                    $('#goToTopButton').fadeIn();
-                } else {
-                    $('#goToTopButton').fadeOut();
-                }
-            });
-
-            //Click event to scroll to top
-            $(function () {
-                $('#goToTopButton').click(function () {
-                    $('html, body').animate({scrollTop: 0}, 1100);
-                    return false;
-                });
-            });
-        });
-
-        /*]]>*/
-    </script>
+    <!-- Only JQuery is available at the beginning of the document, others are at the bottom -->
+    <script th:src="@{/bower_components/jquery/dist/jquery.min.js}"></script>
 
 </head>
 <body>
@@ -80,8 +46,6 @@
                 <li><a th:href="@{${mappings.get('OUR_EXPLOITATION')}}">Notre safranière</a></li>
                 <li><a th:href="@{${mappings.get('ORDER')}}">Commander en ligne</a></li>
                 <li><a th:href="@{${mappings.get('BASKET')}}">Mon panier</a></li>
-                <!--<li><a href="#" data-target="#login" data-toggle="modal" class="fa fa-key"></a></li>-->
-                <!--<li class="btn-trial"><a href="#footer">Free Trail</a></li>-->
             </ul>
         </div>
     </div>
@@ -648,7 +612,8 @@
     <div class="container text-center">
 
         <ul class="social-links">
-            <li><a href="https://www.facebook.com/Safran-Des-Lices-196579650796991/"><i class="fa fa-facebook fa-fw"></i></a></li>
+            <li><a href="https://www.facebook.com/Safran-Des-Lices-196579650796991/"><i
+                    class="fa fa-facebook fa-fw"></i></a></li>
             <li><a href="mailto:safrandeslices@orange.fr"><i class="fa fa-envelope fa-fw"></i></a></li>
         </ul>
 
@@ -661,13 +626,50 @@
 </footer>
 <!--/ Footer-->
 
-<script th:src="@{/bower_components/jquery/dist/jquery.min.js}"></script>
-<script th:src="@{/bower_components/jquery-easing/jquery.easing.min.js}"></script>
-<script th:src="@{/bower_components/bootstrap/dist/js/bootstrap.min.js}"></script>
-<script th:src="@{/js/custom.js}"></script>
-
 <!-- Scroll to top button -->
 <button id="goToTopButton" title="Remonter" class="fa fa-arrow-up"></button>
+
+<script th:src="@{/bower_components/jquery-ui/jquery-ui.min.js}"></script>
+<script th:src="@{/bower_components/jquery-easing/jquery.easing.min.js}"></script>
+<script th:src="@{/bower_components/bootstrap/dist/js/bootstrap.min.js}"></script>
+<script th:src="@{/bower_components/lightbox2/dist/js/lightbox.js}"></script>
+<script th:src="@{/js/template.js}"></script>
+
+<script th:inline="javascript">
+
+        var UrlTree = {
+            BASKET: /*[[${#httpServletRequest.getContextPath() + mappings.get('BASKET')}]]*/ null
+        };
+
+
+        /*<![CDATA[*/
+
+        /**
+         * Scroll button
+         */
+
+        $(function () {
+            // display button only if needed
+            $(window).scroll(function () {
+                if ($(this).scrollTop() > 100) {
+                    $('#goToTopButton').fadeIn();
+                } else {
+                    $('#goToTopButton').fadeOut();
+                }
+            });
+
+            //Click event to scroll to top
+            $(function () {
+                $('#goToTopButton').click(function () {
+                    $('html, body').animate({scrollTop: 0}, 1100);
+                    return false;
+                });
+            });
+        });
+
+        /*]]>*/
+
+</script>
 
 </body>
 </html>

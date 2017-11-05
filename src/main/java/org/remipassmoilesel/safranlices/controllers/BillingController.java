@@ -215,15 +215,15 @@ public class BillingController {
                            HttpServletResponse response) throws IOException {
 
         // check if user authorization
-        String authorizedPdf = (String) session.getAttribute(AUTHORIZED_BILL_ID_SATTR);
+        String authorizedBill = (String) session.getAttribute(AUTHORIZED_BILL_ID_SATTR);
 
-        if (authorizedPdf == null) {
-            logger.error("Access refused on bill display");
+        if (authorizedBill == null || billId.equals(authorizedBill) == false) {
+            logger.error("Access refused on bill display: " + billId);
             return "redirect:" + Mappings.ROOT;
         }
 
         // display bill
-        Path path = PdfBillGenerator.getPdfAbsolutePath(authorizedPdf);
+        Path path = PdfBillGenerator.getPdfAbsolutePath(authorizedBill);
 
         Utils.pdfResponse(response, path);
         return "";

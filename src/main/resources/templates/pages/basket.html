@@ -24,6 +24,9 @@
         }
 
     </style>
+
+    <script th:src="@{/js/basket.js}"></script>
+
 </head>
 <body>
 <div layout:fragment="content">
@@ -34,7 +37,8 @@
                 <div class="header-section text-center">
                     <h2>Mon panier</h2>
                     <p>Sur cette page sont listés les articles que vous souhaitez acheter. <br/>
-                        Vous pouvez sélectionner des produits sur <a th:href="@{${mappings.get('ORDER')}}">la page de commande</a>.</p>
+                        Vous pouvez sélectionner des produits sur <a th:href="@{${mappings.get('ORDER')}}">la page de
+                            commande</a>.</p>
                     <hr class="bottom-line"/>
                 </div>
             </div>
@@ -65,6 +69,11 @@
                             <td th:text="${row.value}">3</td>
                             <td th:text="${row.key.getPrice() + ' €'}">35.5€</td>
                             <td th:text="${row.key.getPrice() * row.value + ' €'}">135.5€</td>
+                            <td><a th:onclick="'App.showEditQuantityDialog(' + ${row.key.getId()} + ',' + ${row.value} + ')'"
+                                   style="cursor: pointer"
+                                   title="Modifier la quantité d'articles"
+                                   class="fa fa-pencil"></a>
+                            </td>
                             <td><a th:href="@{${mappings.get('BASKET')}(delete=true, id=${row.key.getId()})}"
                                    title="Supprimer l'article"
                                    class="fa fa-times"></a>
@@ -108,6 +117,12 @@
 
     </section>
 
+    <div id="changeQuantityDialog" title="Modifier la quantité d'articles">
+        <p>Saisissez la quantité d'articles que vous souhaitez:</p>
+        <p><input type="number" id="newQuantityTextField" /></p>
+    </div>
+
 </div>
+
 </body>
 </html>
