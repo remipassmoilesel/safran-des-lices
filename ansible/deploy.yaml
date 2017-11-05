@@ -1,6 +1,10 @@
 - hosts: "vps"
 
   tasks:
+  - name: "Push changes"
+    raw: "cd {{ playbook_dir }} && git push origin master"
+    delegate_to: localhost
+
   - name: "Update set-env file"
     copy:
       src: "./setenv-prod.sh"

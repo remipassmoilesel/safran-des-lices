@@ -8,6 +8,9 @@ import java.util.List;
 
 public class Basket {
 
+    public static final String BASKET_SATTR = "basket";
+    public static final String ORDER_SATTR = "order";
+
     public static Basket getBasketOrCreate(HttpSession session) {
 
         Basket basket;
@@ -22,9 +25,6 @@ public class Basket {
 
         return basket;
     }
-
-    public static final String BASKET_SATTR = "basket";
-    public static final String ORDER_SATTR = "order";
 
     /**
      * Raw basket, with
