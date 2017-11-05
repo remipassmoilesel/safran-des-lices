@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="mainDecorator"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Page d'administration</title>
+
+    <link th:href="@{/css/admin.css}" type="text/css" rel="stylesheet"/>
+
+    <script type="text/javascript" th:src="@{/js/admin.js}"></script>
+
+</head>
+<body>
+<div layout:fragment="content">
+
+    <section id="courses" class="section-padding">
+
+        <div class="container">
+
+            <div class="row">
+                <div class="header-section text-center">
+                    <h2>Toutes les factures</h2>
+                    <hr class="bottom-line"/>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <ul class="col-md-offset-2 coll-md-8">
+                <li th:each="name : ${billNames}">
+                    <a th:href="@{${mappings.get('ADMIN_SHOW_BILL')}(id=${name})}"
+                       target="_blank"
+                       th:text="${name}"></a>
+                </li>
+            </ul>
+        </div>
+
+    </section>
+
+</div>
+</body>
+</html>

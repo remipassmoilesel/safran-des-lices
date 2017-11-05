@@ -2,6 +2,7 @@ package org.remipassmoilesel.safranlices.controllers;
 
 import org.remipassmoilesel.safranlices.Mappings;
 import org.remipassmoilesel.safranlices.Templates;
+import org.remipassmoilesel.safranlices.bill.PdfBillGenerator;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
 import org.remipassmoilesel.safranlices.entities.Expense;
 import org.remipassmoilesel.safranlices.entities.OrderNotificationType;
@@ -25,7 +26,13 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by remipassmoilesel on 13/06/17.
@@ -116,6 +123,33 @@ public class AdminController {
 
         Mappings.includeMappings(model);
         return Templates.ADMIN_SHOW_ORDER;
+    }
+
+    @RequestMapping(Mappings.ADMIN_SHOW_BILL)
+    public void showBill(
+            HttpServletResponse response,
+            @RequestParam(value = "id") String id) throws IOException {
+
+        // display bill
+        Path path = PdfBillGenerator.getPdfAbsolutePath(id);
+
+        Utils.pdfResponse(response, path);
+    }
+
+    @RequestMapping(Mappings.ADMIN_SHOW_ALL_BILLS)
+    public String showAllBills(Model model) throws IOException {
+
+        List<String> billNames = Files.list(PdfBillGenerator.PDF_ROOT)
+                .map(p -> p.getFileName().toString())
+                .collect(Collectors.toList());
+
+        Collections.sort(billNames);
+        Collections.reverse(billNames);
+
+        model.addAttribute("billNames", billNames);
+
+        Mappings.includeMappings(model);
+        return Templates.ADMIN_SHOW_ALL_BILLS;
     }
 
     @RequestMapping(Mappings.ADMIN_ACTION)
