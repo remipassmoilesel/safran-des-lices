@@ -4,7 +4,36 @@
     <title>Administration</title>
 </head>
 <body>
-<div th:fragment="adminOrders" class="container">
+
+
+<div th:fragment="adminOrdersTable" class="container">
+
+    <div class="order row text-center" th:if="${#lists.size(orders) lt 1}">
+        <i>Aucune commande à afficher.</i>
+    </div>
+
+    <table class="adminOrdersTable table table-striped">
+        <thead>
+        <tr>
+            <td>Commande n°</td>
+            <td>Date</td>
+            <td>Nom et prénom</td>
+            <td>Total</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order, iter : ${orders}" th:if="${#lists.size(orders) gt 0}">
+            <td th:text="${order.getId()}">3</td>
+            <td th:text="${#dates.format(order.getDate(), 'dd/MM/yyyy à HH:mm')}">10/01/1980 à 08:22</td>
+            <td th:text="${order.getFirstName() + ' ' + order.getLastName()}">Jules Jean</td>
+            <td th:text="${order.getTotal() + ' €'}">30 €</td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<div th:fragment="adminOrderComplete" class="container">
 
     <div class="order row text-center" th:if="${#lists.size(orders) lt 1}">
         <i>Aucune commande à afficher.</i>
@@ -17,7 +46,8 @@
             <table class="orderTable">
                 <tr>
                     <td class="orderHeader" colspan="2" th:inline="text">
-                        Commande n°[[${order.getId()}]], passée le [[${#dates.format(order.getDate(), 'dd/MM/yyyy à HH:mm')}]]
+                        Commande n°[[${order.getId()}]], passée le [[${#dates.format(order.getDate(), 'dd/MM/yyyy à
+                        HH:mm')}]]
                     </td>
                 </tr>
 
@@ -39,7 +69,9 @@
                     </td>
                 </tr>
 
-                <tr><td>&nbsp;</td></tr>
+                <tr>
+                    <td>&nbsp;</td>
+                </tr>
 
                 <tr>
                     <td class="orderLabel">Nom et prénom:</td>
@@ -68,7 +100,9 @@
                     <td th:text="${order.getEmail()}">jean@claude.fr</td>
                 </tr>
 
-                <tr><td>&nbsp;</td></tr>
+                <tr>
+                    <td>&nbsp;</td>
+                </tr>
 
                 <tr th:if="${#strings.isEmpty(order.getComment()) == false}">
                     <td class="orderLabel">Commentaire:</td>

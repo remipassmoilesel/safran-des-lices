@@ -1,7 +1,6 @@
 .order {
     margin-top: 1em;
     margin-bottom: 2em;
-    background: #c0a7bcdd;
 }
 
 .order ul {
@@ -103,4 +102,19 @@
 
 h3 {
     margin-top: 3em;
+}
+
+.adminOrdersTable{
+    width: 70%;
+    margin: auto;
+}
+
+.adminOrdersTable td{
+    padding: 1em;
+    text-align: center;
+}
+
+.adminOrdersTable thead td{
+    font-weight: bolder;
+    text-align: center;
 }
