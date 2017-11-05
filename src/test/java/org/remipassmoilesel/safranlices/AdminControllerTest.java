@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.remipassmoilesel.safranlices.controllers.AdminController;
+import org.remipassmoilesel.safranlices.dataLoaders.DevDataFactory;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
 import org.remipassmoilesel.safranlices.entities.Expense;
 import org.remipassmoilesel.safranlices.entities.Product;
@@ -20,6 +21,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -86,8 +90,14 @@ public class AdminControllerTest {
     @Transactional
     public void testModifications() throws Exception {
 
-        // mark order as paid
-        CommercialOrder o1 = orderRepository.findAll().get(0);
+        // create an order and mark it as non paid
+        List<Expense> exps = new ArrayList();
+        exps.add(DevDataFactory.createExpense());
+        expenseRepository.save(exps);
+
+        CommercialOrder o1 = DevDataFactory.createOrder(null, null,
+                null, null, null, null,
+                null, null, null, null, exps);
         o1.setPaid(false);
         o1.setProcessed(false);
         orderRepository.save(o1);

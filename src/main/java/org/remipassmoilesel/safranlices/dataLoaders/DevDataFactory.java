@@ -107,7 +107,7 @@ public class DevDataFactory {
         }
 
         if (expenses == null) {
-            expenses = Arrays.asList(new Expense("Frais de port", 5d));
+            expenses = Arrays.asList(createExpense());
         }
 
         String postalCode = "35582";
@@ -129,5 +129,13 @@ public class DevDataFactory {
                 DevDataFactory.createProduct("Sel au safran 100g", "Sel parfumé au safran, peut être utilisé pour saler", null, 15d, null),
                 DevDataFactory.createProduct("Sirop de safran 35ml", "Sirop de safran, peut être utilisé pour siroter", null, 15d, null)
         );
+    }
+
+    public static Expense createExpense() {
+        return createExpense("Frais de port", 5d);
+    }
+
+    public static Expense createExpense(String name, double value) {
+        return new Expense(name, value);
     }
 }

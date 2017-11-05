@@ -50,7 +50,6 @@ public class CommercialOrderRepositoryTest {
         List<Product> products = productRepository.findAll(false);
         List<Expense> expenses = expenseRepository.findAll(false);
 
-
         int nbr = 10;
         for (int i = 0; i < nbr; i++) {
             CommercialOrder order = DevDataFactory.createOrder(null, products, null,
