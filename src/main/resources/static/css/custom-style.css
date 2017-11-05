@@ -40,13 +40,15 @@
 }
 
 .btn-primary {
-    background-color: #7f5f91;
-    border-color: gray;
+    background-color: #7f5f91 !important;
+    border-color: gray !important;
+    color: white !important;
 }
 
 .btn-primary.focus, .btn-primary:focus, .btn-primary:hover {
-    background-color: #6c4384;
-    border-color: #7f5f91;
+    background-color: #6c4384 !important;
+    border-color: #7f5f91 !important;
+    color: white !important;
 }
 
 .welcome-body p{
@@ -76,4 +78,8 @@
 
 .checkout-payment-block p{
     margin: 2em;
+}
+
+.ui-dialog-titlebar-close{
+    display: none;
 }

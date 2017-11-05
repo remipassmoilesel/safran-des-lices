@@ -2,37 +2,47 @@ var App = {
 
     init: function(){
 
+        // initialize dialog
         $("#changeQuantityDialog").dialog({
-          resizable: false,
-          height: "auto",
-          width: 400,
-          modal: true,
-          autoOpen: false,
-          buttons: {
-            "Changer la quantité": function() {
-              App.editQuantity()
-              $(this).dialog("close");
-            },
-            "Annuler": function() {
-              $(this).dialog("close");
-            }
-          }
+            closeOnEscape: false,
+            resizable: false,
+            height: "auto",
+            width: 400,
+            modal: true,
+            autoOpen: false,
         });
 
+        // on click of cancel button, close dialog
+        $("#changeQuantityDialogBtnCancel").click(function(){
+            $("#changeQuantityDialog").dialog('close');
+        });
+
+         // on approve button click, redirect page
+        $("#changeQuantityDialogBtnApprove").click(function(){
+            var articleId =  $("#changeQuantityDialogArticleId").val();
+            var newQuantity = $("#changeQuantityDialogTextField").val();
+
+            App.editQuantity(articleId, newQuantity);
+
+            $("#changeQuantityDialog").dialog('close');
+        });
     },
 
     showEditQuantityDialog: function(articleId, oldQuantity){
 
-        console.log($("#newQuantityTextField"))
+        // get old quantity and fill text field with
+        $("#changeQuantityDialogTextField").val(oldQuantity);
 
-        $("#newQuantityTextField").val(oldQuantity);
-        $("#changeQuantityDialog").open();
+        // set article id
+        $("#changeQuantityDialogArticleId").val(articleId);
+
+        // finally open dialog
+        $("#changeQuantityDialog").dialog("open");
 
     },
 
     editQuantity: function(articleId, newQuantity){
-
-
+        document.location.href = UrlTree.BASKET + "?changeQtty=true&id=" + articleId + "&qtty=" + newQuantity;
     },
 
 }

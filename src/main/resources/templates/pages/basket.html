@@ -23,6 +23,8 @@
             margin: 1em
         }
 
+
+
     </style>
 
     <script th:src="@{/js/basket.js}"></script>
@@ -69,7 +71,8 @@
                             <td th:text="${row.value}">3</td>
                             <td th:text="${row.key.getPrice() + ' €'}">35.5€</td>
                             <td th:text="${row.key.getPrice() * row.value + ' €'}">135.5€</td>
-                            <td><a th:onclick="'App.showEditQuantityDialog(' + ${row.key.getId()} + ',' + ${row.value} + ')'"
+                            <td>
+                                <a th:onclick="'App.showEditQuantityDialog(' + ${row.key.getId()} + ',' + ${row.value} + ')'"
                                    style="cursor: pointer"
                                    title="Modifier la quantité d'articles"
                                    class="fa fa-pencil"></a>
@@ -117,9 +120,21 @@
 
     </section>
 
-    <div id="changeQuantityDialog" title="Modifier la quantité d'articles">
+    <div id="changeQuantityDialog" style="display: none" title="Modifier la quantité d'articles">
+
         <p>Saisissez la quantité d'articles que vous souhaitez:</p>
-        <p><input type="number" id="newQuantityTextField" /></p>
+
+        <div class="text-left" style="margin: 1em;">
+            <input type="number" id="changeQuantityDialogTextField"/>
+            <input type="hidden" id="changeQuantityDialogArticleId"/>
+        </div>
+
+        <div class="pull-right">
+
+            <a class="btn btn-default" href="#" id="changeQuantityDialogBtnCancel">Annuler</a>
+            <a class="btn btn-primary" href="#" id="changeQuantityDialogBtnApprove">Changer la quantité</a>
+
+        </div>
     </div>
 
 </div>
