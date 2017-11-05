@@ -1,4 +1,7 @@
 - hosts: "vps"
+  vars:
+    destination_dir: "/opt/tomcat/webapps/vh_safranlices/"
+    source_repo: "https://github.com/remipassmoilesel/safran-des-lices"
 
   tasks:
   - name: "Push changes"
@@ -24,7 +27,7 @@
 
   - name: "Clone and update git project"
     git:
-      repo: "https://github.com/remipassmoilesel/safran-des-lices"
+      repo: "{{ source_repo }}"
       dest: "/opt/safran-des-lices"
 
   - name: "Update application dependencies"
@@ -35,11 +38,16 @@
   - name: "Package application"
     raw: "source /opt/tomcat/bin/setenv-safran-lices.sh && cd /opt/safran-des-lices && mvn package -DskipTests=true"
 
+  - name: "Ensure destination directory exists"
+    file:
+      state: "directory"
+      path: "{{ destination_dir }}"
+
   - name: "Deploy application"
     copy:
       remote_src: "yes"
       src: "/opt/safran-des-lices/target/safran-des-lices-0.0.1-SNAPSHOT.war"
-      dest: "/opt/tomcat/webapps/vh_safranlices/ROOT.war"
+      dest: "{{ destination_dir }}/ROOT.war"
 
   - name: "Enable and restart tomcat"
     systemd:
