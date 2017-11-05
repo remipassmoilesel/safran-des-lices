@@ -68,4 +68,10 @@ public class StaticController {
         return Templates.LEGAL_MENTIONS;
     }
 
+    @RequestMapping(value = Mappings.TERMS_OF_SALES)
+    public String showTermsOfSale(Model model) {
+        Mappings.includeMappings(model);
+        return Templates.TERMS_OF_SALE;
+    }
+
 }

@@ -25,10 +25,8 @@ public class Mappings {
     public static final String CHECKOUT_END = ROOT + "fin-de-commande";
     public static final String SHOW_BILL = ROOT + "facture";
 
-    public static final String TEMPLATE = ROOT + "template";
     public static final String LEGAL_MENTIONS = ROOT + "mentions-legales";
-
-    public static final String ERROR = ROOT + "error";
+    public static final String TERMS_OF_SALES = ROOT + "conditions-generales-de-vente";
 
     public static final String ADMIN_ROOT = ROOT + "admin/";
     public static final String ADMIN_LOGIN = ADMIN_ROOT + "login";
@@ -39,6 +37,8 @@ public class Mappings {
     public static final String ADMIN_SHOW_BILL = ADMIN_ROOT + "facture" ;
     public static final String ADMIN_SHOW_ALL_BILLS = ADMIN_ROOT + "afficher-toutes-les-factures" ;
 
+    public static final String TEMPLATE = ROOT + "template";
+    public static final String ERROR = ROOT + "error";
 
     public static MappingMap getMap() {
 
