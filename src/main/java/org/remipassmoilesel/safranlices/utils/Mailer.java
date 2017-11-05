@@ -1,12 +1,13 @@
 package org.remipassmoilesel.safranlices.utils;
 
-import org.remipassmoilesel.safranlices.Templates;
+import org.remipassmoilesel.safranlices.bill.PdfBillGenerator;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
 import org.remipassmoilesel.safranlices.entities.OrderNotificationType;
 import org.remipassmoilesel.safranlices.entities.Product;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -55,13 +56,17 @@ public class Mailer {
     }
 
     public void sendAdminNotification(CommercialOrder order) throws MessagingException {
+        sendAdminNotification(order, null);
+    }
+
+    public void sendAdminNotification(CommercialOrder order, String billId) throws MessagingException {
 
         // get admin receivers
         List<String> adminDests = Arrays.asList(adminAdresses.split(","));
 
         // create message
         MimeMessage adminMessage = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(adminMessage, false, "utf-8");
+        MimeMessageHelper helper = new MimeMessageHelper(adminMessage, true, "utf-8");
 
         // set from, to, subject
         adminMessage.setFrom(mailFrom);
@@ -76,12 +81,21 @@ public class Mailer {
         vars.put("productsWithQuantities", productsWithQuantities);
         adminMessage.setContent(getTemplatedMailAsString("mail/admin", vars), "text/html");
 
+        // set attachment
+        if (billId != null) {
+            helper.addAttachment(billId, new FileSystemResource(PdfBillGenerator.getPdfAbsolutePath(billId).toString()));
+        }
+
         // send message
         javaMailSender.send(adminMessage);
 
     }
 
     public void sendClientNotification(OrderNotificationType step, CommercialOrder order) throws MessagingException {
+        sendClientNotification(step, order, null);
+    }
+
+    public void sendClientNotification(OrderNotificationType step, CommercialOrder order, String billId) throws MessagingException {
 
         // create message
         MimeMessage clientMessage = javaMailSender.createMimeMessage();
@@ -100,6 +114,10 @@ public class Mailer {
         vars.put("productsWithQuantities", productsWithQuantities);
         String template = getTemplatedMailAsString(step.getMailTemplate(), vars);
         clientMessage.setContent(template, "text/html");
+
+        if (step.equals(OrderNotificationType.ORDER_CONFIRMED) && billId != null) {
+            helper.addAttachment("facture.pdf", new FileSystemResource(PdfBillGenerator.getPdfAbsolutePath(billId).toString()));
+        }
 
         // send message
         javaMailSender.send(clientMessage);

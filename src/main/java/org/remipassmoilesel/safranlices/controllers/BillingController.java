@@ -169,13 +169,6 @@ public class BillingController {
         // include order in session
         session.setAttribute("order", order);
 
-        // send admin notification
-        try {
-            mailer.sendAdminNotification(order);
-        } catch (Exception e) {
-            logger.error("Unable to send mail notification", e);
-        }
-
         executor.execute(() -> {
             this.generatePdfBillThenNotify(order, products, total);
         });
@@ -226,7 +219,7 @@ public class BillingController {
         Path path = PdfBillGenerator.getPdfAbsolutePath(authorizedBill);
 
         Utils.pdfResponse(response, path);
-        return "";
+        return null;
     }
 
     private void generatePdfBillThenNotify(
@@ -242,9 +235,18 @@ public class BillingController {
             logger.error("Unable to generate bill", e);
         }
 
+        String billId = PdfBillGenerator.getPdfName(order);
+
         // send notification to client
         try {
-            mailer.sendClientNotification(OrderNotificationType.ORDER_CONFIRMED, order);
+            mailer.sendClientNotification(OrderNotificationType.ORDER_CONFIRMED, order, billId);
+        } catch (Exception e) {
+            logger.error("Unable to send mail notification", e);
+        }
+
+        // send admin notification
+        try {
+            mailer.sendAdminNotification(order, billId);
         } catch (Exception e) {
             logger.error("Unable to send mail notification", e);
         }
