@@ -35,4 +35,4 @@
     systemd:
       name: "tomcat"
       enabled: "yes"
-      state: "restarted"
+      state: "reloaded"
