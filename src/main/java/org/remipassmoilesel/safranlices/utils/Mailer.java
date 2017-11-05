@@ -67,13 +67,13 @@ public class Mailer {
         List<String> adminDests = Arrays.asList(adminAdresses.split(","));
 
         // create message
-        MimeMessage adminMessage = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(adminMessage, true, "utf-8");
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
         // set from, to, subject
-        adminMessage.setFrom(mailFrom);
+        helper.setFrom(mailFrom);
         helper.setTo(adminDests.toArray(new String[adminDests.size()]));
-        adminMessage.setSubject("Safran des Lices - Nouvelle commande");
+        helper.setSubject("Safran des Lices - Nouvelle commande");
 
         // set body
         List<Product> products = productRepository.findAll(false);
@@ -81,16 +81,17 @@ public class Mailer {
         HashMap<String, Object> vars = new HashMap<>();
         vars.put("order", order);
         vars.put("productsWithQuantities", productsWithQuantities);
-        adminMessage.setContent(getTemplatedMailAsString("mail/admin", vars), "text/html");
+        helper.setText(getTemplatedMailAsString("mail/admin", vars), true);
 
         // set attachment
         if (billId != null) {
-            helper.addAttachment(billId,
-                    new FileSystemResource(billGenerator.getPdfAbsolutePath(billId).toString()));
+            FileSystemResource billResource = new FileSystemResource(
+                    billGenerator.getPdfAbsolutePath(billId).toString());
+            helper.addAttachment(billId, billResource);
         }
 
         // send message
-        javaMailSender.send(adminMessage);
+        javaMailSender.send(message);
 
     }
 
@@ -101,13 +102,13 @@ public class Mailer {
     public void sendClientNotification(OrderNotificationType step, CommercialOrder order, String billId) throws MessagingException {
 
         // create message
-        MimeMessage clientMessage = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(clientMessage, true, "utf-8");
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
         // set from, to, subject
-        clientMessage.setFrom(mailFrom);
+        helper.setFrom(mailFrom);
         helper.setTo(order.getEmail());
-        clientMessage.setSubject("Safran des Lices - " + step.getMailSubject());
+        helper.setSubject("Safran des Lices - " + step.getMailSubject());
 
         // set body
         List<Product> products = productRepository.findAll(false);
@@ -116,7 +117,7 @@ public class Mailer {
         vars.put("order", order);
         vars.put("productsWithQuantities", productsWithQuantities);
         String template = getTemplatedMailAsString(step.getMailTemplate(), vars);
-        clientMessage.setContent(template, "text/html");
+        helper.setText(template, true);
 
         if (step.equals(OrderNotificationType.ORDER_CONFIRMED) && billId != null) {
             helper.addAttachment("facture.pdf",
@@ -124,7 +125,7 @@ public class Mailer {
         }
 
         // send message
-        javaMailSender.send(clientMessage);
+        javaMailSender.send(message);
 
     }
 
