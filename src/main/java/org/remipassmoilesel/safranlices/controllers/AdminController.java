@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
@@ -45,7 +46,7 @@ public class AdminController {
     @Autowired
     private Mailer mailer;
 
-    @RequestMapping(Mappings.ADMIN_PAGE)
+    @RequestMapping(Mappings.ADMIN_ROOT)
     public String showAdminPage(Model model) {
 
         List<Product> products = productRepository.findAll(false);
@@ -66,19 +67,33 @@ public class AdminController {
         model.addAttribute("ordersProcessed", lastOrdersProcessed);
         model.addAttribute("basketsProcessed", getBasketsFromOrders(lastOrdersProcessed, products));
 
-        // add products
-        model.addAttribute("products", products);
-
         // add expenses
         model.addAttribute("expenses", expenseRepository.findAll(false));
 
         Mappings.includeMappings(model);
-        return Templates.ADMIN;
+        return Templates.ADMIN_WELCOME;
     }
 
-    @RequestMapping(Mappings.ADMIN_MODIFICATION)
+    @RequestMapping(Mappings.ADMIN_CONFIGURE_SALES)
+    public String configureSales(Model model) {
+
+        List<Product> products = productRepository.findAll(false);
+        List<Expense> expenses = expenseRepository.findAll(false);
+
+        // add products
+        model.addAttribute("products", products);
+
+        // add expenses
+        model.addAttribute("expenses", expenses);
+
+        Mappings.includeMappings(model);
+        return Templates.ADMIN_CONFIGURE_SALES;
+    }
+
+    @RequestMapping(Mappings.ADMIN_ACTION)
     public String modify(Model model,
                          HttpServletResponse response,
+                         HttpServletRequest request,
                          @RequestParam(value = "action") String action,
                          @RequestParam(value = "id") Long id,
                          @RequestParam(value = "value", required = false) String value,
@@ -86,13 +101,15 @@ public class AdminController {
                          @RequestParam(value = "name", required = false) String name,
                          @RequestParam(value = "quantity", required = false) Integer quantity) throws IOException, MessagingException {
 
+        String redirection = request.getHeader("referer");
+
         // mark as paid or non paid
         if (action.equals("paid")) {
             CommercialOrder order = orderRepository.findOne(id);
             order.setPaid(Boolean.valueOf(value));
             orderRepository.save(order);
 
-            return "redirect:" + Mappings.ADMIN_PAGE;
+            return "redirect:" + redirection;
         }
 
         // mark as processed or non processed
@@ -101,7 +118,7 @@ public class AdminController {
             order.setProcessed(Boolean.valueOf(value));
             orderRepository.save(order);
 
-            return "redirect:" + Mappings.ADMIN_PAGE;
+            return "redirect:" + redirection;
         }
 
         // modify a product
@@ -111,7 +128,7 @@ public class AdminController {
             p.setQuantityAvailable(quantity);
             productRepository.save(p);
 
-            return "redirect:" + Mappings.ADMIN_PAGE;
+            return "redirect:" + redirection;
         }
 
         // modify an expense
@@ -121,7 +138,7 @@ public class AdminController {
             e.setValue(Double.valueOf(value));
             expenseRepository.save(e);
 
-            return "redirect:" + Mappings.ADMIN_PAGE;
+            return "redirect:" + redirection;
         }
 
         // modify an expense
@@ -133,7 +150,7 @@ public class AdminController {
             order.setLastShipmentNotification(new Date());
             orderRepository.save(order);
 
-            return "redirect:" + Mappings.ADMIN_PAGE;
+            return "redirect:" + redirection;
         }
 
         // nothing to do

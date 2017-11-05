@@ -39,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 // restrict admin traffic - must be BEFORE
-                .antMatchers(Mappings.ADMIN_PAGE + "/**").hasAnyRole(ADMIN)
+                .antMatchers(Mappings.ADMIN_ROOT + "/**").hasAnyRole(ADMIN)
                 // permit normal traffic
                 .antMatchers(Mappings.ROOT + "**").permitAll()
                 .anyRequest().authenticated()
@@ -47,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage(Mappings.ADMIN_LOGIN)
                 .loginProcessingUrl(Mappings.ADMIN_LOGIN)
-                .defaultSuccessUrl(Mappings.ADMIN_PAGE)
+                .defaultSuccessUrl(Mappings.ADMIN_ROOT)
                 .failureUrl(Mappings.ADMIN_LOGIN)
                 .permitAll()
                 .and()

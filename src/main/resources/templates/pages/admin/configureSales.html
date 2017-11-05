@@ -3,117 +3,9 @@
       layout:decorator="mainDecorator"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Administration</title>
+    <title>Page d'administration - Modifier les produits et frais</title>
 
-    <style type="text/css">
-        .order {
-            margin-top: 1em;
-            margin-bottom: 2em;
-            background: #c0a7bcdd;
-        }
-
-        .order ul {
-            list-style: circle;
-        }
-
-        .orderHeader {
-            padding-top: 1em;
-            font-size: 1.2em;
-            font-weight: bolder;
-            margin-top: 1em;
-            margin-bottom: 1em;
-        }
-
-        .order input[type="checkbox"]:checked {
-            color: blue;
-        }
-
-        .order input[type="checkbox"]:not(:checked) {
-            color: red;
-        }
-
-        .orderTable {
-            width: 100%;
-        }
-
-        .orderTable td{
-            vertical-align: top;
-        }
-
-        .orderLabel {
-            font-weight: bolder;
-            font-size: 0.9em;
-            color: #484848;
-        }
-
-        .summary ul {
-            list-style: circle;
-        }
-
-        .orderPaid {
-            color: inherit;
-        }
-
-        .orderNonPaid {
-            color: #60071f;
-        }
-
-        .orderProcessed {
-            color: inherit;
-        }
-
-        .orderNonProcessed {
-            color: #60071f;
-        }
-
-        .orderButtons {
-            padding: 0.7em;
-        }
-
-        .productHeader {
-            margin: 0.2em;
-            font-weight: bolder;
-        }
-
-        .productRow {
-            /*border: solid 1px silver;*/
-            margin: 0.2em;
-        }
-
-        .productRow input {
-            width: 90%;
-        }
-
-        .productRow div {
-            padding: 0.7em;
-        }
-
-        .productErrorArea {
-            color: #b70000;
-            font-weight: bolder;
-            padding: 1em;
-        }
-
-        .expenseErrorArea {
-            color: #b70000;
-            font-weight: bolder;
-            padding: 1em;
-        }
-
-        .orderWarn {
-            font-weight: bolder;
-            text-align: center;
-            width: 70%;
-            margin: auto;
-            margin-top: 1em;
-            margin-bottom: 1em;
-        }
-
-        h3 {
-            margin-top: 3em;
-        }
-
-    </style>
+    <link th:href="@{/css/admin.css}" type="text/css" rel="stylesheet"/>
 
     <script type="text/javascript" th:src="@{/js/admin.js}"></script>
 
@@ -127,28 +19,11 @@
 
             <div class="row">
                 <div class="header-section text-center">
-                    <h2>Administration</h2>
+                    <h2>Modifier les produits et frais</h2>
                     <hr class="bottom-line"/>
                 </div>
             </div>
 
-            <div>
-                <div class="orderWarn">
-                    Attention: avant d'envoyer une commande vérifiez toujours la bonne
-                    réception du paiement, même si il apparait confirmé ci-dessous.
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-offset-1 col-md-10 text-left summary">
-                    <ul>
-                        <li><a href="#modifyProducts">Modifier les produits</a></li>
-                        <li><a href="#modifyExpenses">Modifier les frais</a></li>
-                        <li><a href="#lastNonProcessed">Dernières commandes non traitées</a></li>
-                        <li><a href="#lastProcessed">Dernières commandes traitées</a></li>
-                    </ul>
-                </div>
-            </div>
         </div>
 
         <a name="modifyProducts"/>
@@ -278,19 +153,6 @@
                 </form>
             </div>
 
-        </div>
-
-
-        <a name="lastNonProcessed"/>
-        <h3 class="text-center">Dernières commandes non traitées</h3>
-        <div th:replace="fragments/adminOrders :: adminOrders(orders=${ordersToProcess}, baskets=${basketsToProcess})">
-            Orders to process
-        </div>
-
-        <a name="lastProcessed"/>
-        <h3 class="text-center">Dernières commandes traitées</h3>
-        <div th:replace="fragments/adminOrders :: adminOrders(orders=${ordersProcessed}, baskets=${basketsProcessed})">
-            Orders processed
         </div>
 
     </section>

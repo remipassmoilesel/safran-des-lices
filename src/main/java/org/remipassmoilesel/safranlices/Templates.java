@@ -21,10 +21,9 @@ public class Templates {
 
     public static final String ERROR = PAGES_DIR + "error";
 
-
     public static final String ADMIN_DIR = PAGES_DIR + "admin/";
-    public static final String ADMIN = ADMIN_DIR + "admin";
+    public static final String ADMIN_WELCOME = ADMIN_DIR + "welcome";
     public static final String ADMIN_LOGIN = ADMIN_DIR + "adminLogin";
+    public static final String ADMIN_CONFIGURE_SALES = ADMIN_DIR + "configureSales";
 
-    public static final String EXAMPLE_CONTENT = PAGES_DIR + "contentExample";
 }

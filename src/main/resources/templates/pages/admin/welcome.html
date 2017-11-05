@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="mainDecorator"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Page d'administration</title>
+
+    <link th:href="@{/css/admin.css}" type="text/css" rel="stylesheet"/>
+
+    <script type="text/javascript" th:src="@{/js/admin.js}"></script>
+
+</head>
+<body>
+<div layout:fragment="content">
+
+    <section id="courses" class="section-padding">
+
+        <div class="container">
+
+            <div class="row">
+                <div class="header-section text-center">
+                    <h2>Page d'administration</h2>
+                    <hr class="bottom-line"/>
+                </div>
+            </div>
+
+            <div>
+                <div class="orderWarn">
+                    Attention: avant d'envoyer une commande vérifiez toujours la bonne
+                    réception du paiement, même si il apparait confirmé ci-dessous.
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-offset-1 col-md-10 text-left summary">
+                    <ul>
+                        <li><a th:href="@{${mappings.get('ADMIN_CONFIGURE_SALES')}}">
+                            Modifier les produits et les frais
+                        </a></li>
+                        <li><a href="#modifyExpenses">Modifier les frais</a></li>
+                        <li><a href="#lastNonProcessed">Dernières commandes non traitées</a></li>
+                        <li><a href="#lastProcessed">Dernières commandes traitées</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+</div>
+</body>
+</html>

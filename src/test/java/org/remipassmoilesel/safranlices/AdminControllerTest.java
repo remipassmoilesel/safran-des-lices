@@ -1,7 +1,6 @@
 package org.remipassmoilesel.safranlices;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.remipassmoilesel.safranlices.controllers.AdminController;
@@ -21,8 +20,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -68,7 +65,7 @@ public class AdminControllerTest {
         mockMvc.perform(get(Mappings.ADMIN_LOGIN))
                 .andExpect(status().isOk());
 
-        mockMvc.perform(get(Mappings.ADMIN_PAGE))
+        mockMvc.perform(get(Mappings.ADMIN_ROOT))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("ordersToProcess"))
                 .andExpect(model().attributeExists("basketsToProcess"))
@@ -78,7 +75,7 @@ public class AdminControllerTest {
                 .andExpect(model().attributeExists("expenses"))
                 .andExpect(model().attributeExists(Mappings.MODEL_ARGUMENT_NAME));
 
-        mockMvc.perform(get(Mappings.ADMIN_MODIFICATION))
+        mockMvc.perform(get(Mappings.ADMIN_ACTION))
                 .andExpect(status().is4xxClientError());
 
     }
@@ -93,7 +90,7 @@ public class AdminControllerTest {
         o1.setProcessed(false);
         orderRepository.save(o1);
 
-        mockMvc.perform(get(Mappings.ADMIN_MODIFICATION)
+        mockMvc.perform(get(Mappings.ADMIN_ACTION)
                 .param("action", "paid")
                 .param("value", "true")
                 .param("id", o1.getId().toString()))
@@ -103,7 +100,7 @@ public class AdminControllerTest {
         assertTrue(no.isPaid() == true);
 
         // mark order as processed
-        mockMvc.perform(get(Mappings.ADMIN_MODIFICATION)
+        mockMvc.perform(get(Mappings.ADMIN_ACTION)
                 .param("action", "processed")
                 .param("value", "true")
                 .param("id", o1.getId().toString()))
@@ -120,7 +117,7 @@ public class AdminControllerTest {
         p1.setQuantityAvailable(0);
         productRepository.save(p1);
 
-        mockMvc.perform(get(Mappings.ADMIN_MODIFICATION)
+        mockMvc.perform(get(Mappings.ADMIN_ACTION)
                 .param("action", "product")
                 .param("price", newPrice.toString())
                 .param("quantity", newQuantity.toString())
@@ -139,7 +136,7 @@ public class AdminControllerTest {
         e1.setValue(0d);
         expenseRepository.save(e1);
 
-        mockMvc.perform(get(Mappings.ADMIN_MODIFICATION)
+        mockMvc.perform(get(Mappings.ADMIN_ACTION)
                 .param("action", "expense")
                 .param("name", newName)
                 .param("value", newValue.toString())
@@ -151,7 +148,7 @@ public class AdminControllerTest {
         assertTrue(ne1.getValue().equals(newValue));
 
         // bad modification
-        mockMvc.perform(get(Mappings.ADMIN_MODIFICATION)
+        mockMvc.perform(get(Mappings.ADMIN_ACTION)
                 .param("action", "expense")
                 .param("name", newName)
                 .param("value", newValue.toString()))

@@ -30,11 +30,11 @@ public class Mappings {
 
     public static final String ERROR = ROOT + "error";
 
-    public static final String ADMIN_PAGE = ROOT + "admin";
-    public static final String ADMIN_LOGIN = ADMIN_PAGE + "/login";
-    public static final String ADMIN_LOGOUT = ADMIN_PAGE + "/logout";
-    public static final String ADMIN_MODIFICATION = ADMIN_PAGE + "/modification";
-
+    public static final String ADMIN_ROOT = ROOT + "admin/";
+    public static final String ADMIN_LOGIN = ADMIN_ROOT + "login";
+    public static final String ADMIN_LOGOUT = ADMIN_ROOT + "logout";
+    public static final String ADMIN_ACTION = ADMIN_ROOT + "action";
+    public static final String ADMIN_CONFIGURE_SALES = ADMIN_ROOT + "configurer-les-ventes";
 
 
     public static MappingMap getMap() {
