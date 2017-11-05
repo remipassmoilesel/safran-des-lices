@@ -84,9 +84,6 @@ public class AdminController {
 
         model.addAttribute("ordersProcessed", lastOrdersProcessed);
 
-        // add expenses
-        model.addAttribute("expenses", expenseRepository.findAll(false));
-
         Mappings.includeMappings(model);
         return Templates.ADMIN_WELCOME;
     }

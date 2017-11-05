@@ -68,9 +68,11 @@ public class AdminControllerTest {
         mockMvc.perform(get(Mappings.ADMIN_ROOT))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("ordersToProcess"))
-                .andExpect(model().attributeExists("basketsToProcess"))
                 .andExpect(model().attributeExists("ordersProcessed"))
-                .andExpect(model().attributeExists("basketsProcessed"))
+                .andExpect(model().attributeExists(Mappings.MODEL_ARGUMENT_NAME));
+
+        mockMvc.perform(get(Mappings.ADMIN_CONFIGURE_SALES))
+                .andExpect(status().isOk())
                 .andExpect(model().attributeExists("products"))
                 .andExpect(model().attributeExists("expenses"))
                 .andExpect(model().attributeExists(Mappings.MODEL_ARGUMENT_NAME));
