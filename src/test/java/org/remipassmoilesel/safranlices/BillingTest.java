@@ -8,6 +8,7 @@ import org.remipassmoilesel.safranlices.controllers.OrderController;
 import org.remipassmoilesel.safranlices.entities.Expense;
 import org.remipassmoilesel.safranlices.entities.Product;
 import org.remipassmoilesel.safranlices.repositories.ExpenseRepository;
+import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
 import org.remipassmoilesel.safranlices.dataLoaders.DevDataFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,9 @@ public class BillingTest {
     @Autowired
     private ExpenseRepository expenseRepository;
 
+    @Autowired
+    private OrderRepository orderRepository;
+
     @Before
     public void setup() throws IOException {
         mockMvc = MockMvcBuilders.standaloneSetup(orderController, checkoutController).build();
@@ -76,6 +80,7 @@ public class BillingTest {
         Double ex1price = 24d;
         Double ex2price = 36d;
 
+        orderRepository.deleteAll();
         expenseRepository.deleteAll();
         expenseRepository.save(new Expense("", ex1price));
         expenseRepository.save(new Expense("", ex2price));
