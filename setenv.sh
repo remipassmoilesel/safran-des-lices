@@ -26,8 +26,6 @@ export SAFRANLICES_FR_MAIL_FROM=user@mail.com
 export SAFRANLICES_FR_MAIL_ADMIN_USERS=user1@mail.com,user2@mail.com,user3@mail.com
 export SAFRANLICES_FR_MAIL_MAIN=user1@mail.com
 
-export SAFRANLICES_FR_BANKAPI_CLIENT_ID=login
-export SAFRANLICES_FR_BANKAPI_CLIENT_PWD=password
 
 
 

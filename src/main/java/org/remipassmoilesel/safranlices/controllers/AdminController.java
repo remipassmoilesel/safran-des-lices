@@ -46,7 +46,7 @@ public class AdminController {
     private Mailer mailer;
 
     @RequestMapping(Mappings.ADMIN_PAGE)
-    public String showTemplate(Model model) {
+    public String showAdminPage(Model model) {
 
         List<Product> products = productRepository.findAll(false);
 
