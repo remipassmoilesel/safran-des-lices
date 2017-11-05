@@ -1,4 +1,4 @@
-package org.remipassmoilesel.safranlices.bill;
+package org.remipassmoilesel.safranlices.utils;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -6,7 +6,8 @@ import com.itextpdf.text.pdf.PdfWriter;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
 import org.remipassmoilesel.safranlices.entities.Expense;
 import org.remipassmoilesel.safranlices.entities.Product;
-import org.remipassmoilesel.safranlices.utils.Utils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -23,26 +24,31 @@ import java.util.List;
  * <p>
  * Units are 1/72 inch, A4 is 8.27 x 11.69 inches
  */
+@Component
 public class PdfBillGenerator {
 
-    private static final float MAX_HEIGHT = 750f;
+    private final Path LOGO_PATH = Paths.get("./src/main/resources/bill/safran-lices-logo.jpg").toAbsolutePath();
+    private final Path ADDRESS_FILE_PATH = Paths.get("./src/main/resources/bill/address.txt").toAbsolutePath();
+    private final float MAX_DOCUMENT_HEIGHT = 750f;
 
-    public static Path PDF_ROOT = Paths.get("./pdf-bills");
-    private static Path LOGO_PATH = Paths.get("./src/main/resources/bill/safran-lices-logo.jpg").toAbsolutePath();
-    private static Path ADDRESS_FILE_PATH = Paths.get("./src/main/resources/bill/address.txt").toAbsolutePath();
+    @Value("${app.bill.rootDirectory}")
+    private String billRootDirectoryString;
 
-    private static Font TITLE_1_FONT = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD);
-    private static Font TITLE_2_FONT = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+    /**
+     * Do not use direcly this value, use getBillRootDirectory() instead
+     */
+    private Path billRootDirectoryPath;
 
-    private static List<String> addressContent;
+    private Font TITLE_1_FONT = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD);
+    private Font TITLE_2_FONT = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
 
+    private List<String> addressContent;
 
-    public static String getPdfName(CommercialOrder order) {
-        return order.getFormattedDate("yyyy-MM-dd_HH-mm-ss") + "_" + order.getLastName() + "_" + order.getFirstName() + ".pdf";
+    public PdfBillGenerator() {
     }
 
-    public static Path getPdfAbsolutePath(String name) {
-        return PDF_ROOT.resolve(name).toAbsolutePath();
+    public String getPdfName(CommercialOrder order) {
+        return order.getFormattedDate("yyyy-MM-dd_HH-mm-ss") + "_" + order.getLastName() + "_" + order.getFirstName() + ".pdf";
     }
 
     public Path generateBill(CommercialOrder order,
@@ -50,8 +56,7 @@ public class PdfBillGenerator {
 
         String pdfName = getPdfName(order);
 
-        createPdfRoot();
-        deletePreviousPdf(pdfName);
+        // deletePreviousPdf(pdfName);
 
         Path absoluteDocPath = getPdfAbsolutePath(pdfName);
         Document document = new Document();
@@ -217,7 +222,7 @@ public class PdfBillGenerator {
         float scaledWidth = logo.getWidth() * scale;
         float scaledheight = logo.getHeight() * scale;
         float xPosition = 298 - scaledWidth / 2;
-        float yPosition = MAX_HEIGHT;
+        float yPosition = MAX_DOCUMENT_HEIGHT;
 
         logo.setAbsolutePosition(xPosition, yPosition);
         logo.scaleAbsolute(scaledWidth, scaledheight);
@@ -226,16 +231,14 @@ public class PdfBillGenerator {
 
     }
 
+    public Path getPdfAbsolutePath(String name) {
+        return getBillRootDirectory().resolve(name).toAbsolutePath();
+    }
+
     private void deletePreviousPdf(String name) throws IOException {
         Path pdfPath = getPdfAbsolutePath(name);
         if (Files.isRegularFile(pdfPath)) {
             Files.delete(pdfPath);
-        }
-    }
-
-    private void createPdfRoot() throws IOException {
-        if (Files.isDirectory(PDF_ROOT) == false) {
-            Files.createDirectories(PDF_ROOT);
         }
     }
 
@@ -248,4 +251,10 @@ public class PdfBillGenerator {
         return addressContent;
     }
 
+    public Path getBillRootDirectory() {
+        if (billRootDirectoryPath == null) {
+            this.billRootDirectoryPath = Paths.get(billRootDirectoryString);
+        }
+        return billRootDirectoryPath;
+    }
 }

@@ -2,7 +2,7 @@ package org.remipassmoilesel.safranlices.controllers;
 
 import org.remipassmoilesel.safranlices.Mappings;
 import org.remipassmoilesel.safranlices.Templates;
-import org.remipassmoilesel.safranlices.bill.PdfBillGenerator;
+import org.remipassmoilesel.safranlices.utils.PdfBillGenerator;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
 import org.remipassmoilesel.safranlices.entities.Expense;
 import org.remipassmoilesel.safranlices.entities.OrderNotificationType;
@@ -53,6 +53,9 @@ public class AdminController {
 
     @Autowired
     private Mailer mailer;
+
+    @Autowired
+    private PdfBillGenerator billGenerator;
 
 
     @RequestMapping(value = Mappings.ADMIN_LOGIN, method = RequestMethod.GET)
@@ -131,7 +134,7 @@ public class AdminController {
             @RequestParam(value = "id") String id) throws IOException {
 
         // display bill
-        Path path = PdfBillGenerator.getPdfAbsolutePath(id);
+        Path path = billGenerator.getPdfAbsolutePath(id);
 
         Utils.pdfResponse(response, path);
     }
@@ -139,7 +142,7 @@ public class AdminController {
     @RequestMapping(Mappings.ADMIN_SHOW_ALL_BILLS)
     public String showAllBills(Model model) throws IOException {
 
-        List<String> billNames = Files.list(PdfBillGenerator.PDF_ROOT)
+        List<String> billNames = Files.list(billGenerator.getBillRootDirectory())
                 .map(p -> p.getFileName().toString())
                 .collect(Collectors.toList());
 

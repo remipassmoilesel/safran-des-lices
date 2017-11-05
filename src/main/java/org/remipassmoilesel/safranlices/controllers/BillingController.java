@@ -2,13 +2,13 @@ package org.remipassmoilesel.safranlices.controllers;
 
 import org.remipassmoilesel.safranlices.Mappings;
 import org.remipassmoilesel.safranlices.Templates;
-import org.remipassmoilesel.safranlices.bill.PdfBillGenerator;
 import org.remipassmoilesel.safranlices.entities.*;
 import org.remipassmoilesel.safranlices.forms.CheckoutForm;
 import org.remipassmoilesel.safranlices.repositories.ExpenseRepository;
 import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
 import org.remipassmoilesel.safranlices.utils.Mailer;
+import org.remipassmoilesel.safranlices.utils.PdfBillGenerator;
 import org.remipassmoilesel.safranlices.utils.ThreadExecutor;
 import org.remipassmoilesel.safranlices.utils.Utils;
 import org.slf4j.Logger;
@@ -60,6 +60,9 @@ public class BillingController {
 
     @Autowired
     private Environment env;
+
+    @Autowired
+    private PdfBillGenerator billGenerator;
 
     @Value("${app.mail.mainAdress}")
     private String mainMailAdress;
@@ -185,7 +188,7 @@ public class BillingController {
             return "redirect:" + Mappings.BASKET;
         }
 
-        String billId = PdfBillGenerator.getPdfName(order);
+        String billId = billGenerator.getPdfName(order);
         session.setAttribute(AUTHORIZED_BILL_ID_SATTR, billId);
 
         List<Product> products = productRepository.findAll(false);
@@ -216,7 +219,7 @@ public class BillingController {
         }
 
         // display bill
-        Path path = PdfBillGenerator.getPdfAbsolutePath(authorizedBill);
+        Path path = billGenerator.getPdfAbsolutePath(authorizedBill);
 
         Utils.pdfResponse(response, path);
         return null;
@@ -227,15 +230,13 @@ public class BillingController {
             List<Product> products,
             double total) {
 
-        PdfBillGenerator billGenerator = new PdfBillGenerator();
-
         try {
             billGenerator.generateBill(order, products, total);
         } catch (Exception e) {
             logger.error("Unable to generate bill", e);
         }
 
-        String billId = PdfBillGenerator.getPdfName(order);
+        String billId = billGenerator.getPdfName(order);
 
         // send notification to client
         try {

@@ -26,6 +26,10 @@ export SAFRANLICES_FR_MAIL_FROM=user@mail.com
 export SAFRANLICES_FR_MAIL_ADMIN_USERS=user1@mail.com,user2@mail.com,user3@mail.com
 export SAFRANLICES_FR_MAIL_MAIN=user1@mail.com
 
+export SAFRANLICES_FR_MAIL_MAIN=user1@mail.com
+
+export SAFRANLICES_FR_BILL_ROOT_DIRECTORY=/opt/safran-des-lices/bills
+
 
 
 

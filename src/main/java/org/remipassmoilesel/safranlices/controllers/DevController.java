@@ -1,7 +1,7 @@
 package org.remipassmoilesel.safranlices.controllers;
 
 import org.remipassmoilesel.safranlices.Mappings;
-import org.remipassmoilesel.safranlices.bill.PdfBillGenerator;
+import org.remipassmoilesel.safranlices.utils.PdfBillGenerator;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
 import org.remipassmoilesel.safranlices.entities.OrderNotificationType;
 import org.remipassmoilesel.safranlices.entities.Product;
@@ -22,8 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
@@ -52,6 +50,9 @@ public class DevController {
     @Autowired
     private Environment env;
 
+    @Autowired
+    private PdfBillGenerator billGenerator;
+
     @RequestMapping("/generate-bill")
     @ResponseBody
     public void generateBill(HttpServletResponse response)
@@ -61,8 +62,6 @@ public class DevController {
             return;
         }
 
-        PdfBillGenerator generator = new PdfBillGenerator();
-
         // create a fake order
         List<Product> products = productRepository.findAll(false);
 
@@ -70,7 +69,7 @@ public class DevController {
                 null, null, null, null, null, null, null);
 
         // generate pdf
-        Path pdfPath = generator.generateBill(order, products, 88.8);
+        Path pdfPath = billGenerator.generateBill(order, products, 88.8);
 
         Utils.pdfResponse(response, pdfPath);
     }

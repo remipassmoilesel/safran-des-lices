@@ -1,6 +1,5 @@
 package org.remipassmoilesel.safranlices.utils;
 
-import org.remipassmoilesel.safranlices.bill.PdfBillGenerator;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
 import org.remipassmoilesel.safranlices.entities.OrderNotificationType;
 import org.remipassmoilesel.safranlices.entities.Product;
@@ -32,6 +31,9 @@ public class Mailer {
 
     @Autowired
     private TemplateEngine templateEngine;
+
+    @Autowired
+    private PdfBillGenerator billGenerator;
 
     @Value("${app.mail.from}")
     private String mailFrom;
@@ -83,7 +85,8 @@ public class Mailer {
 
         // set attachment
         if (billId != null) {
-            helper.addAttachment(billId, new FileSystemResource(PdfBillGenerator.getPdfAbsolutePath(billId).toString()));
+            helper.addAttachment(billId,
+                    new FileSystemResource(billGenerator.getPdfAbsolutePath(billId).toString()));
         }
 
         // send message
@@ -99,7 +102,7 @@ public class Mailer {
 
         // create message
         MimeMessage clientMessage = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(clientMessage, false, "utf-8");
+        MimeMessageHelper helper = new MimeMessageHelper(clientMessage, true, "utf-8");
 
         // set from, to, subject
         clientMessage.setFrom(mailFrom);
@@ -116,7 +119,8 @@ public class Mailer {
         clientMessage.setContent(template, "text/html");
 
         if (step.equals(OrderNotificationType.ORDER_CONFIRMED) && billId != null) {
-            helper.addAttachment("facture.pdf", new FileSystemResource(PdfBillGenerator.getPdfAbsolutePath(billId).toString()));
+            helper.addAttachment("facture.pdf",
+                    new FileSystemResource(billGenerator.getPdfAbsolutePath(billId).toString()));
         }
 
         // send message
