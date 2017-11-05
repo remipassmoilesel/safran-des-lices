@@ -104,6 +104,7 @@ public class OrderController {
     public String showBasket(
             @RequestParam(required = false, name = "id") Long productId,
             @RequestParam(required = false, name = "addToCart") Boolean addToCart,
+            @RequestParam(required = false, name = "changeQtty") Boolean changeQtty,
             @RequestParam(required = false, name = "qtty") Integer productQuantity,
             @RequestParam(required = false, name = "reset") Boolean reset,
             @RequestParam(required = false, name = "delete") Boolean delete,
@@ -127,6 +128,13 @@ public class OrderController {
 
         // add something to current basket
         if (addToCart != null && addToCart == true && productId != null && productQuantity != null) {
+            basket.addProduct(productId, productQuantity);
+            return "redirect:" + Mappings.BASKET;
+        }
+
+        // change article quantity in basket
+        if (changeQtty != null && changeQtty == true && productId != null && productQuantity != null) {
+            basket.remove(productId);
             basket.addProduct(productId, productQuantity);
             return "redirect:" + Mappings.BASKET;
         }
