@@ -1,8 +1,36 @@
 var App = {
 
     init: function(){
+        App.initializeChangeQttyDialog();
+        App.initializeEmptyBasketDialog();
+    },
 
-        // initialize dialog
+    initializeEmptyBasketDialog: function(){
+
+        // initialize empty basket dialog
+        $("#emptyBasketDialog").dialog({
+            closeOnEscape: false,
+            resizable: false,
+            height: "auto",
+            width: 400,
+            modal: true,
+            autoOpen: false,
+        });
+
+        // on click of cancel button, close dialog
+        $("#emptyBasketDialogBtnCancel").click(function(){
+            $("#emptyBasketDialog").dialog('close');
+        });
+
+         // on approve button click, redirect page
+        $("#emptyBasketDialogBtnApprove").click(function(){
+             App.emptyBasket();
+        });
+
+    },
+
+    initializeChangeQttyDialog: function(){
+        // initialize change quantity dialog
         $("#changeQuantityDialog").dialog({
             closeOnEscape: false,
             resizable: false,
@@ -41,8 +69,16 @@ var App = {
 
     },
 
+    showEmptyBasketDialog: function(articleId, oldQuantity){
+        $("#emptyBasketDialog").dialog("open");
+    },
+
     editQuantity: function(articleId, newQuantity){
         document.location.href = UrlTree.BASKET + "?changeQtty=true&id=" + articleId + "&qtty=" + newQuantity;
+    },
+
+    emptyBasket: function(){
+        document.location.href = UrlTree.BASKET + "?reset=true";
     },
 
 }

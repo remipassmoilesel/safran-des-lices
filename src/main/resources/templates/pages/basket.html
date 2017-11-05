@@ -106,12 +106,12 @@
             <div class="row">
                 <div class="buttons">
 
-                    <a th:href="@{${mappings.get('BASKET') + '?reset=true'}}" class="btn btn-default">
+                    <a href="#" onclick="App.showEmptyBasketDialog()" class="btn btn-default">
                         Vider mon panier
                     </a>
                     &nbsp;
                     <a th:href="@{${mappings.get('BILLING_FORM')}}" class="btn btn-primary">
-                        Paiement sécurisé
+                        Payer mon panier
                     </a>
 
                 </div>
@@ -133,6 +133,18 @@
 
             <a class="btn btn-default" href="#" id="changeQuantityDialogBtnCancel">Annuler</a>
             <a class="btn btn-primary" href="#" id="changeQuantityDialogBtnApprove">Changer la quantité</a>
+
+        </div>
+    </div>
+
+    <div id="emptyBasketDialog" style="display: none" title="Vider le panier">
+
+        <p>Etes vous sûr de vouloir vider votre panier ?</p>
+
+        <div class="pull-right">
+
+            <a class="btn btn-default" href="#" id="emptyBasketDialogBtnCancel">Annuler</a>
+            <a class="btn btn-primary" href="#" id="emptyBasketDialogBtnApprove">Vider mon panier</a>
 
         </div>
     </div>
