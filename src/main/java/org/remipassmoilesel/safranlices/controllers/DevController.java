@@ -1,15 +1,15 @@
 package org.remipassmoilesel.safranlices.controllers;
 
 import org.remipassmoilesel.safranlices.Mappings;
-import org.remipassmoilesel.safranlices.utils.PdfBillGenerator;
+import org.remipassmoilesel.safranlices.dataLoaders.DevDataFactory;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
 import org.remipassmoilesel.safranlices.entities.OrderNotificationType;
 import org.remipassmoilesel.safranlices.entities.Product;
 import org.remipassmoilesel.safranlices.repositories.ExpenseRepository;
 import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
-import org.remipassmoilesel.safranlices.dataLoaders.DevDataFactory;
 import org.remipassmoilesel.safranlices.utils.Mailer;
+import org.remipassmoilesel.safranlices.utils.PdfBillGenerator;
 import org.remipassmoilesel.safranlices.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -88,12 +88,14 @@ public class DevController {
         CommercialOrder order = DevDataFactory.createOrder(null, products, null, null, null,
                 null, null, null, null, null, null);
 
+        // generate pdf
+        Path pdfPath = billGenerator.generateBill(order, products, 88.8);
+
         if ("admin".equals(type)) {
-            mailer.sendAdminNotification(order);
+            mailer.sendAdminNotification(order, pdfPath.getFileName().toString());
         } else if ("client-order-confirmed".equals(type)) {
-            mailer.sendClientNotification(OrderNotificationType.ORDER_CONFIRMED, order);
-        } else if ("client-order-failed".equals(type)) {
-            mailer.sendClientNotification(OrderNotificationType.PAYMENT_FAILED, order);
+            mailer.sendClientNotification(OrderNotificationType.ORDER_CONFIRMED,
+                    order, pdfPath.getFileName().toString());
         } else if ("client-order-sent".equals(type)) {
             mailer.sendClientNotification(OrderNotificationType.ORDER_SENT, order);
         } else {

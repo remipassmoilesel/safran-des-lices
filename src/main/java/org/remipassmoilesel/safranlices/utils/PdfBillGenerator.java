@@ -178,6 +178,9 @@ public class PdfBillGenerator {
         table.addCell("Adresse de livraison");
         table.addCell(order.getShipmentAddress() + " " + order.getShipmentPostalcode() + " " + order.getShipmentCity());
 
+        table.addCell("Email");
+        table.addCell(order.getEmail());
+
         table.addCell("Téléphone");
         table.addCell(order.getPhonenumber());
 
