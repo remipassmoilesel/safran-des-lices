@@ -1,9 +1,9 @@
-- hosts: "vpsfr"
+- hosts: "vps"
 
   tasks:
   - name: "Update set-env file"
     copy:
-      src: "../setenv-prod.sh"
+      src: "./setenv-prod.sh"
       dest: "/opt/tomcat/bin/setenv-safran-lices.sh"
 
   - name: "Enable and start mysql"
@@ -12,7 +12,13 @@
       enabled: "yes"
       state: "started"
 
-  - name: "Update git project"
+  - name: "Enable and start postfix"
+    systemd:
+      name: "postfix"
+      enabled: "yes"
+      state: "started"
+
+  - name: "Clone and update git project"
     git:
       repo: "https://github.com/remipassmoilesel/safran-des-lices"
       dest: "/opt/safran-des-lices"
@@ -23,7 +29,7 @@
       production: "yes"
 
   - name: "Package application"
-    raw: "source /opt/tomcat/bin/setenv-safran-lices.sh && cd /opt/safran-des-lices && mvn package"
+    raw: "source /opt/tomcat/bin/setenv-safran-lices.sh && cd /opt/safran-des-lices && mvn package -DskipTests=true"
 
   - name: "Deploy application"
     copy:
