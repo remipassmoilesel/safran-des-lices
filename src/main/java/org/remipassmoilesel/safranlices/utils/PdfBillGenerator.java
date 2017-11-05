@@ -3,6 +3,7 @@ package org.remipassmoilesel.safranlices.utils;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import org.apache.commons.io.IOUtils;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
 import org.remipassmoilesel.safranlices.entities.Expense;
 import org.remipassmoilesel.safranlices.entities.Product;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -27,9 +27,10 @@ import java.util.List;
 @Component
 public class PdfBillGenerator {
 
-    private final Path LOGO_PATH = Paths.get("./src/main/resources/bill/safran-lices-logo.jpg").toAbsolutePath();
-    private final Path ADDRESS_FILE_PATH = Paths.get("./src/main/resources/bill/address.txt").toAbsolutePath();
-    private final float MAX_DOCUMENT_HEIGHT = 750f;
+    private static final String TOP_LOGO_LOCATION = "/bill/safran-lices-bill-logo.jpg";
+    private static final String ADDRESS_FILE_PATH = "/bill/address.txt";
+    private static final float MAX_DOCUMENT_HEIGHT = 750f;
+    private byte[] topLogo;
 
     @Value("${app.bill.rootDirectory}")
     private String billRootDirectoryString;
@@ -216,7 +217,7 @@ public class PdfBillGenerator {
 
     private void addLogo(Document document) throws IOException, DocumentException {
 
-        Image logo = Image.getInstance(LOGO_PATH.toString());
+        Image logo = Image.getInstance(getTopLogo());
 
         float scale = 0.1f;
         float scaledWidth = logo.getWidth() * scale;
@@ -245,7 +246,7 @@ public class PdfBillGenerator {
     public List<String> getAddressContent() throws IOException {
 
         if (addressContent == null) {
-            addressContent = Files.readAllLines(ADDRESS_FILE_PATH, StandardCharsets.UTF_8);
+            addressContent = IOUtils.readLines(getClass().getResourceAsStream(ADDRESS_FILE_PATH));
         }
 
         return addressContent;
@@ -256,5 +257,14 @@ public class PdfBillGenerator {
             this.billRootDirectoryPath = Paths.get(billRootDirectoryString);
         }
         return billRootDirectoryPath;
+    }
+
+    public byte[] getTopLogo() throws IOException {
+
+        if (topLogo == null) {
+            topLogo = IOUtils.toByteArray(getClass().getResourceAsStream(TOP_LOGO_LOCATION));
+        }
+
+        return topLogo;
     }
 }
