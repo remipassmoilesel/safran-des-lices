@@ -5,7 +5,39 @@
 <head>
     <title>Page d'administration - Modifier les produits et frais</title>
 
-    <link th:href="@{/css/admin.css}" type="text/css" rel="stylesheet"/>
+    <style type="text/css">
+
+    .productErrorArea {
+        color: #b70000;
+        font-weight: bolder;
+        padding: 1em;
+    }
+
+    .expenseErrorArea {
+        color: #b70000;
+        font-weight: bolder;
+        padding: 1em;
+    }
+
+    .productHeader {
+        margin: 0.2em;
+        font-weight: bolder;
+    }
+
+    .productRow {
+        margin: 0.2em;
+    }
+
+    .productRow input {
+        width: 90%;
+    }
+
+    .productRow div {
+        padding: 0.7em;
+    }
+
+
+    </style>
 
     <script type="text/javascript" th:src="@{/js/admin.js}"></script>
 

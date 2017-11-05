@@ -7,7 +7,6 @@
     list-style: circle;
 }
 
-
 .order input[type="checkbox"]:checked {
     color: blue;
 }
@@ -20,10 +19,6 @@
     font-weight: bolder;
     font-size: 0.9em;
     color: #484848;
-}
-
-.summary ul {
-    list-style: circle;
 }
 
 .orderPaid {
@@ -46,44 +41,6 @@
     padding: 0.7em;
 }
 
-.productHeader {
-    margin: 0.2em;
-    font-weight: bolder;
-}
-
-.productRow {
-    /*border: solid 1px silver;*/
-    margin: 0.2em;
-}
-
-.productRow input {
-    width: 90%;
-}
-
-.productRow div {
-    padding: 0.7em;
-}
-
-.productErrorArea {
-    color: #b70000;
-    font-weight: bolder;
-    padding: 1em;
-}
-
-.expenseErrorArea {
-    color: #b70000;
-    font-weight: bolder;
-    padding: 1em;
-}
-
-.orderWarn {
-    font-weight: bolder;
-    text-align: center;
-    width: 70%;
-    margin: auto;
-    margin-top: 1em;
-    margin-bottom: 1em;
-}
 
 h3 {
     margin-top: 3em;
