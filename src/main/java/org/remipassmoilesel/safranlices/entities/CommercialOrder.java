@@ -1,13 +1,11 @@
 package org.remipassmoilesel.safranlices.entities;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
+import org.remipassmoilesel.safranlices.utils.Utils;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Created by remipassmoilesel on 07/07/17.
@@ -56,6 +54,8 @@ public class CommercialOrder {
 
     private Date lastShipmentNotification;
 
+    private String pdfBillName;
+
     @ManyToMany
     private List<Expense> expenses;
 
@@ -72,7 +72,9 @@ public class CommercialOrder {
                            String firstName, String lastName,
                            PaymentType paymentType,
                            String comment, String email,
-                           List<Expense> expenses) {
+                           List<Expense> expenses,
+                           String pdfBillName) {
+
         this.date = date;
         this.products = products;
         this.quantities = basket.getProductMap();
@@ -90,6 +92,7 @@ public class CommercialOrder {
         this.comment = comment;
         this.email = email;
         this.expenses = expenses;
+        this.pdfBillName = pdfBillName;
     }
 
     public HashMap<Long, Integer> getQuantities() {
@@ -176,7 +179,7 @@ public class CommercialOrder {
         return total;
     }
 
-    public String getRoundedTotalAsString(){
+    public String getRoundedTotalAsString() {
         return String.valueOf(Math.round(total * 100.0) / 100.0);
     }
 
@@ -264,6 +267,14 @@ public class CommercialOrder {
         this.expenses = expenses;
     }
 
+    public String getPdfBillName() {
+        return pdfBillName;
+    }
+
+    public void setPdfBillName(String pdfBillName) {
+        this.pdfBillName = pdfBillName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -294,6 +305,7 @@ public class CommercialOrder {
         if (email != null ? !email.equals(that.email) : that.email != null) return false;
         if (lastShipmentNotification != null ? !lastShipmentNotification.equals(that.lastShipmentNotification) : that.lastShipmentNotification != null)
             return false;
+        if (pdfBillName != null ? !pdfBillName.equals(that.pdfBillName) : that.pdfBillName != null) return false;
         return expenses != null ? expenses.equals(that.expenses) : that.expenses == null;
     }
 
@@ -319,10 +331,10 @@ public class CommercialOrder {
         result = 31 * result + (processed ? 1 : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (lastShipmentNotification != null ? lastShipmentNotification.hashCode() : 0);
+        result = 31 * result + (pdfBillName != null ? pdfBillName.hashCode() : 0);
         result = 31 * result + (expenses != null ? expenses.hashCode() : 0);
         return result;
     }
-
 
     @Override
     public String toString() {
@@ -347,11 +359,12 @@ public class CommercialOrder {
                 ", processed=" + processed +
                 ", email='" + email + '\'' +
                 ", lastShipmentNotification=" + lastShipmentNotification +
+                ", pdfBillName='" + pdfBillName + '\'' +
                 ", expenses=" + expenses +
                 '}';
     }
 
     public String getFormattedDate(String pattern) {
-        return DateTimeFormat.forPattern(pattern).print(new DateTime(date));
+        return Utils.getFormattedDate(date, pattern);
     }
 }

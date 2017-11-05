@@ -165,6 +165,14 @@
         <tr>
             <td class="text-right orderButtons" colspan="2">
 
+                <a th:href="@{${mappings.get('ADMIN_SHOW_BILL')}(id=${order.getPdfBillName()})}"
+                   target="_blank"
+                   class="btn btn-default" role="button">
+                    Voir la facture</a>
+
+                &nbsp;
+                &nbsp;
+
                 <a th:href="@{${mappings.get('ADMIN_ACTION')}(action='notify', value='true', id=${order.getId()})}"
                    class="btn btn-default" role="button">
                     Envoyer une notification d'envoi</a>

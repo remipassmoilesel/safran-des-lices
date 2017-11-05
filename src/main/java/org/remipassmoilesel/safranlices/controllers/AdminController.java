@@ -68,19 +68,17 @@ public class AdminController {
     @RequestMapping(Mappings.ADMIN_ROOT)
     public String showAdminPage(Model model) {
 
-        List<Product> products = productRepository.findAll(false);
-
-        int limit = 10;
+        int displayLimit = 20;
 
         // orders non processed
         List<CommercialOrder> lastOrdersToProcess = orderRepository.findLasts(
-                new PageRequest(0, limit), false).getContent();
+                new PageRequest(0, displayLimit), false).getContent();
 
         model.addAttribute("ordersToProcess", lastOrdersToProcess);
 
         // orders processed
         List<CommercialOrder> lastOrdersProcessed = orderRepository.findLasts(
-                new PageRequest(0, limit), true).getContent();
+                new PageRequest(0, displayLimit), true).getContent();
 
         model.addAttribute("ordersProcessed", lastOrdersProcessed);
 

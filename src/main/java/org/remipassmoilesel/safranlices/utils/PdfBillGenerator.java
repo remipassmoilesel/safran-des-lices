@@ -15,6 +15,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -48,10 +49,6 @@ public class PdfBillGenerator {
     public PdfBillGenerator() {
     }
 
-    public String getPdfName(CommercialOrder order) {
-        return order.getFormattedDate("yyyy-MM-dd_HH-mm-ss") + "_" + order.getLastName() + "_" + order.getFirstName() + ".pdf";
-    }
-
     public Path generateBill(CommercialOrder order,
                              List<Product> products, double total) throws IOException, DocumentException {
 
@@ -82,6 +79,21 @@ public class PdfBillGenerator {
 
         return absoluteDocPath;
     }
+
+    public String getPdfName(Date date, String lastName, String firstName) {
+        return Utils.getFormattedDate(date, "yyyy-MM-dd_HH-mm-ss")
+                + "_" + lastName + "_" + firstName + ".pdf";
+    }
+
+    public String getPdfName(CommercialOrder order) {
+        return getPdfName(order.getDate(), order.getLastName(), order.getFirstName());
+    }
+
+
+    public Path getPdfAbsolutePath(String name) {
+        return getBillRootDirectory().resolve(name).toAbsolutePath();
+    }
+
 
     private void addExpenses(Document document, CommercialOrder order) throws DocumentException {
 
@@ -235,10 +247,6 @@ public class PdfBillGenerator {
 
     }
 
-    public Path getPdfAbsolutePath(String name) {
-        return getBillRootDirectory().resolve(name).toAbsolutePath();
-    }
-
     private void deletePreviousPdf(String name) throws IOException {
         Path pdfPath = getPdfAbsolutePath(name);
         if (Files.isRegularFile(pdfPath)) {
@@ -270,4 +278,6 @@ public class PdfBillGenerator {
 
         return topLogo;
     }
+
+
 }

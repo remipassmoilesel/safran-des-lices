@@ -22,7 +22,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertTrue;
@@ -97,7 +96,7 @@ public class AdminControllerTest {
 
         CommercialOrder o1 = DevDataFactory.createOrder(null, null,
                 null, null, null, null,
-                null, null, null, null, exps);
+                null, null, null, null, exps, null);
         o1.setPaid(false);
         o1.setProcessed(false);
         orderRepository.save(o1);

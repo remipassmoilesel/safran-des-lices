@@ -1,5 +1,7 @@
 package org.remipassmoilesel.safranlices.utils;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.remipassmoilesel.safranlices.SafranLicesApplication;
 import org.remipassmoilesel.safranlices.entities.Basket;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
@@ -19,10 +21,7 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by remipassmoilesel on 12/06/17.
@@ -154,5 +153,9 @@ public class Utils {
         response.getOutputStream().write(content);
         response.getOutputStream().flush();
 
+    }
+
+    public static String getFormattedDate(Date date, String pattern) {
+        return DateTimeFormat.forPattern(pattern).print(new DateTime(date));
     }
 }

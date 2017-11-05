@@ -57,7 +57,8 @@ public class DevDataFactory {
                                               String firstName, String lastName,
                                               PaymentType paymentType,
                                               String comment, String email,
-                                              List<Expense> expenses) {
+                                              List<Expense> expenses,
+                                              String pdfBillName) {
 
         if (date == null) {
             date = new Date();
@@ -110,6 +111,10 @@ public class DevDataFactory {
             expenses = Arrays.asList(createExpense());
         }
 
+        if (pdfBillName == null) {
+            pdfBillName = "bill.pdf";
+        }
+
         String postalCode = "35582";
         String city = "Montpellier";
         String shipmentAddress = Utils.generateLoremIpsum(20);
@@ -118,7 +123,7 @@ public class DevDataFactory {
 
         return new CommercialOrder(date, products, basket, address, postalCode, city, shipmentAddress,
                 shipmentPostalcode, shipmentCity, phonenumber, firstName, lastName,
-                paymentType, comment, email, expenses);
+                paymentType, comment, email, expenses, pdfBillName);
     }
 
     public static List<Product> createSampleProductList() {

@@ -144,8 +144,13 @@ public class BillingController {
 
         List<Expense> expenses = expenseRepository.findAll(false);
 
+        Date orderDate = new Date();
+        String billId = billGenerator.getPdfName(orderDate,
+                checkoutForm.getLastname(),
+                checkoutForm.getFirstname());
+
         CommercialOrder order = new CommercialOrder(
-                new Date(),
+                orderDate,
                 products,
                 basket,
                 checkoutForm.getAddress(),
@@ -160,7 +165,8 @@ public class BillingController {
                 paymentType,
                 checkoutForm.getComment(),
                 checkoutForm.getEmail(),
-                expenses);
+                expenses,
+                billId);
 
         double total = basket.computeTotalWithExpenses(products, expenses);
 

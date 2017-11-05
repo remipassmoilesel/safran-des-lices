@@ -66,7 +66,8 @@ public class DevController {
         List<Product> products = productRepository.findAll(false);
 
         CommercialOrder order = DevDataFactory.createOrder(null, products, null, null,
-                null, null, null, null, null, null, null);
+                null, null, null, null,
+                null, null, null, null);
 
         // generate pdf
         Path pdfPath = billGenerator.generateBill(order, products, 88.8);
@@ -86,7 +87,7 @@ public class DevController {
 
         List<Product> products = productRepository.findAll(false);
         CommercialOrder order = DevDataFactory.createOrder(null, products, null, null, null,
-                null, null, null, null, null, null);
+                null, null, null, null, null, null, null);
 
         // generate pdf
         Path pdfPath = billGenerator.generateBill(order, products, 88.8);
@@ -114,7 +115,7 @@ public class DevController {
         List<Product> products = productRepository.findAll(false);
 
         CommercialOrder order = DevDataFactory.createOrder(null, products, null, null,
-                null, null, null, null, null, null, null);
+                null, null, null, null, null, null, null, null);
         model.addAttribute("order", order);
 
         HashMap<Product, Integer> productsWithQuantities = Utils.mapProductWithQuantities(products, order);
