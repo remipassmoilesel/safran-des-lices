@@ -115,67 +115,7 @@
 
     </style>
 
-    <script type="text/javascript">
-        function checkProduct(productId) {
-
-            console.log("check product" + productId);
-
-            var form = $("#productForm" + productId);
-            var errorArea = $(".productErrorArea");
-            var qtty = form.find("input[name='quantity']").val().trim();
-            var price = form.find("input[name='price']").val().trim();
-
-            function showError(htmlError) {
-                errorArea.css("opacity", 0);
-                errorArea.html(htmlError);
-                errorArea.animate({"opacity": 1}, 800);
-            }
-
-            showError("");
-
-            if (qtty.match(/^[0-9]+(\.[0-9]+)?$/i) === null) {
-                showError("Quantité invalide: " + qtty + " (produit: " + productId + ")");
-                return;
-            }
-
-            if (price.match(/^[0-9]+(\.[0-9]+)?$/i) === null) {
-                showError("Prix invalide: " + price + " (produit: " + productId + ")");
-                return;
-            }
-
-            form.submit();
-        }
-
-        function checkExpense(expenseId) {
-
-            console.log("check product" + expenseId);
-
-            var form = $("#expenseForm" + expenseId);
-            var errorArea = $(".expenseErrorArea");
-            var qtty = form.find("input[name='name']").val().trim();
-            var price = form.find("input[name='value']").val().trim();
-
-            function showError(htmlError) {
-                errorArea.css("opacity", 0);
-                errorArea.html(htmlError);
-                errorArea.animate({"opacity": 1}, 800);
-            }
-
-            showError("");
-
-            if (qtty.match(/^.{5,50}$/i) === null) {
-                showError("Nom invalide: " + qtty + " (frais: " + expenseId + ")");
-                return;
-            }
-
-            if (price.match(/^[0-9]+(\.[0-9]+)?$/i) === null) {
-                showError("Valeur invalide: " + price + " (frais: " + expenseId + ")");
-                return;
-            }
-
-            form.submit();
-        }
-    </script>
+    <script type="text/javascript" th:src="@{/js/admin.js}"></script>
 
 </head>
 <body>
@@ -272,7 +212,7 @@
                     <div class="col-sm-2">
                         <input type="hidden" name="action" value="product"/>
                         <input type="hidden" name="id" th:value="${product.getId()}"/>
-                        <input type="button" value="Modifier" th:onClick="${'checkProduct(' + product.getId() + ')'}"/>
+                        <input type="button" value="Modifier" th:onClick="${'App.checkProductAndSendForm(' + product.getId() + ')'}"/>
                     </div>
 
                 </form>
@@ -332,7 +272,7 @@
                     <div class="col-sm-2">
                         <input type="hidden" name="action" value="expense"/>
                         <input type="hidden" name="id" th:value="${expense.getId()}"/>
-                        <input type="button" value="Modifier" th:onClick="${'checkExpense(' + expense.getId() + ')'}"/>
+                        <input type="button" value="Modifier" th:onClick="${'App.checkExpenseAndSendForm(' + expense.getId() + ')'}"/>
                     </div>
 
                 </form>

@@ -78,10 +78,6 @@
                 <tr>
                     <td class="orderLabel">Type de paiement:</td>
                     <td>
-                        <!--<span th:text="${order.getPaymentType()}">CREDIT CARD</span>-->
-                        <span th:if="${order.getPaymentType() == T(org.remipassmoilesel.safranlices.entities.PaymentType).CREDIT_CARD}">
-                            Carte de crédit
-                        </span>
                         <span th:if="${order.getPaymentType() == T(org.remipassmoilesel.safranlices.entities.PaymentType).BANK_CHECK}">
                             Chèque de banque
                         </span>

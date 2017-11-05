@@ -16,13 +16,15 @@ public class Templates {
     public static final String ORDER = PAGES_DIR + "order";
     public static final String BASKET = PAGES_DIR + "basket";
     public static final String BILLING_FORM = PAGES_DIR + "billingForm";
-    public static final String CHECKOUT_FORM = PAGES_DIR + "checkoutForm";
     public static final String CHECKOUT_END = PAGES_DIR + "checkoutEnd";
     public static final String LEGAL_MENTIONS = PAGES_DIR + "legalMentions";
 
     public static final String ERROR = PAGES_DIR + "error";
-    public static final String ADMIN = PAGES_DIR + "admin";
-    public static final String ADMIN_LOGIN = PAGES_DIR + "adminLogin";
+
+
+    public static final String ADMIN_DIR = PAGES_DIR + "admin/";
+    public static final String ADMIN = ADMIN_DIR + "admin";
+    public static final String ADMIN_LOGIN = ADMIN_DIR + "adminLogin";
 
     public static final String EXAMPLE_CONTENT = PAGES_DIR + "contentExample";
 }
