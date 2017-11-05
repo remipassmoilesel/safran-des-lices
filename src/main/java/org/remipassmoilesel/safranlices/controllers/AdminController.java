@@ -10,6 +10,7 @@ import org.remipassmoilesel.safranlices.repositories.ExpenseRepository;
 import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
 import org.remipassmoilesel.safranlices.utils.Mailer;
+import org.remipassmoilesel.safranlices.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,14 @@ public class AdminController {
     @Autowired
     private Mailer mailer;
 
+
+    @RequestMapping(value = Mappings.ADMIN_LOGIN, method = RequestMethod.GET)
+    public String showLoginPage(Model model) throws IOException {
+
+        Mappings.includeMappings(model);
+        return Templates.ADMIN_LOGIN;
+    }
+
     @RequestMapping(Mappings.ADMIN_ROOT)
     public String showAdminPage(Model model) {
 
@@ -58,14 +67,12 @@ public class AdminController {
                 new PageRequest(0, limit), false).getContent();
 
         model.addAttribute("ordersToProcess", lastOrdersToProcess);
-        model.addAttribute("basketsToProcess", getBasketsFromOrders(lastOrdersToProcess, products));
 
         // orders processed
         List<CommercialOrder> lastOrdersProcessed = orderRepository.findLasts(
                 new PageRequest(0, limit), true).getContent();
 
         model.addAttribute("ordersProcessed", lastOrdersProcessed);
-        model.addAttribute("basketsProcessed", getBasketsFromOrders(lastOrdersProcessed, products));
 
         // add expenses
         model.addAttribute("expenses", expenseRepository.findAll(false));
@@ -88,6 +95,27 @@ public class AdminController {
 
         Mappings.includeMappings(model);
         return Templates.ADMIN_CONFIGURE_SALES;
+    }
+
+    @RequestMapping(Mappings.ADMIN_SHOW_ORDER)
+    public String displayOrder(
+            @RequestParam(value = "id") Long id,
+            Model model) {
+
+        CommercialOrder order = orderRepository.getOne(id);
+        List<Product> products = productRepository.findAll(false);
+
+        HashMap<Product, Integer> basket = Utils.mapProductWithQuantities(products, order);
+
+        // add products
+        model.addAttribute("order", order);
+
+        // add expenses
+        model.addAttribute("basket", basket);
+
+
+        Mappings.includeMappings(model);
+        return Templates.ADMIN_SHOW_ORDER;
     }
 
     @RequestMapping(Mappings.ADMIN_ACTION)
@@ -158,37 +186,5 @@ public class AdminController {
         return null;
     }
 
-    private List<List<Object[]>> getBasketsFromOrders(List<CommercialOrder> orders, List<Product> products) {
-
-        List<List<Object[]>> baskets = new ArrayList<>();
-
-        for (CommercialOrder order : orders) {
-
-            HashMap<Long, Integer> qtties = order.getQuantities();
-            Iterator<Long> it = qtties.keySet().iterator();
-
-            ArrayList<Object[]> bskt = new ArrayList<>();
-
-            while (it.hasNext()) {
-                Long pId = it.next();
-                Product p = products.stream()
-                        .filter(pf -> pId.equals(pf.getId()))
-                        .findAny().orElse(null);
-                Integer qt = qtties.get(pId);
-                bskt.add(new Object[]{p, qt});
-            }
-
-            baskets.add(bskt);
-        }
-
-        return baskets;
-    }
-
-    @RequestMapping(value = Mappings.ADMIN_LOGIN, method = RequestMethod.GET)
-    public String showLoginPage(Model model) throws IOException {
-
-        Mappings.includeMappings(model);
-        return Templates.ADMIN_LOGIN;
-    }
 
 }

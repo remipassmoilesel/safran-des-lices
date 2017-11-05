@@ -25,5 +25,6 @@ public class Templates {
     public static final String ADMIN_WELCOME = ADMIN_DIR + "welcome";
     public static final String ADMIN_LOGIN = ADMIN_DIR + "adminLogin";
     public static final String ADMIN_CONFIGURE_SALES = ADMIN_DIR + "configureSales";
+    public static final String ADMIN_SHOW_ORDER = ADMIN_DIR + "showOrder";
 
 }

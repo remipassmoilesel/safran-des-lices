@@ -7,13 +7,6 @@
     list-style: circle;
 }
 
-.orderHeader {
-    padding-top: 1em;
-    font-size: 1.2em;
-    font-weight: bolder;
-    margin-top: 1em;
-    margin-bottom: 1em;
-}
 
 .order input[type="checkbox"]:checked {
     color: blue;
@@ -21,14 +14,6 @@
 
 .order input[type="checkbox"]:not(:checked) {
     color: red;
-}
-
-.orderTable {
-    width: 100%;
-}
-
-.orderTable td{
-    vertical-align: top;
 }
 
 .orderLabel {
@@ -104,17 +89,29 @@ h3 {
     margin-top: 3em;
 }
 
-.adminOrdersTable{
-    width: 70%;
+.ordersTable{
+    width: 80%;
     margin: auto;
 }
 
-.adminOrdersTable td{
+.ordersTable td{
     padding: 1em;
     text-align: center;
 }
 
-.adminOrdersTable thead td{
+.ordersTable thead td{
     font-weight: bolder;
     text-align: center;
+}
+
+.orderComplete .orderLabel{
+    width: 20%;
+    font-weight: bolder;
+}
+
+.orderComplete .orderHeader {
+    padding-top: 1em;
+    padding-bottom: 1em;
+    font-size: 1.2em;
+    font-weight: bolder;
 }

@@ -32,6 +32,11 @@
             </div>
 
             <div class="row">
+
+                <div class="header-section text-center">
+                    <h3>Sections</h3>
+                </div>
+
                 <div class="col-md-offset-1 col-md-10 text-left summary">
                     <ul>
                         <li>
@@ -49,13 +54,13 @@
 
         <a name="lastNonProcessed"/>
         <h3 class="text-center">Dernières commandes non traitées</h3>
-        <div th:replace="fragments/adminOrders :: adminOrdersTable(orders=${ordersToProcess}, baskets=${basketsToProcess})">
+        <div th:replace="fragments/orders :: ordersTable(orders=${ordersToProcess}, baskets=${basketsToProcess})">
             Orders to process
         </div>
 
         <a name="lastProcessed"/>
         <h3 class="text-center">Dernières commandes traitées</h3>
-        <div th:replace="fragments/adminOrders :: adminOrdersTable(orders=${ordersProcessed}, baskets=${basketsProcessed})">
+        <div th:replace="fragments/orders :: ordersTable(orders=${ordersProcessed}, baskets=${basketsProcessed})">
             Orders processed
         </div>
 
