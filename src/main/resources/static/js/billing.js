@@ -23,6 +23,7 @@ var App = {
         var phonenumber = form.find("input[name='phonenumber']");
         var paymentType = form.find("input[name='paymentType']");
         var email = form.find("input[name='email']");
+        var termsOfSales = form.find("input[id='termsOfSaleCheckbox']");
 
         var showErrorMessage = function(message){
           errorArea.css("opacity", "0");
@@ -74,8 +75,14 @@ var App = {
             showErrorMessage("Numéro de téléphone invalide");
             return;
         }
+
         if(!email.val().trim().match(/^[A-Za-z0-9._+-]+@[A-Za-z0-9.-]+\.[a-zA-Z]{2,6}$/)){
             showErrorMessage("Adresse email invalide");
+            return;
+        }
+
+        if(!termsOfSales.is(":checked")){
+            showErrorMessage("Vous devez accepter les conditions générales de vente");
             return;
         }
 

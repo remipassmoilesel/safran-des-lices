@@ -5,8 +5,6 @@
 <head>
     <title>Passer une commande</title>
 
-    <script th:src="@{js/billing.js}"></script>
-
     <style>
         #billingForm .row {
             margin: 0.7em;
@@ -34,11 +32,15 @@
 
         .errorArea {
             color: darkred;
+            font-size: 1.1em;
             opacity: 0;
             text-align: center;
             padding: 1em;
         }
     </style>
+
+    <script th:src="@{js/billing.js}"></script>
+
 </head>
 <body>
 <div layout:fragment="content">
@@ -195,6 +197,14 @@
                     </div>
                     <div class="col-md-5">
                         <textarea class="form-control" rows="5" name="comment"></textarea>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <input type="checkbox" id="termsOfSaleCheckbox"/>
+                        J'accepte les conditions
+                        <a th:href="@{${mappings.get('TERMS_OF_SALES')}}" target="_blank">générales de vente.</a>
                     </div>
                 </div>
 
