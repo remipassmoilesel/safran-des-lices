@@ -154,15 +154,18 @@ public class AdminController {
         return Templates.ADMIN_SHOW_ALL_BILLS;
     }
 
-    @RequestMapping(value = Mappings.ADMIN_DOWNLOAD_PRODUCTS, produces = "text/csv;charset=UTF-8")
+    @RequestMapping(value = Mappings.ADMIN_DOWNLOAD_PRODUCTS)
     public void downloadProducts(HttpServletResponse response) throws IOException {
+
+        // MANDATORY in order to keep utf-8 encoding
+        response.setContentType("text/csv; charset=UTF-8");
+        response.setHeader("Content-Disposition","attachment; filename=\"products.csv\"");
 
         List<Product> products = productRepository.findAll(false);
 
         ProductsExporter pe = new ProductsExporter();
         BufferedWriter writer = new BufferedWriter(response.getWriter());
 
-        response.setHeader("Content-Disposition","attachment; filename=\"products.csv\"");
         pe.export(products, writer);
     }
 
