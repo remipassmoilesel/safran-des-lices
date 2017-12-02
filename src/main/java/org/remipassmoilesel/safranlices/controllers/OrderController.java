@@ -148,8 +148,10 @@ public class OrderController {
         double total = basket.computeTotalForBasket(products);
         model.addAttribute("total", total);
 
-        double shippingCosts = Utils.computeShippingCosts(shippingCostRepository, products);
+        double shippingCosts = Utils.computeShippingCosts(shippingCostRepository, productsWithQuantities);
+        double totalWeight = Utils.computeTotalWeight(productsWithQuantities);
         model.addAttribute("shippingCosts", shippingCosts);
+        model.addAttribute("totalWeight", shippingCosts);
 
         Mappings.includeMappings(model);
         return Templates.BASKET;

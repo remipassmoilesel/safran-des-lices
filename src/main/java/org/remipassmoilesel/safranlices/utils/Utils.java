@@ -170,19 +170,26 @@ public class Utils {
         return DateTimeFormat.forPattern(pattern).print(new DateTime(date));
     }
 
-    public static Double getTotalWeight(List<Product> products) {
+    public static Double computeTotalWeight(HashMap<Product, Integer> productsWithQuantities) {
+
         Double result = 0d;
-        for (Product p : products) {
-            result += p.getGrossWeight();
+        Iterator<Product> iter = productsWithQuantities.keySet().iterator();
+
+        while(iter.hasNext()){
+            Product product = iter.next();
+            Integer quantity = productsWithQuantities.get(product);
+            result += product.getGrossWeight() * quantity;
         }
+
         return result;
     }
 
-    public static Double computeShippingCosts(ShippingCostRepository repository, List<Product> products)
+    public static Double computeShippingCosts(ShippingCostRepository repository,
+                                              HashMap<Product, Integer> productsWithQuantities)
             throws IllegalStateException {
 
         List<ShippingCost> all = repository.findAll(false);
-        Double totalWeight = getTotalWeight(products);
+        Double totalWeight = computeTotalWeight(productsWithQuantities);
 
         for (ShippingCost sc : all) {
             if (sc.getMinWeight() <= totalWeight && sc.getMaxWeight() > totalWeight) {
