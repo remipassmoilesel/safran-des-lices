@@ -61,7 +61,6 @@ public class DevDataFactory {
                                               String firstName, String lastName,
                                               PaymentType paymentType,
                                               String comment, String email,
-                                              List<Expense> expenses,
                                               String pdfBillName) {
 
         if (date == null) {
@@ -111,10 +110,6 @@ public class DevDataFactory {
             email = "jeanEdouard" + System.currentTimeMillis() + "@mail.com";
         }
 
-        if (expenses == null) {
-            expenses = Arrays.asList(createExpense());
-        }
-
         if (pdfBillName == null) {
             pdfBillName = "bill.pdf";
         }
@@ -127,7 +122,7 @@ public class DevDataFactory {
 
         return new CommercialOrder(date, products, basket, address, postalCode, city, shipmentAddress,
                 shipmentPostalcode, shipmentCity, phonenumber, firstName, lastName,
-                paymentType, comment, email, expenses, pdfBillName);
+                paymentType, comment, email, pdfBillName);
     }
 
     public static List<Product> createSampleProductList() {
@@ -138,13 +133,5 @@ public class DevDataFactory {
                 DevDataFactory.createProduct("Sel au safran 100g", "Sel parfumé au safran, peut être utilisé pour saler", null, 15d, null),
                 DevDataFactory.createProduct("Sirop de safran 35ml", "Sirop de safran, peut être utilisé pour siroter", null, 15d, null)
         );
-    }
-
-    public static Expense createExpense() {
-        return createExpense("Frais de port", 5d);
-    }
-
-    public static Expense createExpense(String name, double value) {
-        return new Expense(name, value);
     }
 }

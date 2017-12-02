@@ -6,9 +6,7 @@ import org.junit.runner.RunWith;
 import org.remipassmoilesel.safranlices.controllers.AdminController;
 import org.remipassmoilesel.safranlices.dataLoaders.DevDataFactory;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
-import org.remipassmoilesel.safranlices.entities.Expense;
 import org.remipassmoilesel.safranlices.entities.Product;
-import org.remipassmoilesel.safranlices.repositories.ExpenseRepository;
 import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +19,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -47,9 +43,6 @@ public class AdminControllerTest {
 
     @Autowired
     private OrderRepository orderRepository;
-
-    @Autowired
-    private ExpenseRepository expenseRepository;
 
     @Before
     public void setup() throws IOException {
@@ -77,7 +70,6 @@ public class AdminControllerTest {
         mockMvc.perform(get(Mappings.ADMIN_CONFIGURE_SALES))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("products"))
-                .andExpect(model().attributeExists("expenses"))
                 .andExpect(model().attributeExists(Mappings.MODEL_ARGUMENT_NAME));
 
         mockMvc.perform(get(Mappings.ADMIN_ACTION))
@@ -90,13 +82,10 @@ public class AdminControllerTest {
     public void testModifications() throws Exception {
 
         // create an order and mark it as non paid
-        List<Expense> exps = new ArrayList();
-        exps.add(DevDataFactory.createExpense());
-        expenseRepository.save(exps);
 
         CommercialOrder o1 = DevDataFactory.createOrder(null, null,
                 null, null, null, null,
-                null, null, null, null, exps, null);
+                null, null, null, null, null);
         o1.setPaid(false);
         o1.setProcessed(false);
         orderRepository.save(o1);
@@ -138,32 +127,6 @@ public class AdminControllerTest {
         Product np1 = productRepository.getOne(p1.getId());
         assertTrue(np1.getPrice().equals(newPrice));
         assertTrue(np1.getQuantityAvailable().equals(newQuantity));
-
-        // modify expense
-        String newName = "What an expense";
-        Double newValue = 522d;
-        Expense e1 = expenseRepository.findAll(false).get(0);
-        e1.setName("");
-        e1.setValue(0d);
-        expenseRepository.save(e1);
-
-        mockMvc.perform(get(Mappings.ADMIN_ACTION)
-                .param("action", "expense")
-                .param("name", newName)
-                .param("value", newValue.toString())
-                .param("id", e1.getId().toString()))
-                .andExpect(status().is3xxRedirection());
-
-        Expense ne1 = expenseRepository.getOne(e1.getId());
-        assertTrue(ne1.getName().equals(newName));
-        assertTrue(ne1.getValue().equals(newValue));
-
-        // bad modification
-        mockMvc.perform(get(Mappings.ADMIN_ACTION)
-                .param("action", "expense")
-                .param("name", newName)
-                .param("value", newValue.toString()))
-                .andExpect(status().is4xxClientError());
 
     }
 

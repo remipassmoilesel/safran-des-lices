@@ -5,7 +5,6 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import org.apache.commons.io.IOUtils;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
-import org.remipassmoilesel.safranlices.entities.Expense;
 import org.remipassmoilesel.safranlices.entities.Product;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -70,7 +69,6 @@ public class PdfBillGenerator {
             addCommandHeader(document, order);
             addCustomerInformations(document, order);
             addOrder(document, order, products);
-            addExpenses(document, order);
 
             addTotal(document, total);
 
@@ -92,32 +90,6 @@ public class PdfBillGenerator {
 
     public Path getPdfAbsolutePath(String name) {
         return getBillRootDirectory().resolve(name).toAbsolutePath();
-    }
-
-
-    private void addExpenses(Document document, CommercialOrder order) throws DocumentException {
-
-        Paragraph header = new Paragraph();
-
-        header.add(Chunk.NEWLINE);
-        Chunk title = new Chunk("Frais");
-        title.setFont(TITLE_2_FONT);
-        header.add(title);
-        header.add(Chunk.NEWLINE);
-        header.add(Chunk.NEWLINE);
-
-        PdfPTable table = new PdfPTable(2);
-
-        table.addCell("Désignation");
-        table.addCell("Montant");
-
-        for (Expense expense : order.getExpenses()) {
-            table.addCell(expense.getName());
-            table.addCell(String.valueOf(expense.getValue()));
-        }
-
-        document.add(header);
-        document.add(table);
     }
 
     private void addTotal(Document document, Double total) throws DocumentException {

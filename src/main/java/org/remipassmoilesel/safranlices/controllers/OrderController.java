@@ -3,9 +3,7 @@ package org.remipassmoilesel.safranlices.controllers;
 import org.remipassmoilesel.safranlices.Mappings;
 import org.remipassmoilesel.safranlices.Templates;
 import org.remipassmoilesel.safranlices.entities.Basket;
-import org.remipassmoilesel.safranlices.entities.Expense;
 import org.remipassmoilesel.safranlices.entities.Product;
-import org.remipassmoilesel.safranlices.repositories.ExpenseRepository;
 import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
 import org.remipassmoilesel.safranlices.utils.Mailer;
@@ -38,9 +36,6 @@ public class OrderController {
 
     @Autowired
     private OrderRepository orderRepository;
-
-    @Autowired
-    private ExpenseRepository expenseRepository;
 
     @Autowired
     private Mailer mailer;
@@ -145,12 +140,8 @@ public class OrderController {
 
         model.addAttribute("basket", productsWithQuantities);
 
-        // expenses
-        List<Expense> expenses = expenseRepository.findAll(false);
-        model.addAttribute("expenses", expenses);
-
         // total
-        double total = basket.computeTotalWithExpenses(products, expenses);
+        double total = basket.computeTotalForBasket(products);
         model.addAttribute("total", total);
 
         Mappings.includeMappings(model);

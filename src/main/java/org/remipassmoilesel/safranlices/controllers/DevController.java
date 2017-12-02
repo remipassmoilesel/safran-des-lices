@@ -5,7 +5,6 @@ import org.remipassmoilesel.safranlices.dataLoaders.DevDataFactory;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
 import org.remipassmoilesel.safranlices.entities.OrderNotificationType;
 import org.remipassmoilesel.safranlices.entities.Product;
-import org.remipassmoilesel.safranlices.repositories.ExpenseRepository;
 import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
 import org.remipassmoilesel.safranlices.utils.Mailer;
@@ -42,9 +41,6 @@ public class DevController {
     private OrderRepository orderRepository;
 
     @Autowired
-    private ExpenseRepository expenseRepository;
-
-    @Autowired
     private Mailer mailer;
 
     @Autowired
@@ -67,7 +63,7 @@ public class DevController {
 
         CommercialOrder order = DevDataFactory.createOrder(null, products, null, null,
                 null, null, null, null,
-                null, null, null, null);
+                null, null, null);
 
         // generate pdf
         Path pdfPath = billGenerator.generateBill(order, products, 88.8);
@@ -87,7 +83,7 @@ public class DevController {
 
         List<Product> products = productRepository.findAll(false);
         CommercialOrder order = DevDataFactory.createOrder(null, products, null, null, null,
-                null, null, null, null, null, null, null);
+                null, null, null, null, null, null);
 
         // generate pdf
         Path pdfPath = billGenerator.generateBill(order, products, 88.8);
@@ -115,7 +111,7 @@ public class DevController {
         List<Product> products = productRepository.findAll(false);
 
         CommercialOrder order = DevDataFactory.createOrder(null, products, null, null,
-                null, null, null, null, null, null, null, null);
+                null, null, null, null, null, null, null);
         model.addAttribute("order", order);
 
         HashMap<Product, Integer> productsWithQuantities = Utils.mapProductWithQuantities(products, order);

@@ -69,24 +69,6 @@ public class Basket {
     }
 
     /**
-     * Compute total of current basket and add supplementary expenses
-     *
-     * @param products
-     * @param expenses
-     * @return
-     */
-    public Double computeTotalWithExpenses(List<Product> products, List<Expense> expenses) {
-
-        Double total = computeTotalForBasket(products);
-
-        for (Expense ex : expenses) {
-            total += ex.getValue();
-        }
-
-        return total;
-    }
-
-    /**
      * Reset basket and save it into current session
      *
      * @param session

@@ -5,10 +5,8 @@ import org.remipassmoilesel.safranlices.Templates;
 import org.remipassmoilesel.safranlices.csv.ProductsExporter;
 import org.remipassmoilesel.safranlices.csv.ProductsImporter;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
-import org.remipassmoilesel.safranlices.entities.Expense;
 import org.remipassmoilesel.safranlices.entities.OrderNotificationType;
 import org.remipassmoilesel.safranlices.entities.Product;
-import org.remipassmoilesel.safranlices.repositories.ExpenseRepository;
 import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
 import org.remipassmoilesel.safranlices.utils.Mailer;
@@ -53,9 +51,6 @@ public class AdminController {
     private OrderRepository orderRepository;
 
     @Autowired
-    private ExpenseRepository expenseRepository;
-
-    @Autowired
     private Mailer mailer;
 
     @Autowired
@@ -94,13 +89,9 @@ public class AdminController {
     public String configureSales(Model model) {
 
         List<Product> products = productRepository.findAll(false);
-        List<Expense> expenses = expenseRepository.findAll(false);
 
         // add products
         model.addAttribute("products", products);
-
-        // add expenses
-        model.addAttribute("expenses", expenses);
 
         Mappings.includeMappings(model);
         return Templates.ADMIN_CONFIGURE_SALES;
@@ -119,9 +110,7 @@ public class AdminController {
         // add products
         model.addAttribute("order", order);
 
-        // add expenses
         model.addAttribute("basket", basket);
-
 
         Mappings.includeMappings(model);
         return Templates.ADMIN_SHOW_ORDER;
@@ -226,17 +215,6 @@ public class AdminController {
             return "redirect:" + redirection;
         }
 
-        // modify an expense
-        if (action.equals("expense")) {
-            Expense e = expenseRepository.getOne(id);
-            e.setName(name);
-            e.setValue(Double.valueOf(value));
-            expenseRepository.save(e);
-
-            return "redirect:" + redirection;
-        }
-
-        // modify an expense
         if (action.equals("notify")) {
 
             CommercialOrder order = orderRepository.getOne(id);

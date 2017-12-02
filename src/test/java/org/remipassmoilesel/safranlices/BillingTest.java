@@ -5,9 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.remipassmoilesel.safranlices.controllers.BillingController;
 import org.remipassmoilesel.safranlices.controllers.OrderController;
-import org.remipassmoilesel.safranlices.entities.Expense;
 import org.remipassmoilesel.safranlices.entities.Product;
-import org.remipassmoilesel.safranlices.repositories.ExpenseRepository;
 import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
 import org.remipassmoilesel.safranlices.dataLoaders.DevDataFactory;
@@ -51,9 +49,6 @@ public class BillingTest {
     private ProductRepository productRepository;
 
     @Autowired
-    private ExpenseRepository expenseRepository;
-
-    @Autowired
     private OrderRepository orderRepository;
 
     @Before
@@ -76,14 +71,7 @@ public class BillingTest {
         productRepository.save(p1);
         productRepository.save(p2);
 
-        // create fake expenses
-        Double ex1price = 24d;
-        Double ex2price = 36d;
-
         orderRepository.deleteAll();
-        expenseRepository.deleteAll();
-        expenseRepository.save(new Expense("", ex1price));
-        expenseRepository.save(new Expense("", ex2price));
 
         // create a session
         MvcResult response = mockMvc.perform(get(Mappings.BASKET))
@@ -120,7 +108,7 @@ public class BillingTest {
 
         Double total = (Double) response.getModelAndView().getModel().get("total");
         assertEquals(total.doubleValue(),
-                p1qtty * p1price + p2qtty * p2price + ex1price + ex2price, 0);
+                p1qtty * p1price + p2qtty * p2price, 0);
 
     }
 

@@ -4,7 +4,6 @@ import org.remipassmoilesel.safranlices.Mappings;
 import org.remipassmoilesel.safranlices.Templates;
 import org.remipassmoilesel.safranlices.entities.*;
 import org.remipassmoilesel.safranlices.forms.CheckoutForm;
-import org.remipassmoilesel.safranlices.repositories.ExpenseRepository;
 import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
 import org.remipassmoilesel.safranlices.utils.Mailer;
@@ -50,9 +49,6 @@ public class BillingController {
     private OrderRepository orderRepository;
 
     @Autowired
-    private ExpenseRepository expenseRepository;
-
-    @Autowired
     private ThreadExecutor executor;
 
     @Autowired
@@ -88,11 +84,10 @@ public class BillingController {
             return "redirect:" + Mappings.BASKET;
         }
 
-        List<Expense> expenses = expenseRepository.findAll(false);
         List<Product> products = productRepository.findAll(false);
 
         // total
-        double total = basket.computeTotalWithExpenses(products, expenses);
+        double total = basket.computeTotalForBasket(products);
         model.addAttribute("total", total);
 
         Mappings.includeMappings(model);
@@ -142,8 +137,6 @@ public class BillingController {
 
         PaymentType paymentType = PaymentType.valueOf(checkoutForm.getPaymentType());
 
-        List<Expense> expenses = expenseRepository.findAll(false);
-
         Date orderDate = new Date();
         String billId = billGenerator.getPdfName(orderDate,
                 checkoutForm.getLastname(),
@@ -165,10 +158,9 @@ public class BillingController {
                 paymentType,
                 checkoutForm.getComment(),
                 checkoutForm.getEmail(),
-                expenses,
                 billId);
 
-        double total = basket.computeTotalWithExpenses(products, expenses);
+        double total = basket.computeTotalForBasket(products);
 
         order.setTotal(total);
         order.setProcessed(false);
@@ -198,10 +190,9 @@ public class BillingController {
         session.setAttribute(AUTHORIZED_BILL_ID_SATTR, billId);
 
         List<Product> products = productRepository.findAll(false);
-        List<Expense> expenses = expenseRepository.findAll(false);
 
         Basket basket = Basket.getBasketOrCreate(session);
-        double total = basket.computeTotalWithExpenses(products, expenses);
+        double total = basket.computeTotalForBasket(products);
 
         model.addAttribute("order", order);
         model.addAttribute("total", total);

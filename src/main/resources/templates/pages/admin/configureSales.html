@@ -13,12 +13,6 @@
         padding: 1em;
     }
 
-    .expenseErrorArea {
-        color: #b70000;
-        font-weight: bolder;
-        padding: 1em;
-    }
-
     .productHeader {
         margin: 0.2em;
         font-weight: bolder;
@@ -132,67 +126,6 @@
                         <input type="hidden" name="id" th:value="${product.getId()}"/>
                         <input type="button" value="Modifier"
                                th:onClick="${'App.checkProductAndSendForm(' + product.getId() + ')'}"/>
-                    </div>
-
-                </form>
-            </div>
-
-        </div>
-
-        <a name="modifyExpenses"/>
-        <h3 class="text-center">Modifier les frais</h3>
-
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-offset-1 col-sm-10 text-center">
-                    <div class="expenseErrorArea">&nbsp;</div>
-                </div>
-            </div>
-
-            <div class="row productRow text-center" th:if="${#lists.size(expenses) lt 1}">
-                <i>Aucun frais à afficher</i>
-            </div>
-
-            <div class="row productHeader" th:if="${#lists.size(expenses) gt 0}">
-                <div class="col-sm-offset-1 col-sm-1">
-                    ID
-                </div>
-
-                <div class="col-sm-4">
-                    Nom
-                </div>
-
-                <div class="col-sm-2">
-                    Valeur
-                </div>
-
-            </div>
-
-            <div class="row productRow" th:each="expense : ${expenses}" th:if="${#lists.size(expenses) gt 0}">
-                <form method="get" th:id="${'expenseForm' + expense.getId()}"
-                      th:action="@{${mappings.get('ADMIN_ACTION')}}">
-
-                    <!-- expense id -->
-                    <div class="col-sm-offset-1 col-sm-1" th:text="${expense.getId()}">
-                        11
-                    </div>
-
-                    <!-- expense name -->
-                    <div class="col-sm-4">
-                        <input name="name" type="text" th:value="${expense.getName()}"/>
-                    </div>
-
-                    <!-- expense price -->
-                    <div class="col-sm-2">
-                        <input name="value" type="text" th:value="${expense.getValue()}"/>
-                    </div>
-
-                    <!-- modify button -->
-                    <div class="col-sm-2">
-                        <input type="hidden" name="action" value="expense"/>
-                        <input type="hidden" name="id" th:value="${expense.getId()}"/>
-                        <input type="button" value="Modifier"
-                               th:onClick="${'App.checkExpenseAndSendForm(' + expense.getId() + ')'}"/>
                     </div>
 
                 </form>

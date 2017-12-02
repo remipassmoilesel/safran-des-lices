@@ -5,9 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.remipassmoilesel.safranlices.dataLoaders.DevDataFactory;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
-import org.remipassmoilesel.safranlices.entities.Expense;
 import org.remipassmoilesel.safranlices.entities.Product;
-import org.remipassmoilesel.safranlices.repositories.ExpenseRepository;
 import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +33,6 @@ public class CommercialOrderRepositoryTest {
     @Autowired
     private ProductRepository productRepository;
 
-    @Autowired
-    private ExpenseRepository expenseRepository;
-
     @Before
     public void setup() throws IOException {
         orderRepository.deleteAll();
@@ -48,13 +43,12 @@ public class CommercialOrderRepositoryTest {
 
         // get products
         List<Product> products = productRepository.findAll(false);
-        List<Expense> expenses = expenseRepository.findAll(false);
 
         int nbr = 10;
         for (int i = 0; i < nbr; i++) {
             CommercialOrder order = DevDataFactory.createOrder(null, products, null,
                     null, null, null,
-                    null, null, null, null, expenses, null);
+                    null, null, null, null, null);
             orderRepository.save(order);
         }
 

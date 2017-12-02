@@ -6,6 +6,8 @@ import org.remipassmoilesel.safranlices.SafranLicesApplication;
 import org.remipassmoilesel.safranlices.entities.Basket;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
 import org.remipassmoilesel.safranlices.entities.Product;
+import org.remipassmoilesel.safranlices.entities.ShippingCost;
+import org.remipassmoilesel.safranlices.repositories.ShippingCostRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
@@ -166,5 +168,26 @@ public class Utils {
 
     public static String getFormattedDate(Date date, String pattern) {
         return DateTimeFormat.forPattern(pattern).print(new DateTime(date));
+    }
+
+    public static Double getTotalWeight(List<Product> products) {
+        Double result = 0d;
+        for (Product p : products) {
+            result += p.getPrice();
+        }
+        return result;
+    }
+
+    public static Double computeShippingCosts(ShippingCostRepository repository, List<Product> products)
+            throws IllegalStateException {
+        List<ShippingCost> all = repository.findAll(false);
+        Double totalWeight = getTotalWeight(products);
+        for (ShippingCost sc : all) {
+            if (sc.getMinWeight() < totalWeight && sc.getMaxWeight() > totalWeight) {
+                return sc.getPrice();
+            }
+        }
+
+        throw new IllegalStateException("No valid shipping cost found for weight: " + totalWeight);
     }
 }
