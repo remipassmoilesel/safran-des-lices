@@ -125,34 +125,43 @@ public class Utils {
     }
 
 
-    public static byte[] readPdf(Path pdfPath) throws IOException {
+    public static byte[] readRaw(Path pdfPath) throws IOException {
 
         // display it
         try (InputStream pdfInputStream = Files.newInputStream(pdfPath)) {
-
-            byte[] buffer = new byte[8192];
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-            int bytesRead;
-            while ((bytesRead = pdfInputStream.read(buffer)) != -1) {
-                baos.write(buffer, 0, bytesRead);
-            }
-            return baos.toByteArray();
+            return readRaw(pdfInputStream);
         }
 
     }
 
-    public static void pdfResponse(HttpServletResponse response, Path pdfPath) throws IOException {
+    public static byte[] readRaw(InputStream pdfStream) throws IOException {
+        byte[] buffer = new byte[8192];
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-        byte[] content = readPdf(pdfPath);
+        int bytesRead;
+        while ((bytesRead = pdfStream.read(buffer)) != -1) {
+            baos.write(buffer, 0, bytesRead);
+        }
+        return baos.toByteArray();
+    }
 
+    public static void pdfResponse(HttpServletResponse response, byte[] content) throws IOException {
         response.setContentType("application/pdf");
         response.setHeader("Content-disposition", "inline; filename='output.pdf'");
         response.setContentLength(content.length);
 
         response.getOutputStream().write(content);
         response.getOutputStream().flush();
+    }
 
+    public static void pdfResponse(HttpServletResponse response, Path pdfPath) throws IOException {
+        byte[] content = readRaw(pdfPath);
+        pdfResponse(response, content);
+    }
+
+    public static void pdfResponse(HttpServletResponse response, InputStream pdf) throws IOException {
+        byte[] content = readRaw(pdf);
+        pdfResponse(response, content);
     }
 
     public static String getFormattedDate(Date date, String pattern) {

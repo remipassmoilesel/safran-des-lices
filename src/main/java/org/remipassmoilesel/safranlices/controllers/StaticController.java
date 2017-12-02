@@ -2,38 +2,23 @@ package org.remipassmoilesel.safranlices.controllers;
 
 import org.remipassmoilesel.safranlices.Mappings;
 import org.remipassmoilesel.safranlices.Templates;
-import org.remipassmoilesel.safranlices.entities.*;
-import org.remipassmoilesel.safranlices.forms.CheckoutForm;
-import org.remipassmoilesel.safranlices.repositories.ExpenseRepository;
-import org.remipassmoilesel.safranlices.repositories.OrderRepository;
-import org.remipassmoilesel.safranlices.repositories.ProductRepository;
-import org.remipassmoilesel.safranlices.utils.Mailer;
 import org.remipassmoilesel.safranlices.utils.Utils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Created by remipassmoilesel on 13/06/17.
  */
 @Controller
 public class StaticController {
+
+    private static final String TERMS_PDF_PATH = "/terms-of-sales/terms-of-sale.pdf";
 
     @Value("${app.mail.mainAdress}")
     private String mainMailAdress;
@@ -69,9 +54,9 @@ public class StaticController {
     }
 
     @RequestMapping(value = Mappings.TERMS_OF_SALES)
-    public String showTermsOfSale(Model model) {
-        Mappings.includeMappings(model);
-        return Templates.TERMS_OF_SALE;
+    public void showTermsOfSale(HttpServletResponse response) throws IOException {
+        InputStream inputStream = this.getClass().getResourceAsStream(TERMS_PDF_PATH);
+        Utils.pdfResponse(response, inputStream);
     }
 
 }
