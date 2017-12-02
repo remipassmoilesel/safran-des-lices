@@ -173,17 +173,19 @@ public class Utils {
     public static Double getTotalWeight(List<Product> products) {
         Double result = 0d;
         for (Product p : products) {
-            result += p.getPrice();
+            result += p.getGrossWeight();
         }
         return result;
     }
 
     public static Double computeShippingCosts(ShippingCostRepository repository, List<Product> products)
             throws IllegalStateException {
+
         List<ShippingCost> all = repository.findAll(false);
         Double totalWeight = getTotalWeight(products);
+
         for (ShippingCost sc : all) {
-            if (sc.getMinWeight() < totalWeight && sc.getMaxWeight() > totalWeight) {
+            if (sc.getMinWeight() <= totalWeight && sc.getMaxWeight() > totalWeight) {
                 return sc.getPrice();
             }
         }

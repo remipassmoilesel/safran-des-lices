@@ -19,9 +19,11 @@ public class ShippingCost {
     private Double price;
 
     public ShippingCost() {
+        this.deleted = false;
     }
 
     public ShippingCost(Double minWeight, Double maxWeight, Double price) {
+        this();
         this.minWeight = minWeight;
         this.maxWeight = maxWeight;
         this.price = price;
