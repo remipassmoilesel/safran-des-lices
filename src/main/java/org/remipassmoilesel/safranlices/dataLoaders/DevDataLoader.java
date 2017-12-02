@@ -4,6 +4,7 @@ import org.joda.time.DateTime;
 import org.remipassmoilesel.safranlices.entities.Basket;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
 import org.remipassmoilesel.safranlices.entities.Product;
+import org.remipassmoilesel.safranlices.entities.ShippingCost;
 import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
 import org.remipassmoilesel.safranlices.repositories.ShippingCostRepository;
@@ -69,6 +70,17 @@ public class DevDataLoader implements ApplicationRunner {
             logger.warn("-- Fake orders added");
         }
 
+        if (shippingCostRepository.count() < 1) {
+            populateShippingRepository();
+            logger.warn("-- Fake shipping costs added");
+        }
+
+    }
+
+    private void populateShippingRepository() {
+        shippingCostRepository.save(new ShippingCost(0d, 50d, 3d));
+        shippingCostRepository.save(new ShippingCost(50d, 100d, 6d));
+        shippingCostRepository.save(new ShippingCost(100d, 9999d, 12d));
     }
 
     private void populateProductRepository() {

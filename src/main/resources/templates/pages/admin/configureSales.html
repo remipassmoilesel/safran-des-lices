@@ -34,6 +34,10 @@
         text-align: left;
     }
 
+    .import-shipping-costs * {
+        text-align: left;
+    }
+
     </style>
 
     <script type="text/javascript" th:src="@{/js/admin.js}"></script>
@@ -158,6 +162,39 @@
                         <div class="form-group">
                             <label for="productsList">Liste des produits à importer</label>
                             <input type="file" id="productsList" name="productsList"/>
+                        </div>
+                        <div>&nbsp;</div>
+                        <button type="submit" class="btn btn-default">Importer</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div>&nbsp;</div>
+        <div>&nbsp;</div>
+
+        <a name="import-products"/>
+        <h3 class="text-center">Importer des frais de ports</h3>
+
+        <div class="container import-shipping-costs">
+            <div class="row">
+                <div class="col-sm-offset-1 col-sm-10">
+                    <form th:action="@{${mappings.get('ADMIN_UPLOAD_SHIPPING_COSTS')}}"
+                          method="POST" enctype="multipart/form-data">
+                        <div class="form-group">
+                            Tout d'abord, téléchargez la liste des produits:
+                            <a th:href="@{${mappings.get('ADMIN_DOWNLOAD_SHIPPING_COSTS')}}">
+                                Télécharger la liste des frais de port
+                            </a>
+                        </div>
+                        <div class="form-group">
+                            Ensuite modifiez-la et sauvegardez-la au format CSV.
+                            Enfin, importez la liste sur le site.
+                        </div>
+                        <div>&nbsp;</div>
+                        <div class="form-group">
+                            <label for="shippingCostsList">Liste des frais de port à importer</label>
+                            <input type="file" id="shippingCostsList" name="shippingCostsList"/>
                         </div>
                         <div>&nbsp;</div>
                         <button type="submit" class="btn btn-default">Importer</button>

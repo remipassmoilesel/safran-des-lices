@@ -4,11 +4,15 @@ import org.remipassmoilesel.safranlices.Mappings;
 import org.remipassmoilesel.safranlices.Templates;
 import org.remipassmoilesel.safranlices.csv.ProductsExporter;
 import org.remipassmoilesel.safranlices.csv.ProductsImporter;
+import org.remipassmoilesel.safranlices.csv.ShippingCostsExporter;
+import org.remipassmoilesel.safranlices.csv.ShippingCostsImporter;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
 import org.remipassmoilesel.safranlices.entities.OrderNotificationType;
 import org.remipassmoilesel.safranlices.entities.Product;
+import org.remipassmoilesel.safranlices.entities.ShippingCost;
 import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
+import org.remipassmoilesel.safranlices.repositories.ShippingCostRepository;
 import org.remipassmoilesel.safranlices.utils.Mailer;
 import org.remipassmoilesel.safranlices.utils.PdfBillGenerator;
 import org.remipassmoilesel.safranlices.utils.Utils;
@@ -49,6 +53,9 @@ public class AdminController {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private ShippingCostRepository shippingCostRepository;
 
     @Autowired
     private Mailer mailer;
@@ -169,6 +176,37 @@ public class AdminController {
 
         ProductsImporter pimporter = new ProductsImporter();
         pimporter.importProducts(productsList.getInputStream(), productRepository);
+
+        String redirection = request.getHeader("referer");
+        return "redirect:" + redirection;
+    }
+
+    @RequestMapping(value = Mappings.ADMIN_DOWNLOAD_SHIPPING_COSTS)
+    public void downloadShippingCosts(HttpServletResponse response) throws IOException {
+
+        // MANDATORY in order to keep utf-8 encoding
+        response.setContentType("text/csv; charset=UTF-8");
+        response.setHeader("Content-Disposition", "attachment; filename=\"shipping-costs.csv\"");
+
+        List<ShippingCost> shippingCosts = shippingCostRepository.findAll(false);
+
+        ShippingCostsExporter exporter = new ShippingCostsExporter();
+        BufferedWriter writer = new BufferedWriter(response.getWriter());
+
+        exporter.export(shippingCosts, writer);
+    }
+
+    @RequestMapping(value = Mappings.ADMIN_UPLOAD_SHIPPING_COSTS)
+    public String uploadShippingCosts(
+            @RequestParam("shippingCostsList") MultipartFile shippingCostsList,
+            HttpServletRequest request) throws IOException {
+
+        if (shippingCostsList.getOriginalFilename().toLowerCase().endsWith(".csv") == false) {
+            throw new Error("Invalid extension: " + shippingCostsList.getOriginalFilename());
+        }
+
+        ShippingCostsImporter pimporter = new ShippingCostsImporter();
+        pimporter.importShippingCosts(shippingCostsList.getInputStream(), shippingCostRepository);
 
         String redirection = request.getHeader("referer");
         return "redirect:" + redirection;
