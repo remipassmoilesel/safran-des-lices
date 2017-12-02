@@ -36,6 +36,7 @@ public class Mappings {
     public static final String ADMIN_SHOW_ORDER = ADMIN_ROOT + "afficher-la-commande";
     public static final String ADMIN_SHOW_BILL = ADMIN_ROOT + "facture" ;
     public static final String ADMIN_SHOW_ALL_BILLS = ADMIN_ROOT + "afficher-toutes-les-factures" ;
+    public static final String ADMIN_DOWNLOAD_PRODUCTS = ADMIN_ROOT + "telecharger-les-produits" ;
 
     public static final String TEMPLATE = ROOT + "template";
     public static final String ERROR = ROOT + "error";

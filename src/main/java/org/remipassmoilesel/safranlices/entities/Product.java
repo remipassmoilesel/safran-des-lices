@@ -25,6 +25,10 @@ public class Product {
 
     private Double price;
 
+    private Double netWeight;
+
+    private Double grossWeight;
+
     private Integer quantityAvailable;
 
     private boolean deleted;
@@ -106,23 +110,49 @@ public class Product {
         this.deleted = deleted;
     }
 
+    public Double getNetWeight() {
+        return netWeight;
+    }
+
+    public void setNetWeight(Double netWeight) {
+        this.netWeight = netWeight;
+    }
+
+    public Double getGrossWeight() {
+        return grossWeight;
+    }
+
+    public void setGrossWeight(Double grossWeight) {
+        this.grossWeight = grossWeight;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return Objects.equals(id, product.id) &&
+        return deleted == product.deleted &&
+                Objects.equals(id, product.id) &&
                 Objects.equals(name, product.name) &&
                 Objects.equals(description, product.description) &&
                 Objects.equals(pictures, product.pictures) &&
                 Objects.equals(price, product.price) &&
-                Objects.equals(quantityAvailable, product.quantityAvailable) &&
-                Objects.equals(deleted, product.deleted);
+                Objects.equals(netWeight, product.netWeight) &&
+                Objects.equals(grossWeight, product.grossWeight) &&
+                Objects.equals(quantityAvailable, product.quantityAvailable);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, pictures, price, quantityAvailable, deleted);
+        return Objects.hash(id, name, description, pictures, price, netWeight, grossWeight, quantityAvailable, deleted);
     }
 
     @Override
@@ -133,6 +163,8 @@ public class Product {
                 ", description='" + description + '\'' +
                 ", pictures='" + pictures + '\'' +
                 ", price=" + price +
+                ", netWeight=" + netWeight +
+                ", grossWeight=" + grossWeight +
                 ", quantityAvailable=" + quantityAvailable +
                 ", deleted=" + deleted +
                 '}';
