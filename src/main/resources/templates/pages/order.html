@@ -7,6 +7,17 @@
     <title>Commander en ligne</title>
 
     <style>
+
+        .product {
+            margin: 0.7em;
+        }
+
+        .product a {
+            display: inline-block;
+            font-size: 0.9em;
+            text-align: center;
+        }
+
         .product input {
             width: 4.5em !important;
             display: inline-block !important;
@@ -29,6 +40,10 @@
             font-size: 0.8em;
             width: 80%;
             margin: auto;
+        }
+
+        .show-description {
+            cursor: pointer;
         }
     </style>
 
@@ -69,7 +84,7 @@
                         </div>
 
                         <!-- Add quantity to basket -->
-                        <div style="margin: 0.7em;" th:if="${p.getQuantityAvailable() gt 0}" class="product">
+                        <div th:if="${p.getQuantityAvailable() gt 0}" class="product">
                             <form class="form-inline">
                                 <div class="form-group">
                                     <input type="number" value="1" class="form-control"
@@ -85,10 +100,16 @@
                                 &nbsp;
                             </div>
 
+                            <a class="show-description"
+                               th:attr="data-description=${p.getDescription()},
+                                        data-weight=${p.getNetWeight()},
+                                        data-title=${p.getName()}">
+                                Description complète...</a>
+
                         </div>
 
                         <div style="margin: 1em;" th:if="${p.getQuantityAvailable() le 0}">
-                            <h3>Produit épuisé</h3>
+                            Produit épuisé
                         </div>
 
                     </div>
@@ -97,6 +118,28 @@
 
         </div>
     </section>
+
+    <!-- Modal -->
+    <div class="modal fade" id="product-modal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h2 class="modal-title">Modal Header</h2>
+                </div>
+                <div class="modal-body">
+                    <p class="description">Some text in the modal.</p>
+                    <p>Poids net: <span class="weight"></span>g</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
 </div>
 </body>

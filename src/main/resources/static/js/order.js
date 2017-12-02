@@ -26,6 +26,24 @@ var App = {
             document.location.href = UrlTree.BASKET + "?addToCart=true&id=" + id + "&qtty=" + qtty;
 
         });
+
+        $(".show-description").click(function () {
+
+            var title = $(this).data('title');
+            var description = $(this).data('description');
+            var weight = $(this).data('weight');
+
+            console.log(title)
+            console.log(description)
+            console.log(weight)
+
+            var modal = $('#product-modal');
+            modal.find('.modal-title').html(title);
+            modal.find('.description').html(description);
+            modal.find('.weight').html(weight);
+
+            modal.modal('show');
+        });
     }
 
 };

@@ -48,7 +48,11 @@ public class DevDataFactory {
             quantityAvailable = rand.nextInt(200);
         }
 
-        return new Product(name, description, pictures, price, quantityAvailable);
+        Product product = new Product(name, description, pictures, price, quantityAvailable);
+        product.setNetWeight(10.5);
+        product.setGrossWeight(5.5);
+
+        return product;
     }
 
     public static CommercialOrder createOrder(Date date,
