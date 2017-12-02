@@ -6,6 +6,7 @@ import org.remipassmoilesel.safranlices.entities.Basket;
 import org.remipassmoilesel.safranlices.entities.Product;
 import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
+import org.remipassmoilesel.safranlices.repositories.ShippingCostRepository;
 import org.remipassmoilesel.safranlices.utils.Mailer;
 import org.remipassmoilesel.safranlices.utils.Utils;
 import org.slf4j.Logger;
@@ -36,6 +37,9 @@ public class OrderController {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private ShippingCostRepository shippingCostRepository;
 
     @Autowired
     private Mailer mailer;
@@ -143,6 +147,9 @@ public class OrderController {
         // total
         double total = basket.computeTotalForBasket(products);
         model.addAttribute("total", total);
+
+        double shippingCosts = Utils.computeShippingCosts(shippingCostRepository, products);
+        model.addAttribute("shippingCosts", shippingCosts);
 
         Mappings.includeMappings(model);
         return Templates.BASKET;
