@@ -4,11 +4,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.remipassmoilesel.safranlices.controllers.OrderController;
+import org.remipassmoilesel.safranlices.dataLoaders.DevDataFactory;
 import org.remipassmoilesel.safranlices.entities.Basket;
 import org.remipassmoilesel.safranlices.entities.Product;
+import org.remipassmoilesel.safranlices.entities.ShippingCost;
 import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
-import org.remipassmoilesel.safranlices.dataLoaders.DevDataFactory;
+import org.remipassmoilesel.safranlices.repositories.ShippingCostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -20,6 +22,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -46,7 +49,10 @@ public class BasketTest {
     @Autowired
     private ProductRepository productRepository;
 
-   @Autowired
+    @Autowired
+    private ShippingCostRepository shippingCostRepository;
+
+    @Autowired
     private OrderRepository orderRepository;
 
     @Before
@@ -177,5 +183,67 @@ public class BasketTest {
         assertEquals(total.doubleValue(),
                 p1qtty * p1price + p2qtty * p2price, 0);
     }
+
+
+    @Test
+    public void computedWeightShouldBeExact() throws Exception {
+
+        Basket basket = new Basket();
+        List<Product> allProducts = new ArrayList<>();
+
+        Product p1 = new Product();
+        p1.setId(1l);
+        p1.setGrossWeight(35d);
+        basket.addProduct(p1, 2);
+        allProducts.add(p1);
+
+
+        Product p2 = new Product();
+        p2.setId(1l);
+        p2.setGrossWeight(65d);
+        basket.addProduct(p2, 2);
+        allProducts.add(p2);
+
+        assertEquals(200d, basket.computeTotalWeight(allProducts), 0);
+    }
+
+    @Test
+    public void computedShippingCostsShouldBeExact() throws Exception {
+
+        // create a basket
+        Basket basket = new Basket();
+
+        // create a fake product
+        List<Product> allProducts = new ArrayList<>();
+        Product product1 = new Product();
+        product1.setGrossWeight(100d);
+        allProducts.add(product1);
+
+        // create fake shipping costs
+        List<ShippingCost> allShippingCosts = new ArrayList<>();
+
+        ShippingCost s1 = new ShippingCost(0d, 200d, 5d);
+        ShippingCost s2 = new ShippingCost(200d, 400d, 10d);
+        ShippingCost s3 = new ShippingCost(400d, 9999999999d, 15d);
+        allShippingCosts.add(s1);
+        allShippingCosts.add(s2);
+        allShippingCosts.add(s3);
+
+        basket.addProduct(product1, 1);
+
+        assertEquals(5d, basket.computeShippingCosts(allProducts, allShippingCosts), 0);
+
+        basket.clear();
+        basket.addProduct(product1, 2);
+
+        assertEquals(10d, basket.computeShippingCosts(allProducts, allShippingCosts), 0);
+
+        basket.clear();
+        basket.addProduct(product1, 10);
+
+        assertEquals(15d, basket.computeShippingCosts(allProducts, allShippingCosts), 0);
+
+    }
+
 
 }

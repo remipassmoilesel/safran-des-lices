@@ -2,6 +2,7 @@ package org.remipassmoilesel.safranlices.controllers;
 
 import org.remipassmoilesel.safranlices.Mappings;
 import org.remipassmoilesel.safranlices.dataLoaders.DevDataFactory;
+import org.remipassmoilesel.safranlices.entities.Basket;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
 import org.remipassmoilesel.safranlices.entities.OrderNotificationType;
 import org.remipassmoilesel.safranlices.entities.Product;
@@ -114,7 +115,7 @@ public class DevController {
                 null, null, null, null, null, null, null);
         model.addAttribute("order", order);
 
-        HashMap<Product, Integer> productsWithQuantities = Utils.mapProductWithQuantities(products, order);
+        HashMap<Product, Integer> productsWithQuantities = Basket.fromOrder(order).mapProductWithQuantities(products);
         model.addAttribute("productsWithQuantities", productsWithQuantities);
 
         if ("admin".equals(type)) {

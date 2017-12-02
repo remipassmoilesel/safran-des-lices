@@ -107,7 +107,7 @@ public class DevDataLoader implements ApplicationRunner {
             Iterator<Integer> randomQuantities = rand.ints(1, 6).iterator();
 
             for (int j = 0; j < numberOfProductsOrdered; j++) {
-                Long randomProductId = products.get(rand.nextInt(products.size())).getId();
+                Product randomProductId = products.get(rand.nextInt(products.size()));
                 Integer randomQuantity = randomQuantities.next();
                 basket.addProduct(randomProductId, randomQuantity);
             }
@@ -119,7 +119,7 @@ public class DevDataLoader implements ApplicationRunner {
                     null, null,
                     null, null, null);
 
-            order.setTotal(basket.computeTotalForBasket(products));
+            order.setTotal(basket.computeTotal(products));
             order.setProcessed(i % 2 == 0);
             order.setPaid(rand.nextBoolean());
 

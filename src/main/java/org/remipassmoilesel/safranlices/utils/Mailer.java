@@ -1,5 +1,6 @@
 package org.remipassmoilesel.safranlices.utils;
 
+import org.remipassmoilesel.safranlices.entities.Basket;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
 import org.remipassmoilesel.safranlices.entities.OrderNotificationType;
 import org.remipassmoilesel.safranlices.entities.Product;
@@ -77,7 +78,7 @@ public class Mailer {
 
         // set body
         List<Product> products = productRepository.findAll(false);
-        HashMap<Product, Integer> productsWithQuantities = Utils.mapProductWithQuantities(products, order);
+        HashMap<Product, Integer> productsWithQuantities = Basket.fromOrder(order).mapProductWithQuantities(products);
         HashMap<String, Object> vars = new HashMap<>();
         vars.put("order", order);
         vars.put("productsWithQuantities", productsWithQuantities);
@@ -112,7 +113,7 @@ public class Mailer {
 
         // set body
         List<Product> products = productRepository.findAll(false);
-        HashMap<Product, Integer> productsWithQuantities = Utils.mapProductWithQuantities(products, order);
+        HashMap<Product, Integer> productsWithQuantities = Basket.fromOrder(order).mapProductWithQuantities(products);
         HashMap<String, Object> vars = new HashMap<>();
         vars.put("order", order);
         vars.put("productsWithQuantities", productsWithQuantities);

@@ -6,6 +6,7 @@ import org.remipassmoilesel.safranlices.entities.*;
 import org.remipassmoilesel.safranlices.forms.CheckoutForm;
 import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
+import org.remipassmoilesel.safranlices.repositories.ShippingCostRepository;
 import org.remipassmoilesel.safranlices.utils.Mailer;
 import org.remipassmoilesel.safranlices.utils.PdfBillGenerator;
 import org.remipassmoilesel.safranlices.utils.ThreadExecutor;
@@ -49,6 +50,9 @@ public class BillingController {
     private OrderRepository orderRepository;
 
     @Autowired
+    private ShippingCostRepository shippingCostRepository;
+
+    @Autowired
     private ThreadExecutor executor;
 
     @Autowired
@@ -87,7 +91,7 @@ public class BillingController {
         List<Product> products = productRepository.findAll(false);
 
         // total
-        double total = basket.computeTotalForBasket(products);
+        double total = basket.computeTotal(products);
         model.addAttribute("total", total);
 
         Mappings.includeMappings(model);
@@ -160,7 +164,13 @@ public class BillingController {
                 checkoutForm.getEmail(),
                 billId);
 
-        double total = basket.computeTotalForBasket(products);
+        double total = basket.computeTotal(products);
+
+//        double shippingCosts = Utils.computeShippingCosts(shippingCostRepository, productsWithQuantities);
+//        double totalWeight = Utils.computeTotalWeight(productsWithQuantities);
+//        model.addAttribute("shippingCosts", shippingCosts);
+//        model.addAttribute("totalWeight", shippingCosts);
+
 
         order.setTotal(total);
         order.setProcessed(false);
@@ -192,7 +202,7 @@ public class BillingController {
         List<Product> products = productRepository.findAll(false);
 
         Basket basket = Basket.getBasketOrCreate(session);
-        double total = basket.computeTotalForBasket(products);
+        double total = basket.computeTotal(products);
 
         model.addAttribute("order", order);
         model.addAttribute("total", total);

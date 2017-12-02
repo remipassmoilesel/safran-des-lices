@@ -4,11 +4,11 @@ import org.remipassmoilesel.safranlices.Mappings;
 import org.remipassmoilesel.safranlices.Templates;
 import org.remipassmoilesel.safranlices.entities.Basket;
 import org.remipassmoilesel.safranlices.entities.Product;
+import org.remipassmoilesel.safranlices.entities.ShippingCost;
 import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
 import org.remipassmoilesel.safranlices.repositories.ShippingCostRepository;
 import org.remipassmoilesel.safranlices.utils.Mailer;
-import org.remipassmoilesel.safranlices.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,6 +113,8 @@ public class OrderController {
         // current user basket: Article ID / Quantity
         Basket basket = Basket.getBasketOrCreate(session);
 
+        Product product = productRepository.getOne(productId);
+
         // empty basket
         if (reset != null && reset == true) {
             basket.resetBasket(session);
@@ -121,35 +123,37 @@ public class OrderController {
 
         // delete article
         if (delete != null && delete == true && productId != null) {
-            basket.remove(productId);
+            basket.remove(product);
             return "redirect:" + Mappings.BASKET;
         }
 
         // add something to current basket
         if (addToCart != null && addToCart == true && productId != null && productQuantity != null) {
-            basket.addProduct(productId, productQuantity);
+            basket.addProduct(product, productQuantity);
             return "redirect:" + Mappings.BASKET;
         }
 
         // change article quantity in basket
         if (changeQtty != null && changeQtty == true && productId != null && productQuantity != null) {
-            basket.remove(productId);
-            basket.addProduct(productId, productQuantity);
+            basket.remove(product);
+            basket.addProduct(product, productQuantity);
             return "redirect:" + Mappings.BASKET;
         }
 
         // map quantities and products
-        List<Product> products = productRepository.findAll(false);
-        HashMap<Product, Integer> productsWithQuantities = Utils.mapProductWithQuantities(products, basket);
+        List<Product> allProducts = productRepository.findAll(false);
+        List<ShippingCost> allShippingCosts = shippingCostRepository.findAll(false);
 
+        HashMap<Product, Integer> productsWithQuantities = basket.mapProductWithQuantities(allProducts);
         model.addAttribute("basket", productsWithQuantities);
 
         // total
-        double total = basket.computeTotalForBasket(products);
+        double total = basket.computeTotal(allProducts);
         model.addAttribute("total", total);
 
-        double shippingCosts = Utils.computeShippingCosts(shippingCostRepository, productsWithQuantities);
-        double totalWeight = Utils.computeTotalWeight(productsWithQuantities);
+        // shipping informations
+        double shippingCosts = basket.computeShippingCosts(allProducts, allShippingCosts);
+        double totalWeight = basket.computeTotalWeight(allProducts);
         model.addAttribute("shippingCosts", shippingCosts);
         model.addAttribute("totalWeight", shippingCosts);
 

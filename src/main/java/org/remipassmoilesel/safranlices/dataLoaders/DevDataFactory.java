@@ -1,6 +1,9 @@
 package org.remipassmoilesel.safranlices.dataLoaders;
 
-import org.remipassmoilesel.safranlices.entities.*;
+import org.remipassmoilesel.safranlices.entities.Basket;
+import org.remipassmoilesel.safranlices.entities.CommercialOrder;
+import org.remipassmoilesel.safranlices.entities.PaymentType;
+import org.remipassmoilesel.safranlices.entities.Product;
 import org.remipassmoilesel.safranlices.utils.Utils;
 
 import java.util.*;
@@ -78,7 +81,7 @@ public class DevDataFactory {
         if (basket == null) {
             basket = new Basket();
             for (Product p : products) {
-                basket.addProduct(p.getId(), rand.nextInt(25));
+                basket.addProduct(p, rand.nextInt(25));
             }
         }
 

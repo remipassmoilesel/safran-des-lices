@@ -57,6 +57,8 @@ public class CommercialOrder {
 
     private String pdfBillName;
 
+    private Double shippingCosts;
+
     public CommercialOrder() {
     }
 
@@ -267,6 +269,14 @@ public class CommercialOrder {
         return Utils.getFormattedDate(date, pattern);
     }
 
+    public Double getShippingCosts() {
+        return shippingCosts;
+    }
+
+    public void setShippingCosts(Double shippingCosts) {
+        this.shippingCosts = shippingCosts;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -292,12 +302,13 @@ public class CommercialOrder {
                 Objects.equals(comment, that.comment) &&
                 Objects.equals(email, that.email) &&
                 Objects.equals(lastShipmentNotification, that.lastShipmentNotification) &&
-                Objects.equals(pdfBillName, that.pdfBillName);
+                Objects.equals(pdfBillName, that.pdfBillName) &&
+                Objects.equals(shippingCosts, that.shippingCosts);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, date, products, quantities, address, postalcode, city, shipmentAddress, shipmentPostalcode, shipmentCity, phonenumber, firstName, lastName, paymentType, total, comment, paid, processed, email, lastShipmentNotification, pdfBillName);
+        return Objects.hash(id, date, products, quantities, address, postalcode, city, shipmentAddress, shipmentPostalcode, shipmentCity, phonenumber, firstName, lastName, paymentType, total, comment, paid, processed, email, lastShipmentNotification, pdfBillName, shippingCosts);
     }
 
     @Override
@@ -324,6 +335,7 @@ public class CommercialOrder {
                 ", email='" + email + '\'' +
                 ", lastShipmentNotification=" + lastShipmentNotification +
                 ", pdfBillName='" + pdfBillName + '\'' +
+                ", shippingCosts=" + shippingCosts +
                 '}';
     }
 }

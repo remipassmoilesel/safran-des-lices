@@ -26,6 +26,11 @@ public class Basket {
         return basket;
     }
 
+
+    public static Basket fromOrder(CommercialOrder order) {
+        return new Basket(order.getQuantities());
+    }
+
     /**
      * Raw basket, with
      * long=product id,
@@ -52,7 +57,7 @@ public class Basket {
      * @param products
      * @return
      */
-    public Double computeTotalForBasket(List<Product> products) {
+    public Double computeTotal(List<Product> products) {
 
         Double total = 0d;
         Iterator<Long> keys = productMap.keySet().iterator();
@@ -108,20 +113,23 @@ public class Basket {
     /**
      * Remove a product from basket
      *
-     * @param productId
+     * @param product
      * @return
      */
-    public Integer remove(Long productId) {
-        return productMap.remove(productId);
+    public Integer remove(Product product) {
+        return productMap.remove(product.getId());
     }
 
     /**
      * Add a product in basket, and specified quantity
      *
-     * @param id
+     * @param product
      * @param quantity
      */
-    public void addProduct(Long id, Integer quantity) {
+    public void addProduct(Product product, Integer quantity) {
+
+        Long id = product.getId();
+
         if (productMap.get(id) != null) {
             quantity += productMap.get(id);
         }
@@ -137,5 +145,56 @@ public class Basket {
      */
     public Integer getQuantityFor(Long productId) {
         return productMap.get(productId);
+    }
+
+    public HashMap<Product, Integer> mapProductWithQuantities(List<Product> allProducts) {
+
+        HashMap<Product, Integer> productsWithQuantities = new HashMap<>();
+
+        for (Long productId : this.getProductIds()) {
+
+            Product p = allProducts.stream()
+                    .filter(pf -> productId.equals(pf.getId()))
+                    .findAny().orElse(null);
+
+            productsWithQuantities.put(p, this.getQuantityFor(productId));
+        }
+
+        return productsWithQuantities;
+    }
+
+
+    public Double computeTotalWeight(List<Product> allProducts) {
+
+        Double result = 0d;
+        HashMap<Product, Integer> map = this.mapProductWithQuantities(allProducts);
+        Iterator<Product> iter = map.keySet().iterator();
+
+        while (iter.hasNext()) {
+            Product product = iter.next();
+            Integer quantity = map.get(product);
+            result += product.getGrossWeight() * quantity;
+        }
+
+        return result;
+    }
+
+    public Double computeShippingCosts(List<Product> allProducts,
+                                       List<ShippingCost> allShippingCosts)
+            throws IllegalStateException {
+
+        Double totalWeight = computeTotalWeight(allProducts);
+
+        for (ShippingCost sc : allShippingCosts) {
+            if (sc.getMinWeight() <= totalWeight && sc.getMaxWeight() > totalWeight) {
+                return sc.getPrice();
+            }
+        }
+
+        throw new IllegalStateException("No valid shipping cost found for weight: " + totalWeight);
+    }
+
+    public void clear() {
+        this.productMap.clear();
     }
 }

@@ -4,6 +4,7 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import org.apache.commons.io.IOUtils;
+import org.remipassmoilesel.safranlices.entities.Basket;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
 import org.remipassmoilesel.safranlices.entities.Product;
 import org.springframework.beans.factory.annotation.Value;
@@ -122,7 +123,7 @@ public class PdfBillGenerator {
         table.addCell("Prix unitaire");
         table.addCell("Quantité");
 
-        HashMap<Product, Integer> productMap = Utils.mapProductWithQuantities(products, order);
+        HashMap<Product, Integer> productMap = Basket.fromOrder(order).mapProductWithQuantities(products);
 
         Iterator<Product> iter = productMap.keySet().iterator();
         while (iter.hasNext()) {

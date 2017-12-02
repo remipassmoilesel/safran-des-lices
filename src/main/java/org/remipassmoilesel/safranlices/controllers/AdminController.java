@@ -6,10 +6,7 @@ import org.remipassmoilesel.safranlices.csv.ProductsExporter;
 import org.remipassmoilesel.safranlices.csv.ProductsImporter;
 import org.remipassmoilesel.safranlices.csv.ShippingCostsExporter;
 import org.remipassmoilesel.safranlices.csv.ShippingCostsImporter;
-import org.remipassmoilesel.safranlices.entities.CommercialOrder;
-import org.remipassmoilesel.safranlices.entities.OrderNotificationType;
-import org.remipassmoilesel.safranlices.entities.Product;
-import org.remipassmoilesel.safranlices.entities.ShippingCost;
+import org.remipassmoilesel.safranlices.entities.*;
 import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
 import org.remipassmoilesel.safranlices.repositories.ShippingCostRepository;
@@ -36,7 +33,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -110,14 +106,13 @@ public class AdminController {
             Model model) {
 
         CommercialOrder order = orderRepository.getOne(id);
-        List<Product> products = productRepository.findAll(false);
+        List<Product> allProducts = productRepository.findAll(false);
 
-        HashMap<Product, Integer> basket = Utils.mapProductWithQuantities(products, order);
+        Basket basket = Basket.fromOrder(order);
 
-        // add products
+        // add order and products
         model.addAttribute("order", order);
-
-        model.addAttribute("basket", basket);
+        model.addAttribute("basket", basket.mapProductWithQuantities(allProducts));
 
         Mappings.includeMappings(model);
         return Templates.ADMIN_SHOW_ORDER;

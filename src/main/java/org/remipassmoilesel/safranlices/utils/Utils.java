@@ -101,27 +101,6 @@ public class Utils {
         writer.close();
     }
 
-    public static HashMap<Product, Integer> mapProductWithQuantities(List<Product> allProducts, CommercialOrder order) {
-        HashMap<Long, Integer> productsMap = order.getQuantities();
-        return mapProductWithQuantities(allProducts, new Basket(productsMap));
-    }
-
-    public static HashMap<Product, Integer> mapProductWithQuantities(List<Product> allProducts, Basket basket) {
-
-        HashMap<Product, Integer> productsWithQuantities = new HashMap<>();
-
-        for (Long productId : basket.getProductIds()) {
-
-            Product p = allProducts.stream()
-                    .filter(pf -> productId.equals(pf.getId()))
-                    .findAny().orElse(null);
-
-            productsWithQuantities.put(p, basket.getQuantityFor(productId));
-        }
-
-        return productsWithQuantities;
-    }
-
     public static boolean isDevProfileEnabled(Environment env) {
         return Arrays.asList(env.getActiveProfiles()).contains(SafranLicesApplication.DEV_PROFILE);
     }
@@ -170,33 +149,4 @@ public class Utils {
         return DateTimeFormat.forPattern(pattern).print(new DateTime(date));
     }
 
-    public static Double computeTotalWeight(HashMap<Product, Integer> productsWithQuantities) {
-
-        Double result = 0d;
-        Iterator<Product> iter = productsWithQuantities.keySet().iterator();
-
-        while(iter.hasNext()){
-            Product product = iter.next();
-            Integer quantity = productsWithQuantities.get(product);
-            result += product.getGrossWeight() * quantity;
-        }
-
-        return result;
-    }
-
-    public static Double computeShippingCosts(ShippingCostRepository repository,
-                                              HashMap<Product, Integer> productsWithQuantities)
-            throws IllegalStateException {
-
-        List<ShippingCost> all = repository.findAll(false);
-        Double totalWeight = computeTotalWeight(productsWithQuantities);
-
-        for (ShippingCost sc : all) {
-            if (sc.getMinWeight() <= totalWeight && sc.getMaxWeight() > totalWeight) {
-                return sc.getPrice();
-            }
-        }
-
-        throw new IllegalStateException("No valid shipping cost found for weight: " + totalWeight);
-    }
 }
