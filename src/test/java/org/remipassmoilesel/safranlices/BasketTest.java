@@ -63,6 +63,8 @@ public class BasketTest {
     @Test
     public void testBasketModifications() throws Exception {
 
+        System.setProperty("hibernate.enable_lazy_load_no_trans", "true");
+
         // show basket
         MvcResult response = mockMvc.perform(get(Mappings.BASKET))
                 .andExpect(status().isOk())
@@ -192,14 +194,14 @@ public class BasketTest {
         List<Product> allProducts = new ArrayList<>();
 
         Product p1 = new Product();
-        p1.setId(1l);
+        p1.setId(1L);
         p1.setGrossWeight(35d);
         basket.addProduct(p1, 2);
         allProducts.add(p1);
 
 
         Product p2 = new Product();
-        p2.setId(1l);
+        p2.setId(2L);
         p2.setGrossWeight(65d);
         basket.addProduct(p2, 2);
         allProducts.add(p2);
@@ -216,6 +218,7 @@ public class BasketTest {
         // create a fake product
         List<Product> allProducts = new ArrayList<>();
         Product product1 = new Product();
+        product1.setId(1L);
         product1.setGrossWeight(100d);
         allProducts.add(product1);
 

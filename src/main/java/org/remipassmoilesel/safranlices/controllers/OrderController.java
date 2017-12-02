@@ -113,8 +113,6 @@ public class OrderController {
         // current user basket: Article ID / Quantity
         Basket basket = Basket.getBasketOrCreate(session);
 
-        Product product = productRepository.getOne(productId);
-
         // empty basket
         if (reset != null && reset == true) {
             basket.resetBasket(session);
@@ -123,18 +121,21 @@ public class OrderController {
 
         // delete article
         if (delete != null && delete == true && productId != null) {
+            Product product = productRepository.getOne(productId);
             basket.remove(product);
             return "redirect:" + Mappings.BASKET;
         }
 
         // add something to current basket
         if (addToCart != null && addToCart == true && productId != null && productQuantity != null) {
+            Product product = productRepository.getOne(productId);
             basket.addProduct(product, productQuantity);
             return "redirect:" + Mappings.BASKET;
         }
 
         // change article quantity in basket
         if (changeQtty != null && changeQtty == true && productId != null && productQuantity != null) {
+            Product product = productRepository.getOne(productId);
             basket.remove(product);
             basket.addProduct(product, productQuantity);
             return "redirect:" + Mappings.BASKET;
@@ -155,7 +156,7 @@ public class OrderController {
         double shippingCosts = basket.computeShippingCosts(allProducts, allShippingCosts);
         double totalWeight = basket.computeTotalWeight(allProducts);
         model.addAttribute("shippingCosts", shippingCosts);
-        model.addAttribute("totalWeight", shippingCosts);
+        model.addAttribute("totalWeight", totalWeight);
 
         Mappings.includeMappings(model);
         return Templates.BASKET;

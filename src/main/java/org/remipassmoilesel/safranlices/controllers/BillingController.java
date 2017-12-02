@@ -166,11 +166,10 @@ public class BillingController {
 
         double total = basket.computeTotal(products);
 
-//        double shippingCosts = Utils.computeShippingCosts(shippingCostRepository, productsWithQuantities);
-//        double totalWeight = Utils.computeTotalWeight(productsWithQuantities);
-//        model.addAttribute("shippingCosts", shippingCosts);
-//        model.addAttribute("totalWeight", shippingCosts);
-
+        double shippingCosts = basket.computeShippingCosts(products, shippingCostRepository.findAll(false));
+        double totalWeight = basket.computeTotalWeight(products);
+        model.addAttribute("shippingCosts", shippingCosts);
+        model.addAttribute("totalWeight", totalWeight);
 
         order.setTotal(total);
         order.setProcessed(false);
