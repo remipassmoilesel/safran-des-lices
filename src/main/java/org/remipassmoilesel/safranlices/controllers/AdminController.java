@@ -3,6 +3,7 @@ package org.remipassmoilesel.safranlices.controllers;
 import org.remipassmoilesel.safranlices.Mappings;
 import org.remipassmoilesel.safranlices.Templates;
 import org.remipassmoilesel.safranlices.csv.ProductsExporter;
+import org.remipassmoilesel.safranlices.csv.ProductsImporter;
 import org.remipassmoilesel.safranlices.entities.CommercialOrder;
 import org.remipassmoilesel.safranlices.entities.Expense;
 import org.remipassmoilesel.safranlices.entities.OrderNotificationType;
@@ -17,17 +18,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.*;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -159,14 +159,30 @@ public class AdminController {
 
         // MANDATORY in order to keep utf-8 encoding
         response.setContentType("text/csv; charset=UTF-8");
-        response.setHeader("Content-Disposition","attachment; filename=\"products.csv\"");
+        response.setHeader("Content-Disposition", "attachment; filename=\"products.csv\"");
 
         List<Product> products = productRepository.findAll(false);
 
-        ProductsExporter pe = new ProductsExporter();
+        ProductsExporter pexporter = new ProductsExporter();
         BufferedWriter writer = new BufferedWriter(response.getWriter());
 
-        pe.export(products, writer);
+        pexporter.export(products, writer);
+    }
+
+    @RequestMapping(value = Mappings.ADMIN_UPLOAD_PRODUCTS)
+    public String uploadProducts(
+            @RequestParam("productsList") MultipartFile productsList,
+            HttpServletRequest request) throws IOException {
+
+        if (productsList.getOriginalFilename().toLowerCase().endsWith(".csv") == false) {
+            throw new Error("Invalid extension: " + productsList.getOriginalFilename());
+        }
+
+        ProductsImporter pimporter = new ProductsImporter();
+        pimporter.importProducts(productsList.getInputStream(), productRepository);
+
+        String redirection = request.getHeader("referer");
+        return "redirect:" + redirection;
     }
 
     @RequestMapping(Mappings.ADMIN_ACTION)

@@ -26,10 +26,23 @@
                 <div style="text-align: center">
                     Veuillez nous en excuser. Vous pouvez revenir à l'accueil du site ci-dessous.
                     <br/><br/><br/>
+
+                    <div th:text="${'Erreur: ' + #vars.get('javax.servlet.error.exception')}"></div>
+
+                    <br/><br/><br/>
                     <a class="btn btn-default" th:href="@{${mappings.get('ROOT')}}">
                         Revenir à l'accueil du site</a>
                 </div>
             </div>
+
+
+
+            <!--<table>-->
+                <!--<tr th:each="var : ${#vars}">-->
+                    <!--<td th:text="${var.key}"></td>-->
+                    <!--<td th:text="${var.value}"></td>-->
+                <!--</tr>-->
+            <!--</table>-->
 
         </div>
     </section>

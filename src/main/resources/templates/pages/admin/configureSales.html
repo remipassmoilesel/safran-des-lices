@@ -37,6 +37,9 @@
     }
 
 
+
+
+
     </style>
 
     <script type="text/javascript" th:src="@{/js/admin.js}"></script>
@@ -73,8 +76,22 @@
 
         <div class="container">
             <div class="row">
-                <div class="col-sm-offset-1 col-sm-10 text-center">
-                    <a th:href="@{${mappings.get('ADMIN_DOWNLOAD_PRODUCTS')}}">Télécharger la liste des produits</a>
+                <div class="col-sm-offset-4 col-sm-4 text-center">
+                    Tout d'abord, téléchargez la liste des produits:
+                    <a th:href="@{${mappings.get('ADMIN_DOWNLOAD_PRODUCTS')}}">
+                        Télécharger la liste des produits
+                    </a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-offset-4 col-sm-4 text-center">
+                    Ensuite modifiez la, puis enregistrez la sur le site:
+                    <form th:action="@{${mappings.get('ADMIN_UPLOAD_PRODUCTS')}}"
+                          method="POST" enctype="multipart/form-data">
+                        <input type="file" name="productsList"/>
+                        <input type="submit"/>
+                    </form>
                 </div>
             </div>
         </div>
@@ -140,7 +157,8 @@
                     <div class="col-sm-2">
                         <input type="hidden" name="action" value="product"/>
                         <input type="hidden" name="id" th:value="${product.getId()}"/>
-                        <input type="button" value="Modifier" th:onClick="${'App.checkProductAndSendForm(' + product.getId() + ')'}"/>
+                        <input type="button" value="Modifier"
+                               th:onClick="${'App.checkProductAndSendForm(' + product.getId() + ')'}"/>
                     </div>
 
                 </form>
@@ -200,7 +218,8 @@
                     <div class="col-sm-2">
                         <input type="hidden" name="action" value="expense"/>
                         <input type="hidden" name="id" th:value="${expense.getId()}"/>
-                        <input type="button" value="Modifier" th:onClick="${'App.checkExpenseAndSendForm(' + expense.getId() + ')'}"/>
+                        <input type="button" value="Modifier"
+                               th:onClick="${'App.checkExpenseAndSendForm(' + expense.getId() + ')'}"/>
                     </div>
 
                 </form>
