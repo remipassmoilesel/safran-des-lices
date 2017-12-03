@@ -210,6 +210,10 @@ public class BillingController {
         model.addAttribute("total", totalWithShippingCosts);
         model.addAttribute("billId", billId);
 
+        // destroy basket
+        session.setAttribute(Basket.ORDER_SATTR, null);
+        session.setAttribute(Basket.BASKET_SATTR, null);
+
         Mappings.includeMappings(model);
         return Templates.CHECKOUT_END;
     }
