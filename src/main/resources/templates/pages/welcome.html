@@ -6,6 +6,9 @@
     <title>Bienvenue</title>
 
     <style>
+        .img-responsive {
+            margin: 0.5em;
+        }
     </style>
 
 </head>
@@ -17,24 +20,29 @@
             <div class="row">
                 <div class="header-section text-center welcome-body">
                     <h2>Bienvenue sur le site du Safran des Lices</h2>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-offset-3 col-md-6 text-center">
 
                     <p>Nichée au cœur d’un charmant village de l’Hérault, entre mer et garrigue,
-                        <br/> notre exploitation familiale va vous surprendre.</p>
+                        notre exploitation familiale va vous surprendre. </p>
 
                     <p>Découvrez à travers la qualité de nos produits la force et la finesse
-                        <br/> de cette épice qui saura réveiller tous vos plats.</p>
+                        de cette épice qui saura réveiller tous vos plats.</p>
 
                     <hr class="bottom-line"/>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-md-5 col-sm-5 col-md-offset-1 col-sm-offset-1 padleft-right">
-                    <a th:href="@{${mappings.get('OUR_SAFRAN')}}">
+                <div class="col-md-offset-1 col-md-5 padleft-right">
+                    <a th:href="@{${mappings.get('ORDER')}}">
                         <img th:src="@{img/DSC_0168.jpg}" class="img-responsive"/>
                     </a>
                 </div>
-                <div class="col-md-5 col-sm-5 padleft-right">
+                <div class="col-md-5 padleft-right">
                     <a th:href="@{${mappings.get('ORDER')}}">
                         <img th:src="@{img/DSC_0040.jpg}" class="img-responsive"/>
                     </a>
