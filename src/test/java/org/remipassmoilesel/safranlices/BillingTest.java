@@ -6,9 +6,11 @@ import org.junit.runner.RunWith;
 import org.remipassmoilesel.safranlices.controllers.BillingController;
 import org.remipassmoilesel.safranlices.controllers.OrderController;
 import org.remipassmoilesel.safranlices.entities.Product;
+import org.remipassmoilesel.safranlices.entities.ShippingCost;
 import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
 import org.remipassmoilesel.safranlices.dataLoaders.DevDataFactory;
+import org.remipassmoilesel.safranlices.repositories.ShippingCostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -51,6 +53,9 @@ public class BillingTest {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private ShippingCostRepository shippingCostRepository;
+
     @Before
     public void setup() throws IOException {
         mockMvc = MockMvcBuilders.standaloneSetup(orderController, checkoutController).build();
@@ -65,6 +70,11 @@ public class BillingTest {
 
         Integer p2qtty = 4;
         Double p2price = 55d;
+
+        double shipCost = 5;
+        shippingCostRepository.deleteAll();
+        shippingCostRepository.save(new ShippingCost(0d,50000d, 5d));
+
 
         Product p1 = DevDataFactory.createProduct(null, null, null, p1price, null);
         Product p2 = DevDataFactory.createProduct(null, null, null, p2price, null);
@@ -108,7 +118,7 @@ public class BillingTest {
 
         Double total = (Double) response.getModelAndView().getModel().get("total");
         assertEquals(total.doubleValue(),
-                p1qtty * p1price + p2qtty * p2price, 0);
+                p1qtty * p1price + p2qtty * p2price + shipCost, 0);
 
     }
 

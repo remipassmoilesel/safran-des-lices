@@ -1,15 +1,15 @@
 "Vous ne devez pas supprimer cet en-tête, ni l'ordre des colonnes. Si vous changez une valeur de la case 'ID', un nouvel élément sera créé.",,,,,,,
 ID,Nom,Prix,Quantité disponible,Poids brut (grammes),Poids net (grammes),Description,"Photographies, séparées par des virgules"
-1,Safran en pistils 1g,30,50,110,1,Pur pistils de safran. La nature à l’état brut.,/img/DSC_0039.jpg
-2,Safran en pistils 0.5 gr,18,50,25,0.5,Pur pistils de safran. La nature à l’état brut.,/img/DSC_0039.jpg
-3,Confiture de figues au safran 300 gr,6,20,513,300,"Figues du jardin, un peu de sucre et quelques pistils de safran pour donner une touche originale à une confiture classique.",/img/DSC_0039.jpg
-4,Confiture de pêches au safran 300 gr,6,20,508,300,"Le mariage du safran et de la pêche, un régal !",/img/DSC_0039.jpg
-5,Confiture de pastèque au safran,6,20,510,300,"La pastèque, l’orange et le safran : un délicieux mélange.",/img/DSC_0039.jpg
-6,Raisinet de fruits au safran,6,20,510,300,"Un mélange de fruits (melons, figues, pommes) cuits sans sucres ajoutés.",/img/DSC_0039.jpg
-7,Miel  au safran,9,20,401,260,"Miel de Lozère récolté sur le plateau de la Margeride, agrémenté de pistils de safran.",/img/DSC_0039.jpg
-8,Coffret dégustation confiture,6,20,340,120,Trois mini confitures en pot de 40g pour découvrir le safran dans des saveurs fruitées.,/img/DSC_0039.jpg
-9,Vinaigre au safran,7,20,485,250,"Idéal pour assaisonner vos salades, mayonnaises, ou pour déglacer vos préparations.",/img/DSC_0039.jpg
-10,Confit d’oignons au safran,4,20,195,100,"Un délice en accompagnement de foie gras, charcuteries, …",/img/DSC_0039.jpg
-11,Sel au safran,2,20,96,30,"Sel de Camargue parfumé au safran, donnera à vos plats une petite touche d’exotisme.",/img/DSC_0039.jpg
-12,Huile d’olive au safran,15.11,20,456,250,"Huile d’olive récoltée à Murviel-Lès-Montpellier réhaussée de pistils de safran. (olives : Aglandeau, Cailletier)",/img/DSC_0039.jpg
-13,Sirop de safran,15.12,20,548,250,Sirop de safran sucré idéal pour toutes vos préparations.,/img/DSC_0039.jpg
+1,Safran en pistils 1g,30,50,110,1,Pur pistils de safran. La nature à l’état brut.,/img/1_gramme.JPG
+2,Safran en pistils 0.5 gr,18,50,25,0.5,Pur pistils de safran. La nature à l’état brut.,/img/1_gramme.JPG
+3,Confiture de figues au safran 300 gr,6,20,513,300,"Figues du jardin, un peu de sucre et quelques pistils de safran pour donner une touche originale à une confiture classique.",/img/figues.jpg
+4,Confiture de pêches au safran 300 gr,6,20,508,300,"Le mariage du safran et de la pêche, un régal !",/img/peche.jpg
+5,Confiture de pastèque au safran,6,20,510,300,"La pastèque, l’orange et le safran : un délicieux mélange.",/img/pasteque.jpg
+6,Raisinet de fruits au safran,6,20,510,300,"Un mélange de fruits (melons, figues, pommes) cuits sans sucres ajoutés.",/img/raisinet.jpg
+7,Miel  au safran,9,20,401,260,"Miel de Lozère récolté sur le plateau de la Margeride, agrémenté de pistils de safran.",/img/miel.jpg
+8,Coffret dégustation confiture,6,20,340,120,Trois mini confitures en pot de 40g pour découvrir le safran dans des saveurs fruitées.,"/img/confiture_figue_mini.jpg,/img/confiture_peche_mini.JPG,/img/confiture_raisin_mini.JPG"
+9,Vinaigre au safran,7,20,485,250,"Idéal pour assaisonner vos salades, mayonnaises, ou pour déglacer vos préparations.",/img/vinaigre.jpg
+10,Confit d’oignons au safran,4,20,195,100,"Un délice en accompagnement de foie gras, charcuteries, …",/img/config_oignon.jpg
+11,Sel au safran,2,20,96,30,"Sel de Camargue parfumé au safran, donnera à vos plats une petite touche d’exotisme.",/img/sel.jpg
+12,Huile d’olive au safran,15.11,20,456,250,"Huile d’olive récoltée à Murviel-Lès-Montpellier réhaussée de pistils de safran. (olives : Aglandeau, Cailletier)",/img/huile.jpg
+13,Sirop de safran,15.12,20,548,250,Sirop de safran sucré idéal pour toutes vos préparations.,/img/huile.jpg
