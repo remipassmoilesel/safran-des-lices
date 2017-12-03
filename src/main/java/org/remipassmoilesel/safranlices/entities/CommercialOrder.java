@@ -271,6 +271,10 @@ public class CommercialOrder {
         return Utils.getFormattedDate(date, pattern);
     }
 
+    public String getOrderUid() {
+        return this.getFormattedDate("yyyyMMddHHmmss") + "-" + this.getId();
+    }
+
     public Double getShippingCosts() {
         return shippingCosts;
     }

@@ -34,9 +34,9 @@
 
                 <p>Veuillez libéller votre chèque à l'ordre de:</p>
                 <pre>
-    Safran des lices - Emmanuel Cossart
-    24 Rue des Clauzes
-    34570 Murviel-Lès-Montpellier
+Safran des lices - Emmanuel Cossart
+24 Rue des Clauzes
+34570 Murviel-Lès-Montpellier
                 </pre>
 
             </div>
@@ -44,8 +44,8 @@
             <div class="col-md-offset-2 col-md-8" th:if="${order.getPaymentType().toString()} eq 'BANK_TRANSFER'">
                 <p>Veuillez effectuer un virement bancaire aux coordonnées suivantes: </p>
                 <pre>
-    Caisse d'Epargne
-    RIB bientôt disponible
+Caisse d'Epargne
+RIB bientôt disponible
                 </pre>
 
                 <p><b>Montant total à payer: <span th:text="${total}"></span> €</b></p>

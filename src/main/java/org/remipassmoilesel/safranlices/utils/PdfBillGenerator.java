@@ -177,13 +177,17 @@ public class PdfBillGenerator {
 
         Paragraph header = new Paragraph();
         header.add(Chunk.NEWLINE);
-        header.add(Chunk.NEWLINE);
 
+        // add title with date
         String formattedDate = order.getFormattedDate("dd/MM/yyyy");
         Chunk title = new Chunk("Facture pour la commande du " + formattedDate);
         title.setFont(TITLE_1_FONT);
-
         header.add(title);
+        header.add(Chunk.NEWLINE);
+
+        // add order uid
+        Chunk uid = new Chunk("Numéro de facture: " + order.getOrderUid());
+        header.add(uid);
         header.add(Chunk.NEWLINE);
 
         document.add(header);
