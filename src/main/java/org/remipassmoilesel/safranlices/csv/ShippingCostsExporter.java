@@ -19,8 +19,8 @@ public class ShippingCostsExporter {
     private static final Object[] COLUMN_NAMES = {
             "ID",
             "Prix",
-            "Poid minimum",
-            "Poid maximum",
+            "Poids minimum",
+            "Poids maximum",
     };
 
     public void export(List<ShippingCost> shippingCosts, BufferedWriter writer) throws IOException {

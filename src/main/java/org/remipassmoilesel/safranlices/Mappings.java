@@ -31,7 +31,6 @@ public class Mappings {
     public static final String ADMIN_ROOT = ROOT + "admin/";
     public static final String ADMIN_LOGIN = ADMIN_ROOT + "login";
     public static final String ADMIN_LOGOUT = ADMIN_ROOT + "logout";
-    public static final String ADMIN_ACTION = ADMIN_ROOT + "action";
     public static final String ADMIN_CONFIGURE_SALES = ADMIN_ROOT + "configurer-les-ventes";
     public static final String ADMIN_SHOW_ORDER = ADMIN_ROOT + "afficher-la-commande";
     public static final String ADMIN_SHOW_BILL = ADMIN_ROOT + "facture";

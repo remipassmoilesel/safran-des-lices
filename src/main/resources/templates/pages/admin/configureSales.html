@@ -38,9 +38,8 @@
         text-align: left;
     }
 
-    </style>
 
-    <script type="text/javascript" th:src="@{/js/admin.js}"></script>
+    </style>
 
 </head>
 <body>
@@ -67,89 +66,16 @@
 
         </div>
 
-        <a name="modifyProducts"/>
-        <h3 class="text-center">Modifier les produits</h3>
-
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-offset-1 col-sm-10 text-center">
-                    <div class="productErrorArea">&nbsp;</div>
-                </div>
-            </div>
-
-            <div class="row productHeader">
-                <div class="col-sm-offset-1 col-sm-1">
-                    ID
-                </div>
-
-                <div class="col-sm-2">
-                    Nom
-                </div>
-
-                <div class="col-sm-2">
-                    Quantité disponible
-                </div>
-
-                <div class="col-sm-2">
-                    Prix unitaire
-                </div>
-
-            </div>
-
-            <div class="row productRow text-center" th:if="${#lists.size(products) lt 1}">
-                <i>Aucun produit à afficher</i>
-            </div>
-
-            <div class="row productRow" th:each="product : ${products}" th:if="${#lists.size(products) gt 0}">
-                <form method="get" th:id="${'productForm' + product.getId()}"
-                      th:action="@{${mappings.get('ADMIN_ACTION')}}">
-
-                    <!-- product id -->
-                    <div class="col-sm-offset-1 col-sm-1" th:text="${product.getId()}">
-                        11
-                    </div>
-
-                    <!-- product name -->
-                    <div class="col-sm-2" th:text="${product.getName()}">
-                        Safran
-                    </div>
-
-                    <!-- quantity available -->
-                    <div class="col-sm-2">
-                        <input name="quantity" type="text" th:value="${product.getQuantityAvailable()}"/>
-                    </div>
-
-                    <!-- unit price -->
-                    <div class="col-sm-2">
-                        <input name="price" type="text" th:value="${product.getPrice()}"/>
-                    </div>
-
-                    <!-- modify button -->
-                    <div class="col-sm-2">
-                        <input type="hidden" name="action" value="product"/>
-                        <input type="hidden" name="id" th:value="${product.getId()}"/>
-                        <input type="button" value="Modifier"
-                               th:onClick="${'App.checkProductAndSendForm(' + product.getId() + ')'}"/>
-                    </div>
-
-                </form>
-            </div>
-
-        </div>
-
-        <div>&nbsp;</div>
-        <div>&nbsp;</div>
-
         <a name="import-products"/>
-        <h3 class="text-center">Importer des produits</h3>
+        <h3 class="text-center">Modifier les produits</h3>
 
         <div class="container import-products">
             <div class="row">
-                <div class="col-sm-offset-1 col-sm-10">
+                <div class="col-md-offset-2 col-md-8">
                     <form th:action="@{${mappings.get('ADMIN_UPLOAD_PRODUCTS')}}"
                           method="POST" enctype="multipart/form-data">
                         <div class="form-group">
-                            Tout d'abord, téléchargez la liste des produits:
+                            Tout d'abord, téléchargez la liste des produits en cliquant ici:
                             <a th:href="@{${mappings.get('ADMIN_DOWNLOAD_PRODUCTS')}}">
                                 Télécharger la liste des produits
                             </a>
@@ -174,15 +100,15 @@
         <div>&nbsp;</div>
 
         <a name="import-products"/>
-        <h3 class="text-center">Importer des frais de ports</h3>
+        <h3 class="text-center">Modifier les frais de ports</h3>
 
         <div class="container import-shipping-costs">
             <div class="row">
-                <div class="col-sm-offset-1 col-sm-10">
+                <div class="col-md-offset-2 col-md-8">
                     <form th:action="@{${mappings.get('ADMIN_UPLOAD_SHIPPING_COSTS')}}"
                           method="POST" enctype="multipart/form-data">
                         <div class="form-group">
-                            Tout d'abord, téléchargez la liste des produits:
+                            Tout d'abord, téléchargez la liste des règles de frais de port:
                             <a th:href="@{${mappings.get('ADMIN_DOWNLOAD_SHIPPING_COSTS')}}">
                                 Télécharger la liste des frais de port
                             </a>

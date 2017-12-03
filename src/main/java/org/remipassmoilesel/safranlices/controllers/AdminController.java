@@ -6,7 +6,10 @@ import org.remipassmoilesel.safranlices.csv.ProductsExporter;
 import org.remipassmoilesel.safranlices.csv.ProductsImporter;
 import org.remipassmoilesel.safranlices.csv.ShippingCostsExporter;
 import org.remipassmoilesel.safranlices.csv.ShippingCostsImporter;
-import org.remipassmoilesel.safranlices.entities.*;
+import org.remipassmoilesel.safranlices.entities.Basket;
+import org.remipassmoilesel.safranlices.entities.CommercialOrder;
+import org.remipassmoilesel.safranlices.entities.Product;
+import org.remipassmoilesel.safranlices.entities.ShippingCost;
 import org.remipassmoilesel.safranlices.repositories.OrderRepository;
 import org.remipassmoilesel.safranlices.repositories.ProductRepository;
 import org.remipassmoilesel.safranlices.repositories.ShippingCostRepository;
@@ -24,7 +27,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedWriter;
@@ -32,7 +34,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -206,63 +207,5 @@ public class AdminController {
         String redirection = request.getHeader("referer");
         return "redirect:" + redirection;
     }
-
-    @RequestMapping(Mappings.ADMIN_ACTION)
-    public String modify(Model model,
-                         HttpServletResponse response,
-                         HttpServletRequest request,
-                         @RequestParam(value = "action") String action,
-                         @RequestParam(value = "id") Long id,
-                         @RequestParam(value = "value", required = false) String value,
-                         @RequestParam(value = "price", required = false) Double price,
-                         @RequestParam(value = "name", required = false) String name,
-                         @RequestParam(value = "quantity", required = false) Integer quantity) throws IOException, MessagingException {
-
-        String redirection = request.getHeader("referer");
-
-        // mark as paid or non paid
-        if (action.equals("paid")) {
-            CommercialOrder order = orderRepository.findOne(id);
-            order.setPaid(Boolean.valueOf(value));
-            orderRepository.save(order);
-
-            return "redirect:" + redirection;
-        }
-
-        // mark as processed or non processed
-        if (action.equals("processed")) {
-            CommercialOrder order = orderRepository.findOne(id);
-            order.setProcessed(Boolean.valueOf(value));
-            orderRepository.save(order);
-
-            return "redirect:" + redirection;
-        }
-
-        // modify a product
-        if (action.equals("product")) {
-            Product p = productRepository.getOne(id);
-            p.setPrice(price);
-            p.setQuantityAvailable(quantity);
-            productRepository.save(p);
-
-            return "redirect:" + redirection;
-        }
-
-        if (action.equals("notify")) {
-
-            CommercialOrder order = orderRepository.getOne(id);
-            mailer.sendClientNotification(OrderNotificationType.ORDER_SENT, order);
-
-            order.setLastShipmentNotification(new Date());
-            orderRepository.save(order);
-
-            return "redirect:" + redirection;
-        }
-
-        // nothing to do
-        response.sendError(400, "Bad request");
-        return null;
-    }
-
 
 }

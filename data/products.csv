@@ -1,0 +1,15 @@
+"Vous ne devez pas supprimer cet en-tête, ni l'ordre des colonnes. Si vous changez une valeur de la case 'ID', un nouvel élément sera créé.",,,,,,,
+ID,Nom,Prix,Quantité disponible,Poids brut (grammes),Poids net (grammes),Description,"Photographies, séparées par des virgules"
+1,Safran en pistils 1g,15.0,20,110,1,Description 1,/img/DSC_0039.jpg
+2,Safran en pistils 0.5 gr,15.1,21,25,0.5,Description 2,/img/DSC_0039.jpg
+3,Confiture de figues au safran 300 gr,15.2,22,513,300,Description 3,/img/DSC_0039.jpg
+4,Confiture de pêches au safran 300 gr,15.3,23,508,300,Description 4,/img/DSC_0039.jpg
+5,Confiture de pastèque au safran,15.4,24,510,300,Description 5,/img/DSC_0039.jpg
+6,Raisinet de fruits au safran,15.5,25,510,300,Description 6,/img/DSC_0039.jpg
+7,Miel  au safran,15.6,26,401,260,Description 7,/img/DSC_0039.jpg
+8,Coffret dégustation confiture,15.7,27,340,120,Description 8,/img/DSC_0039.jpg
+9,Vinaigre au safran,15.8,28,485,250,Description 9,/img/DSC_0039.jpg
+10,Confit d’oignons au safran,15.9,29,195,100,Description 10,/img/DSC_0039.jpg
+11,Sel au safran,15.10,30,96,30,Description 11,/img/DSC_0039.jpg
+12,Huile d’olive au safran,15.11,31,456,250,Description 12,/img/DSC_0039.jpg
+13,Sirop de safran,15.12,32,548,250,Description 13,/img/DSC_0039.jpg

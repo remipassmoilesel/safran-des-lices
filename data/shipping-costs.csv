@@ -1,0 +1,10 @@
+"Vous ne devez pas supprimer cet en-tête, ni l'ordre des colonnes. Si vous changez une valeur de la case 'ID', un nouvel élément sera créé.",,,
+ID,Prix,Poid minimum,Poids maximum
+1,4.90,0,250
+2,6.10,250,500
+3,6.90,500,750
+4,7.50,750,1000
+5,8.50,1000,2000
+6,12.90,2000,5000
+7,18.90,5000,10000
+8,26.90,10000,30000
