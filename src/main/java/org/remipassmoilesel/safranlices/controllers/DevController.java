@@ -67,7 +67,7 @@ public class DevController {
                 null, null, null);
 
         // generate pdf
-        Path pdfPath = billGenerator.generateBill(order, products, 88.8);
+        Path pdfPath = billGenerator.generateBill(order, products, 88.8, 95.5);
 
         Utils.pdfResponse(response, pdfPath);
     }
@@ -87,7 +87,7 @@ public class DevController {
                 null, null, null, null, null, null);
 
         // generate pdf
-        Path pdfPath = billGenerator.generateBill(order, products, 88.8);
+        Path pdfPath = billGenerator.generateBill(order, products, 88.8, 95.5);
 
         if ("admin".equals(type)) {
             mailer.sendAdminNotification(order, pdfPath.getFileName().toString());

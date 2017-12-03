@@ -185,7 +185,7 @@ public class BillingController {
         session.setAttribute("order", order);
 
         executor.execute(() -> {
-            this.generatePdfBillThenNotify(order, products, total);
+            this.generatePdfBillThenNotify(order, products, total, total + shippingCosts);
         });
 
         return "redirect:" + Mappings.CHECKOUT_END;
@@ -237,10 +237,11 @@ public class BillingController {
     private void generatePdfBillThenNotify(
             CommercialOrder order,
             List<Product> products,
-            double total) {
+            double total,
+            double totalWithShipping) {
 
         try {
-            billGenerator.generateBill(order, products, total);
+            billGenerator.generateBill(order, products, total, totalWithShipping);
         } catch (Exception e) {
             logger.error("Unable to generate bill", e);
         }

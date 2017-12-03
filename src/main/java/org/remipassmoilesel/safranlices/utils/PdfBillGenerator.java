@@ -50,7 +50,9 @@ public class PdfBillGenerator {
     }
 
     public Path generateBill(CommercialOrder order,
-                             List<Product> products, double total) throws IOException, DocumentException {
+                             List<Product> products,
+                             Double total,
+                             Double totalWithShipping) throws IOException, DocumentException {
 
         String pdfName = getPdfName(order);
 
@@ -71,7 +73,7 @@ public class PdfBillGenerator {
             addCustomerInformations(document, order);
             addOrder(document, order, products);
 
-            addTotal(document, total);
+            addTotal(document, total, totalWithShipping);
 
             document.close();
         }
@@ -88,19 +90,24 @@ public class PdfBillGenerator {
         return getPdfName(order.getDate(), order.getLastName(), order.getFirstName());
     }
 
-
     public Path getPdfAbsolutePath(String name) {
         return getBillRootDirectory().resolve(name).toAbsolutePath();
     }
 
-    private void addTotal(Document document, Double total) throws DocumentException {
-
+    private void addTotal(Document document, Double total, Double totalWithShipping) throws DocumentException {
         Paragraph content = new Paragraph();
 
         content.add(Chunk.NEWLINE);
-        Chunk title = new Chunk("Total: " + total + " €");
-        title.setFont(TITLE_2_FONT);
-        content.add(title);
+
+        Chunk totalChunk = new Chunk("Total: " + total + " €");
+        totalChunk.setFont(TITLE_2_FONT);
+        content.add(totalChunk);
+        content.add(Chunk.NEWLINE);
+
+        Chunk totalWithShippingChunk = new Chunk("Total avec frais de port: " + totalWithShipping + " €");
+        totalWithShippingChunk.setFont(TITLE_2_FONT);
+        content.add(totalWithShippingChunk);
+
         content.add(Chunk.NEWLINE);
         content.add(Chunk.NEWLINE);
 
@@ -150,6 +157,7 @@ public class PdfBillGenerator {
         header.add(Chunk.NEWLINE);
 
         PdfPTable table = new PdfPTable(2);
+        table.setWidths(new float[] { 1, 3 });
 
         table.addCell("Nom");
         table.addCell(order.getLastName());
@@ -174,7 +182,6 @@ public class PdfBillGenerator {
     }
 
     private void addCommandHeader(Document document, CommercialOrder order) throws DocumentException {
-
         Paragraph header = new Paragraph();
         header.add(Chunk.NEWLINE);
 
@@ -195,7 +202,6 @@ public class PdfBillGenerator {
     }
 
     private void addAddressBloc(Document document) throws IOException, DocumentException {
-
         Paragraph addressParagraph = new Paragraph();
 
         for (String l : getAddressContent()) {
@@ -208,7 +214,6 @@ public class PdfBillGenerator {
     }
 
     private void addLogo(Document document) throws IOException, DocumentException {
-
         Image logo = Image.getInstance(getTopLogo());
 
         float scale = 0.1f;
