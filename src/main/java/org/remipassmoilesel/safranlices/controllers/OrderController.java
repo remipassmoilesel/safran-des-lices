@@ -148,15 +148,16 @@ public class OrderController {
         HashMap<Product, Integer> productsWithQuantities = basket.mapProductWithQuantities(allProducts);
         model.addAttribute("basket", productsWithQuantities);
 
-        // total
-        double total = basket.computeTotal(allProducts);
-        model.addAttribute("total", total);
-
         // shipping informations
         double shippingCosts = basket.computeShippingCosts(allProducts, allShippingCosts);
         double totalWeight = basket.computeTotalWeight(allProducts);
         model.addAttribute("shippingCosts", shippingCosts);
         model.addAttribute("totalWeight", totalWeight);
+
+        // total
+        double total = basket.computeTotalWithoutShippingCosts(allProducts);
+        model.addAttribute("total", total);
+        model.addAttribute("totalWithShipping", total  + shippingCosts);
 
         Mappings.includeMappings(model);
         return Templates.BASKET;

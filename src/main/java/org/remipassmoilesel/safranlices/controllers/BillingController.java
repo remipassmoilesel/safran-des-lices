@@ -91,8 +91,10 @@ public class BillingController {
         List<Product> products = productRepository.findAll(false);
 
         // total
-        double total = basket.computeTotal(products);
-        model.addAttribute("total", total);
+        double shippingCosts = basket.computeShippingCosts(products, shippingCostRepository.findAll(false));
+        double totalWithShippingCosts = basket.computeTotalWithoutShippingCosts(products) + shippingCosts;
+
+        model.addAttribute("total", totalWithShippingCosts);
 
         Mappings.includeMappings(model);
         return Templates.BILLING_FORM;
@@ -164,14 +166,17 @@ public class BillingController {
                 checkoutForm.getEmail(),
                 billId);
 
-        double total = basket.computeTotal(products);
-
+        // set shipping costs and weight
         double shippingCosts = basket.computeShippingCosts(products, shippingCostRepository.findAll(false));
-        double totalWeight = basket.computeTotalWeight(products);
-        model.addAttribute("shippingCosts", shippingCosts);
-        model.addAttribute("totalWeight", totalWeight);
+        double orderWeight = basket.computeTotalWeight(products);
+        order.setShippingCosts(shippingCosts);
+        order.setTotalWeight(orderWeight);
 
+        // compute total
+        double total = basket.computeTotalWithoutShippingCosts(products);
         order.setTotal(total);
+
+        // save order
         order.setProcessed(false);
         order.setPaid(false);
         orderRepository.save(order);
@@ -198,13 +203,11 @@ public class BillingController {
         String billId = billGenerator.getPdfName(order);
         session.setAttribute(AUTHORIZED_BILL_ID_SATTR, billId);
 
-        List<Product> products = productRepository.findAll(false);
-
-        Basket basket = Basket.getBasketOrCreate(session);
-        double total = basket.computeTotal(products);
+        // compute total with shipping
+        double totalWithShippingCosts = order.getTotal() + order.getShippingCosts();
 
         model.addAttribute("order", order);
-        model.addAttribute("total", total);
+        model.addAttribute("total", totalWithShippingCosts);
         model.addAttribute("billId", billId);
 
         Mappings.includeMappings(model);

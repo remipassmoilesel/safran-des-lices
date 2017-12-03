@@ -59,6 +59,8 @@ public class CommercialOrder {
 
     private Double shippingCosts;
 
+    private Double totalWeight;
+
     public CommercialOrder() {
     }
 
@@ -277,6 +279,18 @@ public class CommercialOrder {
         this.shippingCosts = shippingCosts;
     }
 
+    public void setTotalWeight(double totalWeight) {
+        this.totalWeight = totalWeight;
+    }
+
+    public Double getTotalWeight() {
+        return totalWeight;
+    }
+
+    public void setTotalWeight(Double totalWeight) {
+        this.totalWeight = totalWeight;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -303,12 +317,13 @@ public class CommercialOrder {
                 Objects.equals(email, that.email) &&
                 Objects.equals(lastShipmentNotification, that.lastShipmentNotification) &&
                 Objects.equals(pdfBillName, that.pdfBillName) &&
-                Objects.equals(shippingCosts, that.shippingCosts);
+                Objects.equals(shippingCosts, that.shippingCosts) &&
+                Objects.equals(totalWeight, that.totalWeight);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, date, products, quantities, address, postalcode, city, shipmentAddress, shipmentPostalcode, shipmentCity, phonenumber, firstName, lastName, paymentType, total, comment, paid, processed, email, lastShipmentNotification, pdfBillName, shippingCosts);
+        return Objects.hash(id, date, products, quantities, address, postalcode, city, shipmentAddress, shipmentPostalcode, shipmentCity, phonenumber, firstName, lastName, paymentType, total, comment, paid, processed, email, lastShipmentNotification, pdfBillName, shippingCosts, totalWeight);
     }
 
     @Override
@@ -336,6 +351,7 @@ public class CommercialOrder {
                 ", lastShipmentNotification=" + lastShipmentNotification +
                 ", pdfBillName='" + pdfBillName + '\'' +
                 ", shippingCosts=" + shippingCosts +
+                ", totalWeight=" + totalWeight +
                 '}';
     }
 }

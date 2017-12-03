@@ -57,7 +57,7 @@ public class Basket {
      * @param products
      * @return
      */
-    public Double computeTotal(List<Product> products) {
+    public Double computeTotalWithoutShippingCosts(List<Product> products) {
 
         Double total = 0d;
         Iterator<Long> keys = productMap.keySet().iterator();
