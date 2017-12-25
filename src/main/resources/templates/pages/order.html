@@ -36,8 +36,8 @@
             height: 3em;
         }
 
-        .icon-text div:nth-child(2){
-            font-size: 0.8em;
+        .price {
+            font-size: 1em;
             width: 80%;
             margin: auto;
         }
@@ -99,7 +99,7 @@
                         <!-- Name and description -->
                         <div class="icon-text">
                             <h4 class="ser-text" th:text="${p.getName()}">Product name</h4>
-                            <div th:text="${p.getPrice() + ' €'}">35 €</div>
+                            <div class="price" th:text="${p.getPrice() + ' €'}">35 €</div>
                         </div>
 
                         <!-- Add quantity to basket -->
@@ -109,8 +109,10 @@
                                     <input type="number" value="1" class="form-control"
                                            th:id="'productQuantity' + ${p.getId()}"/>
                                     &nbsp;
-                                    <a class="btn btn-default fa fa-cart-plus add-to-basket"
+                                    <a class="btn btn-default add-to-basket"
                                        th:attr="data-max=${p.getQuantityAvailable()}, data-id=${p.getId()}">
+                                        <i class="fa fa-shopping-basket"></i>
+                                        Ajouter au panier
                                     </a>
                                 </div>
                             </form>
@@ -123,7 +125,7 @@
                                th:attr="data-description=${p.getDescription()},
                                         data-weight=${p.getNetWeight()},
                                         data-title=${p.getName()}">
-                                Description complète...</a>
+                                Détails du produit...</a>
 
                         </div>
 

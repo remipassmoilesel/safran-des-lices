@@ -83,3 +83,7 @@
 .ui-dialog-titlebar-close{
     display: none;
 }
+
+.btn {
+    font-family: 'sans-serif';
+}
