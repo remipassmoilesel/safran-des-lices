@@ -16,10 +16,8 @@ public class DevDataFactory {
     private static Random rand = new Random();
     private static List<String> fakePictures = Arrays.asList(
             "/img/DSC_0040.jpg",
-            "/img/DSC_0038.jpg",
-            "/img/DSC_0039.jpg",
-            "/img/DSC_0040.jpg",
-            "/img/DSC_0076.jpg",
+            "/img/huile.jpg",
+            "/img/gelee_mure_mini.jpg",
             "/img/DSC_0077.jpg"
     );
 
