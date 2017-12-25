@@ -58,6 +58,11 @@
             max-width: 100%;
         }
 
+        .product_thumbnail{
+            border: solid rgba(50,50,50,0.3) 4px;
+            max-height: 13em;
+        }
+
     </style>
 
     <script th:src="@{/js/order.js}"></script>
@@ -86,7 +91,7 @@
                             <a th:each="imagePath, iter : ${p.getPicturesAsList()}"
                                th:style="'display: ' + ${iter.index == 0 ? 'block' : 'none' } + ';'"
                                th:href="@{${imagePath}}" th:attr="data-lightbox=${p.getId()}">
-                                <img th:src="@{${imagePath}}" style="width: 100%;"/>
+                                <img th:src="@{${imagePath}}" class="product_thumbnail"/>
                             </a>
                         </div>
 
