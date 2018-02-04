@@ -173,28 +173,28 @@
                 &nbsp;
                 &nbsp;
 
-                <a th:href="@{${mappings.get('ADMIN_ACTION')}(action='notify', value='true', id=${order.getId()})}"
+                <a th:href="@{${mappings.get('ADMIN_ACTIONS')}(action='notify', value='true', id=${order.getId()})}"
                    class="btn btn-default" role="button">
                     Envoyer une notification d'envoi</a>
 
                 &nbsp;
                 &nbsp;
 
-                <a th:href="@{${mappings.get('ADMIN_ACTION')}(action='paid', value='false', id=${order.getId()})}"
+                <a th:href="@{${mappings.get('ADMIN_ACTIONS')}(action='paid', value='false', id=${order.getId()})}"
                    th:if="${order.isPaid() == true}"
                    class="btn btn-default" role="button">
                     Marquer comme non-payée</a>
-                <a th:href="@{${mappings.get('ADMIN_ACTION')}(action='paid', value='true', id=${order.getId()})}"
+                <a th:href="@{${mappings.get('ADMIN_ACTIONS')}(action='paid', value='true', id=${order.getId()})}"
                    th:if="${order.isPaid() == false}" class="btn btn-default" role="button">
                     Marquer comme payée</a>
 
                 &nbsp;
                 &nbsp;
 
-                <a th:href="@{${mappings.get('ADMIN_ACTION')}(action='processed', value='false', id=${order.getId()})}"
+                <a th:href="@{${mappings.get('ADMIN_ACTIONS')}(action='processed', value='false', id=${order.getId()})}"
                    th:if="${order.isProcessed() == true}" class="btn btn-default" role="button">
                     Marquer comme non-traitée</a>
-                <a th:href="@{${mappings.get('ADMIN_ACTION')}(action='processed', value='true', id=${order.getId()})}"
+                <a th:href="@{${mappings.get('ADMIN_ACTIONS')}(action='processed', value='true', id=${order.getId()})}"
                    th:if="${order.isProcessed() == false}" class="btn btn-default" role="button">
                     Marquer comme traitée</a>
             </td>

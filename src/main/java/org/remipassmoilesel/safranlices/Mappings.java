@@ -39,6 +39,7 @@ public class Mappings {
     public static final String ADMIN_UPLOAD_PRODUCTS = ADMIN_ROOT + "enregistrer-les-produits";
     public static final String ADMIN_DOWNLOAD_SHIPPING_COSTS = ADMIN_ROOT + "telecharger-les-frais";
     public static final String ADMIN_UPLOAD_SHIPPING_COSTS = ADMIN_ROOT + "enregistrer-les-frais";
+    public static final String ADMIN_ACTIONS = ADMIN_ROOT + "actions";
 
     public static final String TEMPLATE = ROOT + "template";
     public static final String ERROR = ROOT + "error";
