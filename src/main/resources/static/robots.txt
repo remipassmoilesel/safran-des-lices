@@ -1,0 +1,5 @@
+User-Agent: *
+Disallow: /facturation
+Allow: /
+
+Sitemap: https://safran-des-lices.fr/sitemap.xml
