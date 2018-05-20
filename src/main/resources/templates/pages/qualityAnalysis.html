@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html layout:decorator="mainDecorator"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Analyse qualité</title>
+    <style type="text/css">
+
+    </style>
+
+    <script type="text/javascript" th:inline="none">
+        //<![CDATA[
+
+        //]]>
+    </script>
+
+</head>
+<body>
+<div layout:fragment="content">
+    <section class="section-padding">
+        <div class="container">
+
+            <div class="row">
+                <div class="header-section text-center">
+                    <h2>Qualité de notre safran</h2>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-offset-1 col-md-10">
+                    <div class="subtitle">Analyse qualité en laboratoire</div>
+                    <p>
+                        La qualité de notre safran est garantie par une analyse en laboratoire réalisée par
+                        <a href="https://www.anascan.com" target="_blank">Anascan</a>.
+                    </p>
+                    <p>
+                        Vous pouvez télécharger le document original <a th:href="@{documents/analyse-qualite.pdf}">
+                        en cliquant ici.</a>
+                    </p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-offset-1 col-md-10">
+                    <div class="subtitle">Que révèle cette analyse ?</div>
+                    Cette analyse montre que notre safran est de qualité supérieure, conforme à la catégorie 1
+                    de la norme ISO 3632-2.
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>
+</body>
+</html>

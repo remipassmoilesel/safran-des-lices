@@ -24,6 +24,7 @@ public class Mappings {
     public static final String BILLING_FORM = ROOT + "facturation";
     public static final String CHECKOUT_END = ROOT + "fin-de-commande";
     public static final String SHOW_BILL = ROOT + "facture";
+    public static final String QUALITY_ANALYSIS = "analyse-qualite";
 
     public static final String LEGAL_MENTIONS = ROOT + "mentions-legales";
     public static final String TERMS_OF_SALES = ROOT + "conditions-generales-de-vente";

@@ -35,6 +35,12 @@ public class StaticController {
         return Templates.WELCOME;
     }
 
+    @RequestMapping(Mappings.QUALITY_ANALYSIS)
+    public String showQualityAnalysis(Model model) {
+        Mappings.includeMappings(model);
+        return Templates.QUALITY_ANALYSIS;
+    }
+
     @RequestMapping(Mappings.OUR_SAFRAN)
     public String showProducts(Model model) {
         Mappings.includeMappings(model);

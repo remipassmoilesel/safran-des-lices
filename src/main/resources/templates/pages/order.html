@@ -72,13 +72,16 @@
 <body>
 <div layout:fragment="content">
 
-    <section id="work-shop" class="section-padding">
+    <section class="section-padding">
         <div class="container">
 
             <div class="row">
                 <div class="header-section text-center">
                     <h2>Commander en ligne</h2>
                     <p>Faîtes vous livrer nos produits partout en France !</p>
+                    <p>La qualité de notre safran est <a th:href="@{${mappings.get('QUALITY_ANALYSIS')}}">garantie
+                        par une analyse en laboratoire.</a>
+                    </p>
                     <hr class="bottom-line"/>
                 </div>
             </div>
