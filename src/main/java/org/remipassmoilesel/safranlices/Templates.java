@@ -19,7 +19,6 @@ public class Templates {
     public static final String CHECKOUT_END = PAGES_DIR + "checkoutEnd";
     public static final String QUALITY_ANALYSIS = PAGES_DIR + "qualityAnalysis";
 
-    public static final String TERMS_OF_SALE = PAGES_DIR + "termsOfSales";
     public static final String LEGAL_MENTIONS = PAGES_DIR + "legalMentions";
 
     public static final String ADMIN_DIR = PAGES_DIR + "admin/";
