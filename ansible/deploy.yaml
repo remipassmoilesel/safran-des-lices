@@ -1,11 +1,19 @@
 - hosts: "vps"
   vars:
+    project_root: "{{ playbook_dir }}/.."
     destination_dir: "/opt/tomcat/webapps/vh_safranlices/"
-    source_repo: "https://github.com/remipassmoilesel/safran-des-lices"
+    static_root: "{{ project_root }}/src/main/resources/static"
 
   tasks:
-  - name: "Push changes"
-    raw: "cd {{ playbook_dir }} && git push origin master"
+
+  - name: "Update frontend dependencies"
+    bower:
+      path: "{{ static_root }}"
+      production: "yes"
+    delegate_to: localhost
+
+  - name: "Package application"
+    shell: "cd {{ project_root }} && mvn package -DskipTests=true"
     delegate_to: localhost
 
   - name: "Update set-env file"
@@ -25,19 +33,6 @@
       enabled: "yes"
       state: "started"
 
-  - name: "Clone and update git project"
-    git:
-      repo: "{{ source_repo }}"
-      dest: "/opt/safran-des-lices"
-
-  - name: "Update application dependencies"
-    bower:
-      path: "/opt/safran-des-lices/src/main/resources/static"
-      production: "yes"
-
-  - name: "Package application"
-    raw: "source /opt/tomcat/bin/setenv-safran-lices.sh && cd /opt/safran-des-lices && mvn package -DskipTests=true"
-
   - name: "Delete old application directory"
     file:
       state: "absent"
@@ -52,8 +47,7 @@
 
   - name: "Deploy application"
     copy:
-      remote_src: "yes"
-      src: "/opt/safran-des-lices/target/safran-des-lices-0.0.1-SNAPSHOT.war"
+      src: "{{ project_root }}/target/safran-des-lices-0.0.1-SNAPSHOT.war"
       dest: "{{ destination_dir }}/ROOT.war"
       owner: "tomcat"
 
